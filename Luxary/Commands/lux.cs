@@ -37,7 +37,19 @@ namespace Luxary
                 {
                     await Item.DeleteAsync();
                 }
-                await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/syn.png");
+                await Context.Channel.SendFileAsync("pic/syn.png");
+            }
+            [Command("oke")]
+            [Summary(".lux oke")]
+            [Remarks("Shows an soraka emote")]
+            public async Task oke()
+            {
+                int Delete = 1;
+                foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
+                {
+                    await Item.DeleteAsync();
+                }
+                await Context.Channel.SendFileAsync("pic/oke.png");
             }
             [Command("silly")]
             [Summary(".lux silly")]
@@ -49,7 +61,7 @@ namespace Luxary
                 {
                     await Item.DeleteAsync();
                 }
-                await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/silly.png");
+                await Context.Channel.SendFileAsync("pic/silly.png");
             }
             [Command("triggered")]
             [Summary(".lux triggered")]
@@ -61,7 +73,7 @@ namespace Luxary
                 {
                     await Item.DeleteAsync();
                 }
-                await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/luxerred.gif");
+                await Context.Channel.SendFileAsync("pic/luxerred.gif");
             }
             [Command("normal")]
             [Summary(".lux normal")]
@@ -73,7 +85,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/normal.png");
+            await Context.Channel.SendFileAsync("pic/normal.png");
             }
             [Command("mad")]
             [Summary(".lux mad")]
@@ -85,7 +97,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/mad.png");
+            await Context.Channel.SendFileAsync("pic/mad.png");
             }
             [Command("sad")]
             [Summary(".lux sad")]
@@ -97,7 +109,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/sad.png");
+            await Context.Channel.SendFileAsync("pic/sad.png");
             }
             [Command("cry")]
             [Summary(".lux cry")]
@@ -109,7 +121,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/cry.png");
+            await Context.Channel.SendFileAsync("pic/cry.png");
             }
             [Command("hmm")]
             [Summary(".lux hmm")]
@@ -121,7 +133,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/hmm.png");
+            await Context.Channel.SendFileAsync("pic/hmm.png");
             }
             [Command("gasm")]
             [Summary(".lux gasm")]
@@ -133,7 +145,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/gasm.png");
+            await Context.Channel.SendFileAsync("pic/gasm.png");
             }
             [Command("lel")]
             [Summary(".lux lel")]
@@ -145,7 +157,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/lel2.png");
+            await Context.Channel.SendFileAsync("pic/lel2.png");
             }
             [Command("ded")]
             [Summary(".lux ded")]
@@ -157,7 +169,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/ded.png");
+            await Context.Channel.SendFileAsync("pic/ded.png");
             }
             [Command("happy")]
             [Summary(".lux happy")]
@@ -169,7 +181,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/happy.png");
+            await Context.Channel.SendFileAsync("pic/happy.png");
             }
             [Command("shy")]
             [Summary(".lux shy")]
@@ -181,7 +193,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/shy.png");
+            await Context.Channel.SendFileAsync("pic/shy.png");
             }
             [Command("m2s")]
             [Summary(".lux m2s")]
@@ -193,7 +205,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/m2s.png");
+            await Context.Channel.SendFileAsync("pic/m2s.png");
             }
             [Command("thonk")]
             [Summary(".lux thonk")]
@@ -205,7 +217,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/thonk.png");
+            await Context.Channel.SendFileAsync("pic/thonk.png");
             }
             [Command("oh")]
             [Summary(".lux oh")]
@@ -217,7 +229,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/oh.png");
+            await Context.Channel.SendFileAsync("pic/oh.png");
             }
             [Command("think")]
             [Summary(".lux think")]
@@ -229,7 +241,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/thinking.png");
+            await Context.Channel.SendFileAsync("pic/thinking.png");
             }
             [Command("kl")]
             [Summary(".lux kl")]
@@ -241,7 +253,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/kl.png");
+            await Context.Channel.SendFileAsync("pic/kl.png");
             }
             [Command("cat")]
             [Summary(".lux cat")]
@@ -253,7 +265,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/sg.png");
+            await Context.Channel.SendFileAsync("pic/sg.png");
             }
             [Command("bulb")]
             [Summary(".lux bulb")]
@@ -265,7 +277,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/bulb.png");
+            await Context.Channel.SendFileAsync("pic/bulb.png");
             }
             [Command(":3")]
             [Summary(".lux :3")]
@@ -277,7 +289,7 @@ namespace Luxary
                 {
                     await Item.DeleteAsync();
                 }
-                await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/lel.png");
+                await Context.Channel.SendFileAsync("pic/lel.png");
             }
             [Command("luxgasm")]
             [Alias("lg")]
@@ -290,7 +302,7 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/luxgasm.png");
+            await Context.Channel.SendFileAsync("pic/luxgasm.png");
             }
     }
 }

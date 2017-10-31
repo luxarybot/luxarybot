@@ -10,22 +10,15 @@ using System.Net;
 using System.Xml;
 using System.IO.Compression;
 using Luxary.Service;
+using Luxary.Services;
 using ImageSharp;
 using System.IO;
+using System.Web.UI.WebControls;
 
 namespace Luxary
 {
     public class Image : ModuleBase<ICommandContext>
     {
-        private CommandService _service;
-        [Command("image")]
-        [Alias("img")]
-        public async Task image(string xd = null)
-        {
-            {
-               
-            }
-        }
         [Command("Dog")]
         [Summary(".dog")]
         [Remarks("Shows a random dog.")]
@@ -46,12 +39,12 @@ namespace Luxary
                 int g1 = rnd.Next(1, 255);
                 int g2 = rnd.Next(1, 255);
                 int g3 = rnd.Next(1, 255);
-                var builder = new EmbedBuilder()
+                var builder = new EmbedBuilder
                 {
                     Color = new Discord.Color(g1, g2, g3),
+                    Title = ("Lil doggo's xd"),
+                    ImageUrl = $"{DogImage}",
                 };
-                builder.Title = ("Lil doggo's xd");
-                builder.ImageUrl = $"{DogImage}";
                 await ReplyAsync("", false, builder.Build());
             }
         }
@@ -95,16 +88,16 @@ namespace Luxary
             int ex3 = champ.Next(1, 127);
             int ex4 = champ.Next(1, 127);
             int ex5 = champ.Next(1, 127);
-            ImageSharp.Image<Rgba32> champ1 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/league/" + ex1 + ".png");
-            ImageSharp.Image<Rgba32> champ2 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/league/" + ex2 + ".png");
-            ImageSharp.Image<Rgba32> champ3 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/league/" + ex3 + ".png");
-            ImageSharp.Image<Rgba32> champ4 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/league/" + ex4 + ".png");
-            ImageSharp.Image<Rgba32> champ5 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/league/" + ex5 + ".png");
-            ImageSharp.Image<Rgba32> l1 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/top.png");
-            ImageSharp.Image<Rgba32> l2 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/jng.png");
-            ImageSharp.Image<Rgba32> l3 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/mid.png");
-            ImageSharp.Image<Rgba32> l4 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/bot.png");
-            ImageSharp.Image<Rgba32> l5 = await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/sup.png");
+            ImageSharp.Image<Rgba32> champ1 = await core.StartStreamAsync(path: "league/" + ex1 + ".png");
+            ImageSharp.Image<Rgba32> champ2 = await core.StartStreamAsync(path: "league/" + ex2 + ".png");
+            ImageSharp.Image<Rgba32> champ3 = await core.StartStreamAsync(path: "league/" + ex3 + ".png");
+            ImageSharp.Image<Rgba32> champ4 = await core.StartStreamAsync(path: "league/" + ex4 + ".png");
+            ImageSharp.Image<Rgba32> champ5 = await core.StartStreamAsync(path: "league/" + ex5 + ".png");
+            ImageSharp.Image<Rgba32> l1 = await core.StartStreamAsync(path: "pic/top.png");
+            ImageSharp.Image<Rgba32> l2 = await core.StartStreamAsync(path: "pic/jng.png");
+            ImageSharp.Image<Rgba32> l3 = await core.StartStreamAsync(path: "pic/mid.png");
+            ImageSharp.Image<Rgba32> l4 = await core.StartStreamAsync(path: "pic/bot.png");
+            ImageSharp.Image<Rgba32> l5 = await core.StartStreamAsync(path: "pic/sup.png");
             //totale foto groot VVVVV
             ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(500, 1250);
             //size per image VVVVV
@@ -168,10 +161,10 @@ namespace Luxary
                     file.Dispose();
 
                     ImageSharp.Image<Rgba32> champ1 =
-                        await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/xdddd.png");
+                        await core.StartStreamAsync(path: "pic/xdddd.png");
                     ImageSharp.Image<Rgba32> user =
                         await core.StartStreamAsync(
-                            path: $"D:/Discord/Luxary/Luxary/bin/Debug/images/{randomString}.png");
+                            path: $"images/{randomString}.png");
                     //totale foto groot VVVVV
                     ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(277, 340);
                     //size per image VVVVV
@@ -214,10 +207,10 @@ namespace Luxary
                     file.Dispose();
 
                     ImageSharp.Image<Rgba32> champ1 =
-                        await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/xdddd.png");
+                        await core.StartStreamAsync(path: "pic/xdddd.png");
                     ImageSharp.Image<Rgba32> user =
                         await core.StartStreamAsync(
-                            path: $"D:/Discord/Luxary/Luxary/bin/Debug/images/{randomString}.png");
+                            path: $"images/{randomString}.png");
                     //totale foto groot VVVVV
                     ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(277, 340);
                     //size per image VVVVV
@@ -261,10 +254,10 @@ namespace Luxary
                 file.Dispose();
 
                 ImageSharp.Image<Rgba32> champ1 =
-                    await core.StartStreamAsync(path: "D:/Discord/Luxary/Luxary/bin/Debug/pic/xdddd.png");
+                    await core.StartStreamAsync(path: "pic/xdddd.png");
                 ImageSharp.Image<Rgba32> user =
                     await core.StartStreamAsync(
-                        path: $"D:/Discord/Luxary/Luxary/bin/Debug/pic/boii.png");
+                        path: $"pic/boii.png");
                 //totale foto groot VVVVV
                 ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(277, 340);
                 //size per image VVVVV
@@ -387,11 +380,16 @@ namespace Luxary
         [Remarks("Shows your summoner information")]
         public async Task Summoner([Remainder]string tag)
         {
-            using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+            using (var client = new HttpClient(new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            }))
             {
                 try
                 {
-                    string Summonerid = $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key=RGAPI-9f5b8ac8-b4fe-4c20-94b7-233807f05c23";
+                    string key = "RGAPI-a88f665d-97e0-487c-b373-8b959171efdd";
+                    string Summonerid =
+                        $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
                     client.BaseAddress = new Uri(Summonerid);
                     HttpResponseMessage response = client.GetAsync("").Result;
                     response.EnsureSuccessStatusCode();
@@ -402,129 +400,126 @@ namespace Luxary
                     string Name = jsonn["name"].ToString();
                     string lvl = jsonn["summonerLevel"].ToString();
                     string icon = jsonn["profileIconId"].ToString();
-
-                    var ke = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-                    try
+                    System.Threading.Thread.Sleep(2000);
+                    using (var ke = new HttpClient(new HttpClientHandler
                     {
-                        string Elo = $"https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/{id}?api_key=RGAPI-9f5b8ac8-b4fe-4c20-94b7-233807f05c23";
-                        ke.BaseAddress = new Uri(Elo);
-                        HttpResponseMessage kee = ke.GetAsync("").Result;
-                        kee.EnsureSuccessStatusCode();
-                        string result2 = await kee.Content.ReadAsStringAsync();
-                        var json = JArray.Parse(result2);
-                        string tier = json[0]["tier"].ToString();
-                        string tier2 = json[0]["rank"].ToString();
-                        string check = json[0]["playerOrTeamName"].ToString();
-                        string wins = json[0]["wins"].ToString();
-                        string Losses = json[0]["losses"].ToString();
-                        int resultt = int.Parse(wins);
-                        int resultt2 = int.Parse(Losses);
-
-                        int TotalFilesToProcess = resultt + resultt2;
-                        int winrate = resultt * 100 / TotalFilesToProcess;
-                        var auth = new EmbedAuthorBuilder()
-                        {
-                            Name = $"{Name}'s profile",
-                        };
-                        string version = "7.19.1";
-                        if (tier == "BRONZE")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(139, 69, 19),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "SILVER")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(112, 128, 144),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "GOLD")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(218, 165, 32),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "PLATINUM")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(175, 238, 238),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "DIAMOND")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(30, 144, 255),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "MASTERS")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(178, 34, 34),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                        else if (tier == "CHALLENGER")
-                        {
-                            var builder = new EmbedBuilder()
-                            {
-                                Color = new Discord.Color(220, 20, 60),
-                                Author = auth,
-                            };
-                            builder.Description = $"Level: {lvl}\nRank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
-                            builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                            await ReplyAsync("", false, builder.Build());
-                        }
-                    }
-                    catch
+                        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                    }))
                     {
-                        var auth = new EmbedAuthorBuilder()
+                        try
                         {
-                            Name = $"{Name}'s profile",
-                        };
-                        string version = "7.19.1";
-                        var rnd = new Random();
-                        int g1 = rnd.Next(1, 255);
-                        int g2 = rnd.Next(1, 255);
-                        int g3 = rnd.Next(1, 255);
-                        var builder = new EmbedBuilder()
+                            string Elo =
+                                $"https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/{id}?api_key={key}";
+                            ke.BaseAddress = new Uri(Elo);
+                            HttpResponseMessage kee = ke.GetAsync("").Result;
+                            kee.EnsureSuccessStatusCode();
+                            string result2 = await kee.Content.ReadAsStringAsync();
+                            var json = JArray.Parse(result2);
+                            using (var keee = new HttpClient(new HttpClientHandler
+                            {
+                                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                            }))
+                            {
+                                string Mastery =
+                                    $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
+                                keee.BaseAddress = new Uri(Mastery);
+                                HttpResponseMessage yeboi = keee.GetAsync("").Result;
+                                yeboi.EnsureSuccessStatusCode();
+                                string result3 = await yeboi.Content.ReadAsStringAsync();
+                                var json3 = JArray.Parse(result3);
+                                var CID = json3[0]["championId"].ToString();
+                                var CLVL = json3[0]["championLevel"].ToString();
+                                var CPT = json3[0]["championPoints"].ToString();
+                                System.Threading.Thread.Sleep(2000);
+                                
+                                using (var keee1 = new HttpClient(new HttpClientHandler
+                                {
+                                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                                }))
+                                {
+                                    string Mastery1 =
+                                        $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
+                                    keee1.BaseAddress = new Uri(Mastery1);
+                                    HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
+                                    yeboi1.EnsureSuccessStatusCode();
+                                    string result31 = await yeboi1.Content.ReadAsStringAsync();
+                                    var json31 = JObject.Parse(result31);
+                                    var title = json31["title"].ToString();
+                                    var name = json31["name"].ToString();
+                                    var auth = new EmbedAuthorBuilder()
+                                    {
+                                        Name = $"{Name}'s profile",
+                                    };
+                                    string version = "7.20.1";
+
+                                    var builder = new EmbedBuilder
+                                    {
+                                        Color = new Discord.Color(218, 165, 32),
+                                        Author = auth,
+                                        Description = $"Level: {lvl}"
+                                    };
+                                    builder.AddField(x =>
+                                    {
+                                        x.Name = "Main";
+                                        x.Value =
+                                            $"Champion: **{name}, {title}**\nMastery: **{CLVL}**\nMastery points: **{CPT}**";
+                                        x.IsInline = false;
+
+                                         
+                                    });
+                                    builder.ThumbnailUrl =
+                                        $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
+                                    int i = 0;
+                                    foreach (var lh in json)
+                                    {
+
+                                        string tier = json[i]["tier"].ToString();
+                                        string tier2 = json[i]["rank"].ToString();
+                                        string check = json[i]["playerOrTeamName"].ToString();
+                                        string wins = json[i]["wins"].ToString();
+                                        string league = json[i]["leagueName"].ToString();
+                                        string queueType = json[i]["queueType"].ToString();
+                                        string Losses = json[i]["losses"].ToString();
+                                        int resultt = int.Parse(wins);
+                                        int resultt2 = int.Parse(Losses);
+                                        int totalFilesToProcess = resultt + resultt2;
+                                        int winrate = resultt * 100 / totalFilesToProcess;
+                                        builder.AddField(x =>
+                                        {
+
+                                            x.Name = queueType;
+                                            x.Value =
+                                                $"Rank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
+                                            i = i + 1;
+                                            x.IsInline = false;
+                                        });
+                                    }
+                                    await ReplyAsync("", false, builder.Build());
+                                }
+                            }
+                        }
+                        catch (Exception e)
                         {
-                            Color = new Discord.Color(g1, g2, g3),
-                            Author = auth,
-                        };
-                        builder.Description = $"Level: {lvl}\nNo ranked data.";
-                        builder.ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                        await ReplyAsync("", false, builder.Build());
-                        return;
+                            var auth = new EmbedAuthorBuilder()
+                            {
+                                Name = $"{Name}'s profile",
+                            };
+                            string version = "7.19.1";
+                            var rnd = new Random();
+                            int g1 = rnd.Next(1, 255);
+                            int g2 = rnd.Next(1, 255);
+                            int g3 = rnd.Next(1, 255);
+                            var builder = new EmbedBuilder
+                            {
+                                Color = new Discord.Color(g1, g2, g3),
+                                Author = auth,
+                                Description = $"Level: {lvl}\nNo ranked data.",
+                                ThumbnailUrl =
+                                    $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png",
+                            };
+                            await ReplyAsync("", false, builder.Build());
+                            Console.WriteLine(e);
+                        }
                     }
                 }
                 catch
@@ -537,13 +532,14 @@ namespace Luxary
                     int g1 = rnd.Next(1, 255);
                     int g2 = rnd.Next(1, 255);
                     int g3 = rnd.Next(1, 255);
-                    var builder = new EmbedBuilder()
+                    var builder = new EmbedBuilder
                     {
                         Color = new Discord.Color(g1, g2, g3),
                         Author = auth,
+                        Description = $"Username not found",
+                        ThumbnailUrl =
+                            $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
                     };
-                    builder.Description = $"Username not found";
-                    builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
                     await ReplyAsync("", false, builder.Build());
                 }
             }
@@ -594,9 +590,11 @@ namespace Luxary
             await ReplyAsync("", false, embed.Build());
         }
         [Command("cover")]
-        [Alias("gyb", "c")]
+        [Alias("gyb", "thistakessolongtotypesoyoubetterbefastattyping")]
         [Summary(".cover")]
         [Remarks("Covers some content.")]
+        [RequireBotPermission(GuildPermission.ManageMessages)]
+        [RequireUserPermission(GuildPermission.ManageMessages)]
         public async Task cover()
         {
             int Delete = 1;
@@ -604,10 +602,10 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/blank.png");
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/blank.png");
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/blank.png");
-            await Context.Channel.SendFileAsync("D:/Discord/Luxary/Luxary/bin/Debug/pic/blank.png");
+            await Context.Channel.SendFileAsync("pic/blank.png");
+            await Context.Channel.SendFileAsync("pic/blank.png");
+            await Context.Channel.SendFileAsync("pic/blank.png");
+            await Context.Channel.SendFileAsync("pic/blank.png");
             await ReplyAsync("Covered some weird shit for " + Context.User.Mention + " your welcome");
         }
         [Command("slav")]
@@ -665,10 +663,13 @@ namespace Luxary
         {
             var champ = new Random();
             int ex = champ.Next(1, 127);
-           
-            var embed = new EmbedBuilder();
-            embed.Title = "This wil be your champ";
-            embed.ImageUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/league/{ex}.png";
+
+            var embed = new EmbedBuilder
+            {
+                Title = "This wil be your champ",
+                ImageUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/league/{ex}.png"
+            };
             await ReplyAsync("", false, embed.Build());
         }
         [Command("kys")]
@@ -710,7 +711,7 @@ namespace Luxary
             int g1 = rnd.Next(1, 255);
             int g2 = rnd.Next(1, 255);
             int g3 = rnd.Next(1, 255);
-            if (!(thumbnailurl == null))
+            if (thumbnailurl != null)
             {
                 var embed = new EmbedBuilder()
                 {
@@ -768,15 +769,21 @@ namespace Luxary
                 Console.WriteLine("Making API Call...");
                 using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
                 {
-                    string websiteurl = $"https://api.tenor.co/v1/search?tag={tag}&key=0V4RTXJOKKRQ";
+                    var websiteurl = $"https://api.tenor.co/v1/search?tag={tag}&key=0V4RTXJOKKRQ";
                     client.BaseAddress = new Uri(websiteurl);
-                    HttpResponseMessage response = client.GetAsync("").Result;
+                    var response = client.GetAsync("").Result;
                     response.EnsureSuccessStatusCode();
-                    string result = await response.Content.ReadAsStringAsync();
+                    var result = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(result);
-                    string Joke = json["results"][0]["url"].ToString();
+                    var joke = json["results"][0]["media"][0]["gif"]["url"].ToString();
+                    var title = json["results"][0]["title"].ToString();
+                    var build = new EmbedBuilder
+                    {
+                        Title = title,
+                        ImageUrl = joke
+                    };
+                    await ReplyAsync("", false, build.Build());
 
-                    await ReplyAsync(Joke);
                 }
             }
             catch
@@ -789,71 +796,74 @@ namespace Luxary
                 int g1 = rnd.Next(1, 255);
                 int g2 = rnd.Next(1, 255);
                 int g3 = rnd.Next(1, 255);
-                var builder = new EmbedBuilder()
+                var builder = new EmbedBuilder
                 {
                     Color = new Discord.Color(g1, g2, g3),
                     Author = auth,
+                    Description = $"Gif not found.",
+                    ThumbnailUrl =
+                        $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
                 };
-                builder.Description = $"Gif not found.";
-                builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
                 await ReplyAsync("", false, builder.Build());
             }
         }
-        [Command("giphy")]
-        [Summary(".giphy **<message>**")]
-        [Remarks("Shows a gif.")]
-        [Alias("gp")]
-        public async Task giphy([Remainder] string tag = null)
-        {
-            try
-            {
-                int Delete = 1;
-                foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
-                {
-                    await Item.DeleteAsync();
-                }
-                Console.WriteLine("Making API Call...");
-                using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
-                {
-                    string websiteurl = $"https://api.giphy.com/v1/gifs/random?api_key=BJLJx6TDsXhXKdAIo5qw0ItokQHku6rr&tag={tag}&rating=G";
-                    client.BaseAddress = new Uri(websiteurl);
-                    HttpResponseMessage response = client.GetAsync("").Result;
-                    response.EnsureSuccessStatusCode();
-                    string result = await response.Content.ReadAsStringAsync();
-                    var json = JObject.Parse(result);
-                    string Joke = json["data"]["url"].ToString();
-                    await ReplyAsync(Joke);
-                }
-            }
-            catch
-            {
-                var auth = new EmbedAuthorBuilder()
-                {
-                    Name = $"Error",
-                };
-                var rnd = new Random();
-                int g1 = rnd.Next(1, 255);
-                int g2 = rnd.Next(1, 255);
-                int g3 = rnd.Next(1, 255);
-                var builder = new EmbedBuilder()
-                {
-                    Color = new Discord.Color(g1, g2, g3),
-                    Author = auth,
-                };
-                builder.Description = $"Gif not found.";
-                builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
-                await ReplyAsync("", false, builder.Build());
-            }
-        }
+        //[Command("giphy")]
+        //[Summary(".giphy **<message>**")]
+        //[Remarks("Shows a gif.")]
+        //[Alias("gp")]
+        //public async Task giphy([Remainder] string tag = null)
+        //{
+        //    try
+        //    {
+        //        int Delete = 1;
+        //        foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
+        //        {
+        //            await Item.DeleteAsync();
+        //        }
+        //        Console.WriteLine("Making API Call...");
+        //        using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+        //        {
+        //            string websiteurl = $"https://api.giphy.com/v1/gifs/random?api_key=BJLJx6TDsXhXKdAIo5qw0ItokQHku6rr&tag={tag}&rating=G";
+        //            client.BaseAddress = new Uri(websiteurl);
+        //            HttpResponseMessage response = client.GetAsync("").Result;
+        //            response.EnsureSuccessStatusCode();
+        //            string result = await response.Content.ReadAsStringAsync();
+        //            var json = JObject.Parse(result);
+        //            string Joke = json["data"]["url"].ToString();
+        //            await ReplyAsync(Joke);
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        var auth = new EmbedAuthorBuilder()
+        //        {
+        //            Name = $"Error",
+        //        };
+        //        var rnd = new Random();
+        //        int g1 = rnd.Next(1, 255);
+        //        int g2 = rnd.Next(1, 255);
+        //        int g3 = rnd.Next(1, 255);
+        //        var builder = new EmbedBuilder()
+        //        {
+        //            Color = new Discord.Color(g1, g2, g3),
+        //            Author = auth,
+        //        };
+        //        builder.Description = $"Gif not found.";
+        //        builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+        //        await ReplyAsync("", false, builder.Build());
+        //    }
+        //}
         [Command("weeb")]
         [Summary(".weeb")]
         [Remarks("Sends a weeb gif")]
         public async Task weeb()
         {
             Console.WriteLine("Sending weebstuff >_< desu desu..");
-            var build = new EmbedBuilder();
-            build.Title = "desu desu";
-            build.ImageUrl = "https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/weeb.gif";
+            var build = new EmbedBuilder
+            {
+                Title = "desu desu",
+                ImageUrl = "https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/weeb.gif"
+            };
             await ReplyAsync("", false, build.Build());
         }
     }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.Net.Http;
+using System.Text;
 using Luxary.Services;
 using Newtonsoft.Json;
 using static Luxary.Services.WeatherDataCurrent;
@@ -15,6 +18,108 @@ namespace Luxary
 {
     public class Admin : ModuleBase
     {
+
+        [Command("ServerInfo")]
+        [Alias("sinfo", "servinfo")]
+        [Summary(".serverinfo")]
+        [Remarks("Info about the server you're currently in")]
+        public async Task GuildInfo()
+        {
+            var embedBuilder = new EmbedBuilder();
+            embedBuilder.WithColor(new Color(0, 71, 171));
+
+            var gld = Context.Guild as SocketGuild;
+            var client = Context.Client as DiscordSocketClient;
+
+
+            if (!string.IsNullOrWhiteSpace(gld.IconUrl))
+                embedBuilder.ThumbnailUrl = gld.IconUrl;
+            var O = gld.Owner.Username;
+
+            var V = gld.VoiceRegionId;
+            var C = gld.CreatedAt;
+            var CHV = gld.VoiceChannels.Count;
+            var CHT = gld.TextChannels.Count;
+            var N = gld.DefaultMessageNotifications;
+            var VL = gld.VerificationLevel;
+            var XD = gld.Roles.Count;
+            var X = gld.MemberCount;
+            var Z = client.ConnectionState;
+
+            embedBuilder.Title = $"{gld.Name} Server Information";
+            embedBuilder.Description =
+                $"Server Owner: **{O}\n**Voice Region: **{V}\n**Created At: **{C}\n**MsgNtfc: **{N}\n**Verification: **{VL}\n**Role Count: **{XD}\n**Members: **{X}\n**Connection state:** {Z}\n**Text Channels:** {CHT}\n**Voice Channels:** {CHV}**";
+            await ReplyAsync("", false, embedBuilder);
+
+        }
+
+        [Command("botinfo")]
+        [Alias("binfo")]
+        [Summary(".botinfo")]
+        [Remarks("Shows all Bot Info.")]
+        public async Task Info()
+        {
+            using (var process = Process.GetCurrentProcess())
+            {
+                /*this is required for up time*/
+                var embed = new EmbedBuilder();
+                var application = await Context.Client.GetApplicationInfoAsync(); /*for lib version*/
+                embed.ThumbnailUrl = application.IconUrl; /*pulls bot Avatar. Not needed can be removed*/
+                embed.WithColor(new Color(0x4900ff)) /*Hexacode colours*/
+
+                .AddField(y =>
+                {
+            /*new embed field*/
+                    y.Name = "My daddy:";  /*Field name here*/
+                    y.Value = application.Owner.Username; application.Owner.Id.ToString(); /*Code here. If INT convert to string*/
+                    y.IsInline = true;
+                })
+                .AddField(y =>  /* add new field, rinse and repeat*/
+                {
+                    y.Name = "Bot uptime:";
+                    var time = DateTime.Now - process.StartTime; /* Subtracts current time and start time to get Uptime*/
+                    var sb = new StringBuilder();
+                    if (time.Days > 0)
+                    {
+                        sb.Append($"{time.Days}d ");
+                    }
+                    if (time.Hours > 0)
+                    {
+                        sb.Append($"{time.Hours}h ");
+                    }
+                    if (time.Minutes > 0)
+                    {
+                        sb.Append($"{time.Minutes}m ");
+                    }
+                    sb.Append($"{time.Seconds}s ");
+                    y.Value = sb.ToString();
+                    y.IsInline = true;
+                })
+                .AddField(y =>
+                {
+                    y.Name = "Discord.net version:"; /*pulls discord lib version*/
+                    y.Value = DiscordConfig.Version;
+                    y.IsInline = true;
+                }).AddField(y =>
+                {
+                    y.Name = "Servers:";
+                    y.Value = (Context.Client as DiscordSocketClient).Guilds.Count.ToString() + " connected servers."; /*Numbers of servers the bot is in*/
+                    y.IsInline = true;
+                }).AddField(y =>
+                {
+                    y.Name = "Number Of Users:";
+                    y.Value = (Context.Client as DiscordSocketClient).Guilds.Sum(g => g.Users.Count).ToString(); /*Counts users*/
+                    y.IsInline = true;
+                })
+                .AddField(y =>
+                {
+                    y.Name = "Channels:";
+                    y.Value = (Context.Client as DiscordSocketClient).Guilds.Sum(g => g.Channels.Count).ToString() + " connected channels.";
+                    y.IsInline = true;
+                });
+                await ReplyAsync("",false, embed.Build());
+            }
+        }
         [Command("SetGame")]
         [Summary(".setgame **<game>**")]
         [Remarks("Sets the game of the bot(owner only)")]
@@ -24,7 +129,7 @@ namespace Luxary
             var GuildUser = await Context.Guild.GetUserAsync(Context.User.Id);
             if (GuildUser.Id != 185402901236154368)
             {
-                await Context.Channel.SendMessageAsync("You can't make me play something else");
+                await Context.Channel.SendMessageAsync("Only my daddy can do this.");
             }
             else
             {
@@ -92,6 +197,31 @@ namespace Luxary
             }
         }
 
+        [Command("role")]
+        [RequireUserPermission(GuildPermission.ManageRoles)]
+        public async Task Role(IGuildUser user, string roles)
+        {
+            try
+            {
+                var role = user.Guild.Roles.Where(has => has.Name.ToUpper() == roles.ToUpper());
+                await user.AddRolesAsync(role);
+                var embed = new EmbedBuilder
+                {
+                    Title = "Admin",
+                    Description = $"Gave **{user}** the role **{roles}**"
+                };
+                await ReplyAsync("", false, embed.Build());
+            }
+            catch (Exception)
+            {
+                var embed = new EmbedBuilder
+                {
+                    Title = "Error",
+                    Description = $"idk no rights?"
+                };
+                await ReplyAsync("", false, embed.Build());
+            }
+        }
         [Command("Kick")]
         [Summary(".kick **<user>**")]
         [Remarks("Kicks a player from the server.")]
@@ -148,9 +278,11 @@ namespace Luxary
                 (live == "offline")
             {
                 live = "live";
-                timer1 = new System.Timers.Timer();
-                timer1.Interval = (30000);
-                timer1.AutoReset = false;
+                timer1 = new System.Timers.Timer
+                {
+                    Interval = (30000),
+                    AutoReset = false
+                };
                 timer1.Start();
                 timer1.Elapsed += elapsed;
                 wordOne = word1;

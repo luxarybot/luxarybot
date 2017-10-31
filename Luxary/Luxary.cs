@@ -152,15 +152,26 @@ namespace Luxary
                 var dmChannel = await Context.User.GetOrCreateDMChannelAsync();
                 if (!result.IsSuccess)
                 {
-                    await ReplyAsync($"Sorry, I couldn't find a command like **{command}**.");
+                    var rnd1 = new Random();
+                    int g11 = rnd1.Next(1, 255);
+                    int g12 = rnd1.Next(1, 255);
+                    int g13 = rnd1.Next(1, 255);
+                    var builder1 = new EmbedBuilder()
+                    {
+
+                        Title = "Error",
+                        Color = new Color(g11, g12, g13),
+                        Description = $"the command: **{command}** doesn't excist.\n.cmds for all commands."
+                    };
+                    await ReplyAsync("", false, builder1.Build());
                     return;
                 }
-
                 var rnd = new Random();
                 int g1 = rnd.Next(1, 255);
                 int g2 = rnd.Next(1, 255);
                 int g3 = rnd.Next(1, 255);
                 var builder = new EmbedBuilder()
+
                 {
                     Color = new Color(g1, g2, g3),
                     Description = $"Help about: **{command}** <:happy:362565108032995329>"
@@ -173,8 +184,8 @@ namespace Luxary
                     builder.AddField(x =>
                     {
                         x.Name = $"Command: " + string.Join(", ", cmd.Aliases);
-                        x.Value = $"Usage: {cmd.Summary}\n" +
-                                    $"Info: {cmd.Remarks}";
+                        x.Value = $"**Usage:** {cmd.Summary}\n" +
+                                    $"**Info:** {cmd.Remarks}";
                         x.IsInline = false;
                     });
                 }
@@ -183,156 +194,6 @@ namespace Luxary
 
         }
 
-        [Command("ultraspam")]
-        [Summary(".ultraspam**")]
-        [Remarks("It's the time we show our power from our lord and saviour Teemo and use it against our haters to achieve our goals to")]
-        public async Task SendSpam(string spammm)
-        {
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-            await Context.Channel.SendFileAsync(
-                $"D:/Discord/Luxary/Luxary/bin/Debug/pic/{spammm}.gif");
-        }   
         [Command("afk")]
         [Alias("away")]
         [Summary(".afk **<name>** **<reason>**")]
@@ -459,11 +320,10 @@ namespace Luxary
                     IconUrl = thumbnailurl,
                 };
                 var rnd = new Random();
-                int getal = rnd.Next(1, 6);
                 int g1 = rnd.Next(1, 255);
                 int g2 = rnd.Next(1, 255);
                 int g3 = rnd.Next(1, 255);
-                var embed = new EmbedBuilder()
+                var embed = new EmbedBuilder
                 {
                     Color = new Color(g1, g2, g3),
                     Author = auth
@@ -474,12 +334,11 @@ namespace Luxary
                 var username = us.Username;
                 var discr = us.Discriminator;
                 var id = us.Id;
-                var dat = date;
                 var stat = us.Status;
                 var cc = us.JoinedAt;
                 var game = us.Game;
                 var nick = us.Nickname;
-                var Roles = us.Roles;
+                var muted = us.IsMuted;
                 embed.Title = $"**{us.Username}** Informatie";
                 embed.Description = $"Username: **{username}\n"
                 + $"Tag: **{discr}**\n"
@@ -488,7 +347,7 @@ namespace Luxary
                 + $"Created at: **{date}**\n"
                 + $"Status: **{stat}**\n"
                 + $"Joined server at: **{cc}**\n"
-                + $"Roles: **{Roles}**\n"
+                + $"Muted: **{muted}**\n"
                 + $"Playing: **{game}**\n";
 
                 await ReplyAsync("", false, embed.Build());
@@ -579,8 +438,9 @@ namespace Luxary
         [Alias("hl")]
         [Summary(".hoursleft **<hours>**")]
         [Remarks("Shows how much time left to waste time")]
-        public async Task left(int input)
+        public async Task left(string input)
         {
+            if (input != null)
             {
                 var rnd = new Random();
                 int getal = rnd.Next(1, 6);
@@ -591,28 +451,45 @@ namespace Luxary
                 {
                     Color = new Color(g1, g2, g3),
                 };
-                int hours = 720 - input;
-                int days = input / 8;
+                var boi = Convert.ToInt32(input);
+                int hours = 720 - boi;
+                int days = boi / 8;
                 int weeks = days / 5;
                 embed.Title = $"**Zoveel dagen nog te gaan** <:mad:362497418291314688>";
                 embed.Description = $"**{hours}** hours worked, \n**{days}** days,\n**{weeks}** weeks.";
                 await ReplyAsync("", false, embed.Build());
 
             }
+            else
+            {
+                var embedd = new EmbedBuilder()
+                {
+                    Title = $"Error",
+                    Description = $".hoursleft **<hours>**"
+                };
+                await ReplyAsync("", false, embedd.Build());
+            }
         }
-        [Command("poke")]
-        [Summary(".poke **<user>**")]
-        [Remarks("touches an other user")]
-        [Alias("touch", "prik")]
+        [Command("pat")]
+        [Summary(".pat **<user>**")]
+        [Remarks("pats an other user")]
+        [Alias("touch")]
         public async Task PokeSomebody([Summary("user to poke")] IGuildUser user = null)
         {
             if (user == null)
             {
-                await ReplyAsync("Please touch me with your command <:luxgasm:304937193028321280> , \nExample: .poke <USER>");
+                await ReplyAsync("Please pat me with your command <:luxgasm:304937193028321280> , \nExample: .poke <USER>");
             }
             else
             {
-                await ReplyAsync(Context.User.Mention + " Touches " + user.Mention);
+                var rnd = new Random();
+                int g = rnd.Next(1, 4);
+                EmbedBuilder embed = new EmbedBuilder
+                {
+                    Description = Context.User.Mention + " pats " + user.Mention,
+                    ImageUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/xd{g}.gif"
+                };
+                await ReplyAsync("", false, embed.Build());
             }
         }
         [Command("Ask")]
@@ -629,13 +506,12 @@ namespace Luxary
                 "Yes.",
                 "Idk.",
                 "How bout go fuck yourself.",
-                "And how am i supposed to know that.",
+                "And how am i supposed to know that."
             };
 
             Random rand = new Random();
 
             var rnd = new Random();
-            int getal = rnd.Next(1, 6);
             int g1 = rnd.Next(1, 255);
             int g2 = rnd.Next(1, 255);
             int g3 = rnd.Next(1, 255);
@@ -648,45 +524,106 @@ namespace Luxary
             embed.Title = $"**I say...**";
             embed.Description = text;
             await ReplyAsync("", false, embed.Build());
-        }  
+        }
+
+        [Command("dm")]
+        public async Task sendmsgtoowner(IGuildUser boi, [Remainder] string text)
+        {
+            if (text != null)
+            {
+                var embed = new EmbedBuilder()
+                {
+                    Color = new Color(231, 31, 31)
+                };
+                var application = await Context.Client.GetApplicationInfoAsync();
+                var user = boi.GetOrCreateDMChannelAsync();
+                var z = await boi.GetOrCreateDMChannelAsync();
+                embed.Description =
+                    $"`{Context.User.Username}` **from** `{Context.Guild.Name}` **send you a message!**\n\n{text}";
+                await z.SendMessageAsync("", false, embed);
+            }
+            else
+            {
+                await ReplyAsync("xd");
+            }
+        }
+
         [Command("rate")]
         [Summary(".rate")]
         [Remarks("Gives a rate between 1/10.")]
         [Alias("r8")]
         public async Task rate([Remainder] string input = null)
         {
-            string[] predictionssTexts = new string[]
+            if (input != null)
             {
-                 $"I rate __{input}__ a **0/10** lol.",
-                 $"I rate __{input}__ a **1/10**",
-                 $"I rate __{input}__ a **2/10**",
-                 $"I rate __{input}__ a **3/10**",
-                 $"I rate __{input}__ a **4/10**",
-                 $"I rate __{input}__ a **5/10**",
-                 $"I rate __{input}__ a **6/10**",
-                 $"I rate __{input}__ a **7/10**",
-                 $"I rate __{input}__ a **8/10**",
-                 $"I rate __{input}__ a **9/10**",
-                 $"I rate __{input}__ a **10/10**"
-            };
+                string[] predictionssTexts = new string[]
+                {
+                    $"I rate __{input}__ a **0/10** lol.",
+                    $"I rate __{input}__ a **1/10**",
+                    $"I rate __{input}__ a **2/10**",
+                    $"I rate __{input}__ a **3/10**",
+                    $"I rate __{input}__ a **4/10**",
+                    $"I rate __{input}__ a **5/10**",
+                    $"I rate __{input}__ a **6/10**",
+                    $"I rate __{input}__ a **7/10**",
+                    $"I rate __{input}__ a **8/10**",
+                    $"I rate __{input}__ a **9/10**",
+                    $"I rate __{input}__ a **10/10**"
+                };
 
-            Random rand = new Random();
 
-            var rnd = new Random();
-            int getal = rnd.Next(1, 6);
-            int g1 = rnd.Next(1, 255);
-            int g2 = rnd.Next(1, 255);
-            int g3 = rnd.Next(1, 255);
-            var embed = new EmbedBuilder()
-            {
-                Color = new Color(g1, g2, g3),
-            };
-            int randomIndex = rand.Next(predictionssTexts.Length);
-            string text = predictionssTexts[randomIndex];
-            embed.Title = $"**I say...**";
-            embed.Description = text;
-            await ReplyAsync("", false, embed.Build());
-        }
+                    Random rand = new Random();
+
+                    var rnd = new Random();
+                    int getal = rnd.Next(1, 6);
+                    int g1 = rnd.Next(1, 255);
+                    int g2 = rnd.Next(1, 255);
+                    int g3 = rnd.Next(1, 255);
+                    var embed = new EmbedBuilder()
+                    {
+                    Color = new Color(g1, g2, g3),
+                    };
+                    int randomIndex = rand.Next(predictionssTexts.Length);
+                    string text = predictionssTexts[randomIndex];
+                    embed.Title = $"**I say...**";
+                    embed.Description = text;
+                await ReplyAsync("", false, embed.Build());
+            }
+                else
+                {
+                string[] predictionssTexts = new string[]
+                {
+                    $"I rate this a **0/10** lol.",
+                    $"I rate this a **1/10**",
+                    $"I rate this a **2/10**",
+                    $"I rate this a **3/10**",
+                    $"I rate this a **4/10**",
+                    $"I rate this a solid **5/7**",
+                    $"I rate this a **6/10**",
+                    $"I rate this a **7/10**",
+                    $"I rate this a **8/10**",
+                    $"I rate this a **9/10**",
+                    $"I rate this a **10/10** yeys"
+                };
+
+                        Random rand = new Random();
+
+                        var rnd = new Random();
+                        int getal = rnd.Next(1, 6);
+                        int g1 = rnd.Next(1, 255);
+                        int g2 = rnd.Next(1, 255);
+                        int g3 = rnd.Next(1, 255);
+                        var embed = new EmbedBuilder()
+                        {
+                        Color = new Color(g1, g2, g3),
+                        };
+                        int randomIndex = rand.Next(predictionssTexts.Length);
+                        string text = predictionssTexts[randomIndex];
+                        embed.Title = $"**I say...**";
+                        embed.Description = text;
+                        await ReplyAsync("", false, embed.Build());
+                    }
+                }
         [Command("choose")]
         [Summary(".choose **<option1>** or **<option2>**")]
         [Remarks("Chooses between option1 and option2")]

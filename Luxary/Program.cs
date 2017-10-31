@@ -13,66 +13,71 @@ using Luxary.Service;
 
 namespace Luxary
 {
+    
     class Program
     {
-        private CommandService commands;
-        private DiscordSocketClient client;
-        private IServiceProvider services;
+        private CommandService _commands;
+        private DiscordSocketClient _client;
+        private IServiceProvider _services;
 
-        string token = "";
+        string _token = "";
 
-        static void Main(string[] args) =>
+        public static void Main(string[] args)
+        {
             new Program().Start().GetAwaiter().GetResult();
+        }
 
         public async Task Start()
         {
-            client = new DiscordSocketClient(new DiscordSocketConfig
+            _client = new DiscordSocketClient(new DiscordSocketConfig
             {
                 LogLevel = LogSeverity.Verbose
             });
-            commands = new CommandService();
-            services = new ServiceCollection().BuildServiceProvider();
+            _commands = new CommandService();
+            _services = new ServiceCollection().BuildServiceProvider();
 
             await InstallCommands();
 
             try
             {
+                Console.WriteLine("Hi master, token found :3");
                 StreamReader sr = new StreamReader("token.txt");
-                token = sr.ReadLine();
+                _token = sr.ReadLine();
             }
             catch (Exception e)
             {
-                Console.Write("Exception: " + e.Message);
+                Console.WriteLine("Exception: " + e.Message);
             }
-            await client.LoginAsync(TokenType.Bot, token);
-            await client.StartAsync();
+            await _client.LoginAsync(TokenType.Bot, _token);
+            await _client.StartAsync();
 
-            client.Log += Log;
-            client.UserJoined += UserJoined;
-            client.UserLeft += UserLeft;
-            client.MessageReceived += Message;
-            client.Ready += Game;
+            _client.Log += Log;
+            _client.UserJoined += UserJoined;
+            _client.UserLeft += UserLeft;
+            _client.MessageReceived += Message;
+            _client.Ready += Game;
 
         await Task.Delay(-1);
         }
+
         public async Task Game()
         {
-            await client.SetGameAsync(".weeb for memes");
+            await _client.SetGameAsync(".cmds for commands");
         }
         public async Task UserJoined(SocketGuildUser user)
         {
             var channel = user.Guild.DefaultChannel;
-            await channel.SendMessageAsync("Welcome to the server " + user.Mention + "!");
+            await channel.SendMessageAsync("Welcome to the server " + user.Mention + "! <:happy:362565108032995329>");
         }
         public async Task UserLeft(SocketGuildUser user)
         {
             var channel = user.Guild.DefaultChannel;
-            await channel.SendMessageAsync(user.Mention + " Left the channel :(");
+            await channel.SendMessageAsync(user.Mention + " Left the channel <:mad:362497418291314688>");
         }
         public async Task InstallCommands()
         {
-            client.MessageReceived += HandleCommand;
-            await commands.AddModulesAsync(Assembly.GetEntryAssembly());
+            _client.MessageReceived += HandleCommand;
+            await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
         }
         public async Task Message(SocketMessage message)
         {
@@ -101,11 +106,14 @@ namespace Luxary
                             if (userMentioned.Username == (awayUser.User))
                             {
 
-                                var embeds = new EmbedBuilder();
-                                embeds.Color = new Color(199, 21, 112);
-                                embeds.ThumbnailUrl = userMentioned.GetAvatarUrl();
-                                embeds.Title = $" {awayUser.User} is away";
-                                embeds.Description = $"{awayUser.User} is away since **{awayUser.AwayTime} for {awayDuration}** \n \n he/she left a **__Message__**: \n \n {awayUser.Message} \n \n \n refrain from pinging him/her unnecessarily";
+                                var embeds = new EmbedBuilder
+                                {
+                                    Color = new Color(199, 21, 112),
+                                    ThumbnailUrl = userMentioned.GetAvatarUrl(),
+                                    Title = $" {awayUser.User} is away",
+                                    Description =
+                                        $"{awayUser.User} is away since **{awayUser.AwayTime} for {awayDuration}** \n \n he/she left a **__Message__**: \n \n {awayUser.Message} \n \n \n refrain from pinging him/her unnecessarily"
+                                };
                                 await message.Channel.SendMessageAsync("", false, embeds);
                             }
                         }
@@ -122,21 +130,22 @@ namespace Luxary
 
             int argPos = 0;
 
-            if (!(msg.HasCharPrefix(prefix, ref argPos) || msg.HasMentionPrefix(client.CurrentUser, ref argPos))) return;
+            if (!(msg.HasCharPrefix(prefix, ref argPos) ||
+                  msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 
-            var context = new CommandContext(client, msg);
+            var context = new CommandContext(_client, msg);
 
-            var result = await commands.ExecuteAsync(context, argPos, services);
+            var result = await _commands.ExecuteAsync(context, argPos, _services);
             if (!result.IsSuccess)
             {
-                var builder = new EmbedBuilder
-                {
-                    Title = "Oh no..",
-                    Color = new Discord.Color(178, 34, 34),
-                    Description = result.ErrorReason,
-                    ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
-                };
-                await context.Channel.SendMessageAsync("", false, builder.Build());
+                //    var builder = new EmbedBuilder
+                //    {
+                //        Title = "Oh no..",
+                //        Color = new Discord.Color(178, 34, 34),
+                //        Description = result.ErrorReason,
+                //        ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                //    };
+                //    await context.Channel.SendMessageAsync("", false, builder.Build());
             }
         }
 
@@ -169,6 +178,7 @@ namespace Luxary
             Console.ForegroundColor = c;
 
             return Task.CompletedTask;
+            //COPYRIGHT THIJMEN HOGENKAMP
         }
     }
 }
