@@ -1,1 +1,1 @@
-This is my dank bot for school 
+This is my discord bot for personal inside my discord community
