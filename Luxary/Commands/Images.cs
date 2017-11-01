@@ -14,6 +14,7 @@ using Luxary.Service;
 using Luxary.Services;
 using ImageSharp;
 using System.IO;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace Luxary
@@ -334,10 +335,39 @@ namespace Luxary
                 await ReplyAsync("", false, builder.Build());
             }
         }
-        [Command("nudes")]
-        [Alias("boobs", "rack")]
-        [Summary(".slav")]
-        [Remarks("Fetches some sexy titties")]
+        public class Part3 : IEquatable<Part3>
+        {
+            public string PartName { get; set; }
+
+            public int PartId { get; set; }
+
+            public string PartTitle { get; set; }
+
+            public override string ToString()
+            {
+                return PartName;
+            }
+            public override int GetHashCode()
+            {
+                return PartId;
+            }
+            public override bool Equals(object obj)
+            {
+                if (obj == null) return false;
+                Part3 objAsPart = obj as Part3;
+                if (objAsPart == null) return false;
+                else return Equals(objAsPart);
+            }
+            public bool Equals(Part3 other)
+            {
+                if (other == null) return false;
+                return (this.PartId.Equals(other.PartId));
+            }
+        }
+        [Command("rule34")]
+        [Alias("r34", "ht")]
+        [Summary(".r34 **<tag>**")]
+        [Remarks("For some great r34 content.")]
         public async Task BoobsAsync([Remainder]string tag)
         {
             int Delete = 1;
@@ -345,33 +375,45 @@ namespace Luxary
             {
                 await Item.DeleteAsync();
             }
-            var GuildUser = await Context.Guild.GetUserAsync(Context.User.Id);
-            if (!(GuildUser.Id == 185402901236154368))
+            var guildUser = await Context.Guild.GetUserAsync(Context.User.Id);
+            if (guildUser.Id != 185402901236154368)
             {
                 await Context.Channel.SendMessageAsync("lel no");
             }
             else
             {
-                Console.WriteLine("Making API Call...");
-                XmlDocument doc1 = new XmlDocument();
-                doc1.Load($"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={tag}");
-                XmlElement root = doc1.DocumentElement;
-                XmlNodeList nodes = root.SelectNodes("/posts/post");
-
-                foreach (XmlNode node in nodes)
+                try
                 {
-                    string tempf = node["@[file_url]"].InnerText;
-                    var rnd = new Random();
-                    int g1 = rnd.Next(1, 255);
-                    int g2 = rnd.Next(1, 255);
-                    int g3 = rnd.Next(1, 255);
-                    var builder = new EmbedBuilder()
+                    string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={tag}";
+                    XmlDocument Doc = new XmlDocument();
+                    Doc.Load(url);
+                    XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
+                    List<string> myList = new List<string>();
+                    try
                     {
-                        Color = new Discord.Color(g1, g2, g3),
-                    };
-                    builder.Title = ("Lil doggo's xd");
-                    builder.ImageUrl = $"{tempf}";
-                    await ReplyAsync("", false, builder.Build());
+                        foreach (XmlNode currNode in itemList)
+                        {
+                            // add items to the list
+                            string date = string.Empty;
+                            date = currNode.Attributes["file_url"].Value;
+                            string modifiedString = date.Replace("//", "http://");
+                            myList.Add(modifiedString);
+                        }
+                    }
+                    finally
+                    {
+                        Random r = new Random();
+                        int index = r.Next(myList.Count);
+                        string randomString = myList[index];
+                        var embed = new EmbedBuilder();
+                        embed.Title = $"{tag} Hentai";
+                        embed.ImageUrl = randomString;
+                        await ReplyAsync("", false,embed.Build());
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                 }
             }
         }

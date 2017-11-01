@@ -117,7 +117,7 @@ namespace Luxary
                 var builder = new EmbedBuilder()
                 {
                     Color = new Color(g1, g2, g3),
-                    Title = "Dit zijn de commands: <:luxgasm:304937193028321280>"
+                    Title = "My commands: <:luxgasm:304937193028321280>"
                 };
 
                 foreach (var module in _service.Modules)
