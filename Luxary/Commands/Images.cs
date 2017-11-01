@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -373,7 +374,148 @@ namespace Luxary
                     await ReplyAsync("", false, builder.Build());
                 }
             }
-        }  
+        }
+        public class Part2 : IEquatable<Part2>
+        {
+            public string PartName { get; set; }
+
+            public string PartId { get; set; }
+
+            public string PartTitle { get; set; }
+
+            public override string ToString()
+            {
+                return PartName;
+            }
+            public override bool Equals(object obj)
+            {
+                if (obj == null) return false;
+                Part2 objAsPart = obj as Part2;
+                if (objAsPart == null) return false;
+                else return Equals(objAsPart);
+            }
+            public bool Equals(Part2 other)
+            {
+                if (other == null) return false;
+                return (this.PartId.Equals(other.PartId));
+            }
+        }
+        private static List<Part2> parts2 = new List<Part2>();
+        [Command("mastery")]
+        [Alias("mas")]
+        [Summary(".mastery **<name>**")]
+        [Remarks("Shows your summoner mastery information")]
+        public async Task Mastery([Remainder] string tag)
+        {
+            Part2[] myArray = parts2.ToArray();
+
+                using (var client = new HttpClient(new HttpClientHandler
+                {
+                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                }))
+                {
+                    try
+                    {
+                    StreamReader sr = new StreamReader("riotkey.txt");
+                        string key = sr.ReadLine();
+                        string Summonerid =
+                            $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
+                        client.BaseAddress = new Uri(Summonerid);
+                        HttpResponseMessage response = client.GetAsync("").Result;
+                        response.EnsureSuccessStatusCode();
+
+                        string result = await response.Content.ReadAsStringAsync();
+                        var jsonn = JObject.Parse(result);
+                        string id = jsonn["id"].ToString();
+                        string Name = jsonn["name"].ToString();
+                        string icon = jsonn["profileIconId"].ToString();
+                        {
+
+                            var auth = new EmbedAuthorBuilder()
+                            {
+                                Name = $"{Name}'s mastery",
+                            };
+                            string version = "7.20.1";
+
+
+                            var master = new EmbedBuilder
+                            {
+                                Author = auth,
+                                ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
+                            };
+                            using (var keee = new HttpClient(new HttpClientHandler
+                            {
+                                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                            }))
+                            {
+
+                                string Mastery =
+                                    $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
+                                keee.BaseAddress = new Uri(Mastery);
+                                HttpResponseMessage yeboi = keee.GetAsync("").Result;
+                                yeboi.EnsureSuccessStatusCode();
+                                string result3 = await yeboi.Content.ReadAsStringAsync();
+                                var json3 = JArray.Parse(result3);  
+                                for (int xd = 0; xd <= 9; xd++)
+                                {
+                                    using (var keee1 = new HttpClient(new HttpClientHandler
+                                    {
+                                        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                                    }))
+                                    {
+                                        var CID = json3[xd]["championId"].ToString();
+                                        var CPT = json3[xd]["championPoints"].ToString();
+                                        string Mastery1 =
+                                            $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
+                                        keee1.BaseAddress = new Uri(Mastery1);
+                                        HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
+                                        yeboi1.EnsureSuccessStatusCode();
+                                        string result31 = await yeboi1.Content.ReadAsStringAsync();
+                                        var json31 = JObject.Parse(result31);
+                                        var title = json31["title"].ToString();
+                                        var name = json31["name"].ToString();                                       
+                                        parts2.Add(new Part2()
+                                        {
+                                            PartName = name,
+                                            PartId = title,
+                                            PartTitle = CPT
+                                        });
+                                    }                                      
+                                }
+                                foreach (Part2 songs in parts2)
+                                {
+                                    master.Description +=
+                                        $"**{songs.PartName}** ``-`` {songs.PartTitle}\n";
+                                }
+                            await ReplyAsync("", false, master.Build());
+                                parts2.Clear();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        var auth = new EmbedAuthorBuilder()
+                        {
+                            Name = $"Not found",
+                        };
+                        var rnd = new Random();
+                        int g1 = rnd.Next(1, 255);
+                        int g2 = rnd.Next(1, 255);
+                        int g3 = rnd.Next(1, 255);
+                        var builder = new EmbedBuilder
+                        {
+                            Color = new Discord.Color(g1, g2, g3),
+                            Author = auth,
+                            Description = $"Username not found",
+                            ThumbnailUrl =
+                                $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                        };
+                        await ReplyAsync("", false, builder.Build());
+                        Console.WriteLine(e);
+                    }
+                }
+            }
+
         [Command("summoner")]
         [Alias("sum")]
         [Summary(".summoner **<name>**")]
@@ -387,7 +529,8 @@ namespace Luxary
             {
                 try
                 {
-                    string key = "RGAPI-a88f665d-97e0-487c-b373-8b959171efdd";
+                    StreamReader sr = new StreamReader("riotkey.txt");
+                    string key = sr.ReadLine();
                     string Summonerid =
                         $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
                     client.BaseAddress = new Uri(Summonerid);
