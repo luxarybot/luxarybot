@@ -381,11 +381,17 @@ namespace Luxary
 
             public string PartId { get; set; }
 
+            public int PartID { get; set; }
+
             public string PartTitle { get; set; }
 
             public override string ToString()
             {
                 return PartName;
+            }
+            public override int GetHashCode()
+            {
+                return PartID;
             }
             public override bool Equals(object obj)
             {
@@ -429,19 +435,21 @@ namespace Luxary
                         string id = jsonn["id"].ToString();
                         string Name = jsonn["name"].ToString();
                         string icon = jsonn["profileIconId"].ToString();
+                        try
                         {
-
                             var auth = new EmbedAuthorBuilder()
                             {
                                 Name = $"{Name}'s mastery",
                             };
-                            string version = "7.20.1";
+                            StreamReader vr = new StreamReader("version.txt");
+                            string version = vr.ReadLine();
 
 
                             var master = new EmbedBuilder
                             {
                                 Author = auth,
-                                ThumbnailUrl = $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
+                                ThumbnailUrl =
+                                    $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
                             };
                             using (var keee = new HttpClient(new HttpClientHandler
                             {
@@ -455,12 +463,13 @@ namespace Luxary
                                 HttpResponseMessage yeboi = keee.GetAsync("").Result;
                                 yeboi.EnsureSuccessStatusCode();
                                 string result3 = await yeboi.Content.ReadAsStringAsync();
-                                var json3 = JArray.Parse(result3);  
+                                var json3 = JArray.Parse(result3);
                                 for (int xd = 0; xd <= 9; xd++)
                                 {
                                     using (var keee1 = new HttpClient(new HttpClientHandler
                                     {
-                                        AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                                        AutomaticDecompression =
+                                            DecompressionMethods.GZip | DecompressionMethods.Deflate
                                     }))
                                     {
                                         var CID = json3[xd]["championId"].ToString();
@@ -473,24 +482,47 @@ namespace Luxary
                                         string result31 = await yeboi1.Content.ReadAsStringAsync();
                                         var json31 = JObject.Parse(result31);
                                         var title = json31["title"].ToString();
-                                        var name = json31["name"].ToString();                                       
+                                        var name = json31["name"].ToString();
+                                        int boi = xd + 1;
                                         parts2.Add(new Part2()
                                         {
+                                            PartID = boi,
                                             PartName = name,
                                             PartId = title,
                                             PartTitle = CPT
                                         });
-                                    }                                      
+                                    }
                                 }
                                 foreach (Part2 songs in parts2)
                                 {
                                     master.Description +=
-                                        $"**{songs.PartName}** ``-`` {songs.PartTitle}\n";
+                                        $"{songs.PartID}. **{songs.PartName}** ``-`` {songs.PartTitle}\n";
                                 }
-                            await ReplyAsync("", false, master.Build());
+                                await ReplyAsync("", false, master.Build());
                                 parts2.Clear();
                             }
                         }
+                        catch
+                        {
+                            var auth = new EmbedAuthorBuilder()
+                            {
+                                Name = $"Error",
+                            };
+                            var rnd = new Random();
+                            int g1 = rnd.Next(1, 255);
+                            int g2 = rnd.Next(1, 255);
+                            int g3 = rnd.Next(1, 255);
+                            var builder = new EmbedBuilder
+                            {
+                                Color = new Discord.Color(g1, g2, g3),
+                                Author = auth,
+                                Description = $"Data not available\nError 429",
+                                ThumbnailUrl =
+                                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/mad.png",
+                            };
+                            await ReplyAsync("", false, builder.Build());
+                    }
+
                     }
                     catch (Exception e)
                     {
@@ -593,7 +625,8 @@ namespace Luxary
                                     {
                                         Name = $"{Name}'s profile",
                                     };
-                                    string version = "7.20.1";
+                                    StreamReader vr = new StreamReader("version.txt");
+                                    string version = vr.ReadLine();
 
                                     var builder = new EmbedBuilder
                                     {
@@ -602,7 +635,7 @@ namespace Luxary
                                         Description = $"Level: {lvl}"
                                     };
                                     builder.AddField(x =>
-                                    {
+                                    {                                       
                                         x.Name = "Main";
                                         x.Value =
                                             $"Champion: **{name}, {title}**\nMastery: **{CLVL}**\nMastery points: **{CPT}**";
