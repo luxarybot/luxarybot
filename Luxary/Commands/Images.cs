@@ -335,6 +335,7 @@ namespace Luxary
                 await ReplyAsync("", false, builder.Build());
             }
         }
+
         public class Part3 : IEquatable<Part3>
         {
             public string PartName { get; set; }
@@ -478,8 +479,6 @@ namespace Luxary
         [Remarks("Shows your summoner mastery information")]
         public async Task Mastery([Remainder] string tag)
         {
-            Part2[] myArray = parts2.ToArray();
-
             using (var client = new HttpClient(new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
@@ -561,6 +560,22 @@ namespace Luxary
                                     else if (CLVL.Contains("5"))
                                     {
                                         CLVL = "<:m5:375555589310513153>";
+                                    }
+                                    else if (CLVL.Contains("4"))
+                                    {
+                                        CLVL = "<:m4:375623810105344020>";
+                                    }
+                                    else if (CLVL.Contains("3"))
+                                    {
+                                        CLVL = "<:m3:375623860462157825>";
+                                    }
+                                    else if (CLVL.Contains("2"))
+                                    {
+                                        CLVL = "<:m2:375624600626790400>";
+                                    }
+                                    else
+                                    {
+                                        CLVL = "<:m1:375624581114888193>";
                                     }
                                     parts2.Add(new Part2()
                                     {
