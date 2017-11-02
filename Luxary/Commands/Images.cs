@@ -364,64 +364,87 @@ namespace Luxary
                 return (this.PartId.Equals(other.PartId));
             }
         }
+
         [Command("rule34")]
         [Alias("r34", "ht")]
         [Summary(".r34 **<tag>**")]
-        [Remarks("For some great r34 content.")]
-        public async Task BoobsAsync([Remainder]string tag)
+        [Remarks("For some great r34 content.( ͡° ͜ʖ ͡°)")]
+        public async Task BoobsAsync([Remainder] string tag)
         {
             int Delete = 1;
             foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
             {
                 await Item.DeleteAsync();
             }
-            var guildUser = await Context.Guild.GetUserAsync(Context.User.Id);
-            if (guildUser.Id != 185402901236154368)
             {
-                await Context.Channel.SendMessageAsync("lel no");
-            }
-            else
-            {
-                try
+                var nsfw = Context.Channel.IsNsfw;
+                if (!nsfw)
                 {
-                    string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={tag}";
-                    XmlDocument Doc = new XmlDocument();
-                    Doc.Load(url);
-                    XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
-                    List<string> myList = new List<string>();
+                    var auth = new EmbedAuthorBuilder()
+                    {
+                        Name = $"Error",
+                    };
+                    var rnd = new Random();
+                    int g1 = rnd.Next(1, 255);
+                    int g2 = rnd.Next(1, 255);
+                    int g3 = rnd.Next(1, 255);
+                    var builder = new EmbedBuilder
+                    {
+                        Color = new Discord.Color(g1, g2, g3),
+                        Author = auth,
+                        Description = $"Not a NSFW channel.",
+                        ThumbnailUrl =
+                            $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/shy.png",
+                    };
+                    await ReplyAsync("", false, builder.Build());
+                }
+                else
+                {
                     try
                     {
-                        foreach (XmlNode currNode in itemList)
+                        string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={tag}";
+                        XmlDocument Doc = new XmlDocument();
+                        Doc.Load(url);
+                        XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
+                        List<string> myList = new List<string>();
+                        try
                         {
-                            // add items to the list
-                            string date = string.Empty;
-                            date = currNode.Attributes["file_url"].Value;
-                            string modifiedString = date.Replace("//", "http://");
-                            myList.Add(modifiedString);
+                            foreach (XmlNode currNode in itemList)
+                            {
+                                string date = string.Empty;
+                                date = currNode.Attributes["file_url"].Value;
+                                string modifiedString = date.Replace("//", "http://");
+                                myList.Add(modifiedString);
+                            }
+                        }
+                        finally
+                        {
+                            Random r = new Random();
+                            int index = r.Next(myList.Count);
+                            string randomString = myList[index];
+                            var embed = new EmbedBuilder
+                            {
+                                Title = $"{tag}",
+                                ImageUrl = randomString
+                            };
+                            await ReplyAsync("", false, embed.Build());
                         }
                     }
-                    finally
+                    catch (Exception e)
                     {
-                        Random r = new Random();
-                        int index = r.Next(myList.Count);
-                        string randomString = myList[index];
-                        var embed = new EmbedBuilder();
-                        embed.Title = $"{tag} Hentai";
-                        embed.ImageUrl = randomString;
-                        await ReplyAsync("", false,embed.Build());
+                        Console.WriteLine(e);
                     }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
                 }
             }
         }
+
         public class Part2 : IEquatable<Part2>
         {
             public string PartName { get; set; }
 
             public string PartId { get; set; }
+
+            public string PartMas { get; set; }
 
             public int PartID { get; set; }
 
@@ -457,120 +480,111 @@ namespace Luxary
         {
             Part2[] myArray = parts2.ToArray();
 
-                using (var client = new HttpClient(new HttpClientHandler
+            using (var client = new HttpClient(new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            }))
+            {
+                try
                 {
-                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-                }))
-                {
+                StreamReader sr = new StreamReader("riotkey.txt");
+                    string key = sr.ReadLine();
+                    string Summonerid =
+                        $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
+                    client.BaseAddress = new Uri(Summonerid);
+                    HttpResponseMessage response = client.GetAsync("").Result;
+                    response.EnsureSuccessStatusCode();
+
+                    string result = await response.Content.ReadAsStringAsync();
+                    var jsonn = JObject.Parse(result);
+                    string id = jsonn["id"].ToString();
+                    string Name = jsonn["name"].ToString();
+                    string icon = jsonn["profileIconId"].ToString();
                     try
-                    {
-                    StreamReader sr = new StreamReader("riotkey.txt");
-                        string key = sr.ReadLine();
-                        string Summonerid =
-                            $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
-                        client.BaseAddress = new Uri(Summonerid);
-                        HttpResponseMessage response = client.GetAsync("").Result;
-                        response.EnsureSuccessStatusCode();
-
-                        string result = await response.Content.ReadAsStringAsync();
-                        var jsonn = JObject.Parse(result);
-                        string id = jsonn["id"].ToString();
-                        string Name = jsonn["name"].ToString();
-                        string icon = jsonn["profileIconId"].ToString();
-                        try
-                        {
-                            var auth = new EmbedAuthorBuilder()
-                            {
-                                Name = $"{Name}'s mastery",
-                            };
-                            StreamReader vr = new StreamReader("version.txt");
-                            string version = vr.ReadLine();
-
-
-                            var master = new EmbedBuilder
-                            {
-                                Author = auth,
-                                ThumbnailUrl =
-                                    $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
-                            };
-                            using (var keee = new HttpClient(new HttpClientHandler
-                            {
-                                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-                            }))
-                            {
-
-                                string Mastery =
-                                    $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
-                                keee.BaseAddress = new Uri(Mastery);
-                                HttpResponseMessage yeboi = keee.GetAsync("").Result;
-                                yeboi.EnsureSuccessStatusCode();
-                                string result3 = await yeboi.Content.ReadAsStringAsync();
-                                var json3 = JArray.Parse(result3);
-                                for (int xd = 0; xd <= 9; xd++)
-                                {
-                                    using (var keee1 = new HttpClient(new HttpClientHandler
-                                    {
-                                        AutomaticDecompression =
-                                            DecompressionMethods.GZip | DecompressionMethods.Deflate
-                                    }))
-                                    {
-                                        var CID = json3[xd]["championId"].ToString();
-                                        var CPT = json3[xd]["championPoints"].ToString();
-                                        string Mastery1 =
-                                            $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
-                                        keee1.BaseAddress = new Uri(Mastery1);
-                                        HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
-                                        yeboi1.EnsureSuccessStatusCode();
-                                        string result31 = await yeboi1.Content.ReadAsStringAsync();
-                                        var json31 = JObject.Parse(result31);
-                                        var title = json31["title"].ToString();
-                                        var name = json31["name"].ToString();
-                                        int boi = xd + 1;
-                                        parts2.Add(new Part2()
-                                        {
-                                            PartID = boi,
-                                            PartName = name,
-                                            PartId = title,
-                                            PartTitle = CPT
-                                        });
-                                    }
-                                }
-                                foreach (Part2 songs in parts2)
-                                {
-                                    master.Description +=
-                                        $"{songs.PartID}. **{songs.PartName}** ``-`` {songs.PartTitle}\n";
-                                }
-                                await ReplyAsync("", false, master.Build());
-                                parts2.Clear();
-                            }
-                        }
-                        catch
-                        {
-                            var auth = new EmbedAuthorBuilder()
-                            {
-                                Name = $"Error",
-                            };
-                            var rnd = new Random();
-                            int g1 = rnd.Next(1, 255);
-                            int g2 = rnd.Next(1, 255);
-                            int g3 = rnd.Next(1, 255);
-                            var builder = new EmbedBuilder
-                            {
-                                Color = new Discord.Color(g1, g2, g3),
-                                Author = auth,
-                                Description = $"Data not available\nError 429",
-                                ThumbnailUrl =
-                                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/mad.png",
-                            };
-                            await ReplyAsync("", false, builder.Build());
-                    }
-
-                    }
-                    catch (Exception e)
                     {
                         var auth = new EmbedAuthorBuilder()
                         {
-                            Name = $"Not found",
+                            Name = $"{Name}'s mastery",
+                        };
+                        StreamReader vr = new StreamReader("version.txt");
+                        string version = vr.ReadLine();
+
+
+                        var master = new EmbedBuilder
+                        {
+                            Author = auth,
+                            ThumbnailUrl =
+                                $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
+                        };
+                        using (var keee = new HttpClient(new HttpClientHandler
+                        {
+                            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                        }))
+                        {
+
+                            string Mastery =
+                                $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
+                            keee.BaseAddress = new Uri(Mastery);
+                            HttpResponseMessage yeboi = keee.GetAsync("").Result;
+                            yeboi.EnsureSuccessStatusCode();
+                            string result3 = await yeboi.Content.ReadAsStringAsync();
+                            var json3 = JArray.Parse(result3);
+                            for (int xd = 0; xd <= 9; xd++)
+                            {
+                                using (var keee1 = new HttpClient(new HttpClientHandler
+                                {
+                                    AutomaticDecompression =
+                                        DecompressionMethods.GZip | DecompressionMethods.Deflate
+                                }))
+                                {
+                                    var CID = json3[xd]["championId"].ToString();
+                                    var CPT = json3[xd]["championPoints"].ToString();
+                                    var CLVL = json3[xd]["championLevel"].ToString();
+
+                                    string Mastery1 =
+                                        $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
+                                    keee1.BaseAddress = new Uri(Mastery1);
+                                    HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
+                                    yeboi1.EnsureSuccessStatusCode();
+                                    string result31 = await yeboi1.Content.ReadAsStringAsync();
+                                    var json31 = JObject.Parse(result31);
+                                    var title = json31["title"].ToString();
+                                    var name = json31["name"].ToString();
+                                    if (CLVL.Contains("7"))
+                                    {
+                                        CLVL = "<:m7:375555291108081664>";
+                                    }
+                                    else if (CLVL.Contains("6"))
+                                    {
+                                        CLVL = "<:m6:375555126880108545>";
+                                    }
+                                    else if (CLVL.Contains("5"))
+                                    {
+                                        CLVL = "<:m5:375555589310513153>";
+                                    }
+                                    parts2.Add(new Part2()
+                                    {
+                                        PartName = name,
+                                        PartId = title,
+                                        PartTitle = CPT,
+                                        PartMas = CLVL
+                                    });
+                                }
+                            }
+                            foreach (Part2 songs in parts2)
+                            {
+                                master.Description +=
+                                    $"{songs.PartMas}. **{songs.PartName}** ``-`` {songs.PartTitle}\n";
+                            }
+                            await ReplyAsync("", false, master.Build());
+                            parts2.Clear();
+                        }
+                    }
+                    catch (Exception c)
+                    {
+                        var auth = new EmbedAuthorBuilder()
+                        {
+                            Name = $"Error",
                         };
                         var rnd = new Random();
                         int g1 = rnd.Next(1, 255);
@@ -580,16 +594,37 @@ namespace Luxary
                         {
                             Color = new Discord.Color(g1, g2, g3),
                             Author = auth,
-                            Description = $"Username not found",
+                            Description = $"Data not available\nError 429",
                             ThumbnailUrl =
-                                $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                                $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/mad.png",
                         };
                         await ReplyAsync("", false, builder.Build());
-                        Console.WriteLine(e);
+                        Console.WriteLine(c);
                     }
                 }
+                catch (Exception e)
+                {
+                    var auth = new EmbedAuthorBuilder()
+                    {
+                        Name = $"Not found",
+                    };
+                    var rnd = new Random();
+                    int g1 = rnd.Next(1, 255);
+                    int g2 = rnd.Next(1, 255);
+                    int g3 = rnd.Next(1, 255);
+                    var builder = new EmbedBuilder
+                    {
+                        Color = new Discord.Color(g1, g2, g3),
+                        Author = auth,
+                        Description = $"Username not found",
+                        ThumbnailUrl =
+                            $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                    };
+                    await ReplyAsync("", false, builder.Build());
+                    Console.WriteLine(e);
+                }
             }
-
+        }
         [Command("summoner")]
         [Alias("sum")]
         [Summary(".summoner **<name>**")]
@@ -669,7 +704,18 @@ namespace Luxary
                                     };
                                     StreamReader vr = new StreamReader("version.txt");
                                     string version = vr.ReadLine();
-
+                                    if (CLVL.Contains("7"))
+                                    {
+                                        CLVL = "<:m7:375555291108081664>";
+                                    }
+                                    else if (CLVL.Contains("6"))
+                                    {
+                                        CLVL = "<:m6:375555126880108545>";
+                                    }
+                                    else if (CLVL.Contains("5"))
+                                    {
+                                        CLVL = "<:m5:375555589310513153>";
+                                    }
                                     var builder = new EmbedBuilder
                                     {
                                         Color = new Discord.Color(218, 165, 32),
@@ -680,7 +726,7 @@ namespace Luxary
                                     {                                       
                                         x.Name = "Main";
                                         x.Value =
-                                            $"Champion: **{name}, {title}**\nMastery: **{CLVL}**\nMastery points: **{CPT}**";
+                                            $"Champion: **{name}, {title}**\nMastery: **<:m{CLVL}:375553772207865867>** **{CPT}**";
                                         x.IsInline = false;
 
                                          
@@ -695,6 +741,7 @@ namespace Luxary
                                         string tier2 = json[i]["rank"].ToString();
                                         string check = json[i]["playerOrTeamName"].ToString();
                                         string wins = json[i]["wins"].ToString();
+                                        string lp = json[i]["leaguePoints"].ToString();
                                         string league = json[i]["leagueName"].ToString();
                                         string queueType = json[i]["queueType"].ToString();
                                         string Losses = json[i]["losses"].ToString();
@@ -707,7 +754,7 @@ namespace Luxary
 
                                             x.Name = queueType;
                                             x.Value =
-                                                $"Rank: {tier} {tier2}\nWins: {wins}\nLosses: {Losses}\nWinrate: {winrate}%";
+                                                $"Rank: **{tier} {tier2} - {lp}LP**\nWins: **{wins}**\nLosses: **{Losses}**\nWinrate: **{winrate}%**";
                                             i = i + 1;
                                             x.IsInline = false;
                                         });
