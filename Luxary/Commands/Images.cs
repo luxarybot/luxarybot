@@ -129,7 +129,6 @@ namespace Luxary
 
             await core.StopStreamAsync(Context.Message, finalImage);
         }
-
         [Command("rip")]
         [Summary(".rip")]
         [Remarks("Shows a nice league team comp.")]
@@ -335,7 +334,6 @@ namespace Luxary
                 await ReplyAsync("", false, builder.Build());
             }
         }
-
         public class Part3 : IEquatable<Part3>
         {
             public string PartName { get; set; }
@@ -365,7 +363,6 @@ namespace Luxary
                 return (this.PartId.Equals(other.PartId));
             }
         }
-
         [Command("rule34")]
         [Alias("r34", "ht")]
         [Summary(".r34 **<tag>**")]
@@ -438,7 +435,6 @@ namespace Luxary
                 }
             }
         }
-
         public class Part2 : IEquatable<Part2>
         {
             public string PartName { get; set; }
@@ -621,7 +617,7 @@ namespace Luxary
                 {
                     var auth = new EmbedAuthorBuilder()
                     {
-                        Name = $"Not found",
+                        Name = $"Not found"
                     };
                     var rnd = new Random();
                     int g1 = rnd.Next(1, 255);
@@ -1041,13 +1037,17 @@ namespace Luxary
         {
             try
             {
+                List<string> myList = new List<string>();
                 int Delete = 1;
                 foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
                 {
                     await Item.DeleteAsync();
                 }
                 Console.WriteLine("Making API Call...");
-                using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+                using (var client = new HttpClient(new HttpClientHandler
+                {
+                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                }))
                 {
                     var websiteurl = $"https://api.tenor.co/v1/search?tag={tag}&key=0V4RTXJOKKRQ";
                     client.BaseAddress = new Uri(websiteurl);
@@ -1055,15 +1055,22 @@ namespace Luxary
                     response.EnsureSuccessStatusCode();
                     var result = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(result);
-                    var joke = json["results"][0]["media"][0]["gif"]["url"].ToString();
-                    var title = json["results"][0]["title"].ToString();
+                    JArray items = (JArray)json["results"];
+                    int length = items.Count;
+                    for (int i = 0; i < length; i++)
+                    {
+                        var joke = json["results"][i]["media"][0]["gif"]["url"].ToString();
+                        myList.Add(joke);
+                    }
+                    Random r = new Random();
+                    int index = r.Next(myList.Count);
+                    string randomString = myList[index];
                     var build = new EmbedBuilder
                     {
-                        Title = title,
-                        ImageUrl = joke
+                        Title = tag,
+                        ImageUrl = randomString
                     };
                     await ReplyAsync("", false, build.Build());
-
                 }
             }
             catch
@@ -1076,16 +1083,16 @@ namespace Luxary
                 int g1 = rnd.Next(1, 255);
                 int g2 = rnd.Next(1, 255);
                 int g3 = rnd.Next(1, 255);
-                var builder = new EmbedBuilder
+                var builder = new EmbedBuilder()
                 {
                     Color = new Discord.Color(g1, g2, g3),
                     Author = auth,
-                    Description = $"Gif not found.",
-                    ThumbnailUrl =
-                        $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
                 };
+                builder.Description = $"Gif not found.";
+                builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
                 await ReplyAsync("", false, builder.Build());
             }
+
         }
         //[Command("giphy")]
         //[Summary(".giphy **<message>**")]
