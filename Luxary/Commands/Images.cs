@@ -400,7 +400,8 @@ namespace Luxary
                 {
                     try
                     {
-                        string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={tag}";
+                        var xd = tag.Replace(" ", "_");
+                        string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={xd}";
                         XmlDocument Doc = new XmlDocument();
                         Doc.Load(url);
                         XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
@@ -422,10 +423,11 @@ namespace Luxary
                             string randomString = myList[index];
                             var embed = new EmbedBuilder
                             {
-                                Title = $"{tag}",
+                                Title = $"{xd}",
                                 ImageUrl = randomString
                             };
                             await ReplyAsync("", false, embed.Build());
+                            Console.WriteLine(randomString);
                         }
                     }
                     catch (Exception e)
@@ -737,7 +739,7 @@ namespace Luxary
                                     {                                       
                                         x.Name = "Main";
                                         x.Value =
-                                            $"Champion: **{name}, {title}**\nMastery: **<:m{CLVL}:375553772207865867>** **{CPT}**";
+                                            $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
                                         x.IsInline = false;
 
                                          
@@ -1037,6 +1039,7 @@ namespace Luxary
         {
             try
             {
+                var xd = tag.Replace(" ", "_");
                 List<string> myList = new List<string>();
                 int Delete = 1;
                 foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
@@ -1055,7 +1058,7 @@ namespace Luxary
                     response.EnsureSuccessStatusCode();
                     var result = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(result);
-                    JArray items = (JArray)json["results"];
+                    JArray items = (JArray) json["results"];
                     int length = items.Count;
                     for (int i = 0; i < length; i++)
                     {
@@ -1067,7 +1070,7 @@ namespace Luxary
                     string randomString = myList[index];
                     var build = new EmbedBuilder
                     {
-                        Title = tag,
+                        Title = xd,
                         ImageUrl = randomString
                     };
                     await ReplyAsync("", false, build.Build());
@@ -1089,10 +1092,10 @@ namespace Luxary
                     Author = auth,
                 };
                 builder.Description = $"Gif not found.";
-                builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+                builder.ThumbnailUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
                 await ReplyAsync("", false, builder.Build());
             }
-
         }
         //[Command("giphy")]
         //[Summary(".giphy **<message>**")]
