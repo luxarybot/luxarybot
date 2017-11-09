@@ -363,6 +363,70 @@ namespace Luxary
                 return (this.PartId.Equals(other.PartId));
             }
         }
+        
+        private static IUserMessage message;
+        private int idd = 0;
+        [Command("xdd")]
+        [Alias("xdd")]
+        [Summary(".xdd **<tag>**")]
+        [Remarks("( ͡° ͜ʖ ͡°)")]
+        public async Task BoobsAsyncd([Remainder] string tag)
+        {
+            for (; ; )
+            {
+                var xd = tag.Replace(" ", "_");
+                string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={xd}";
+                XmlDocument Doc = new XmlDocument();
+                Doc.Load(url);
+                XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
+                List<string> myList = new List<string>();
+
+                try
+                {
+                    foreach (XmlNode currNode in itemList)
+                    {
+                        string date = string.Empty;
+                        date = currNode.Attributes["file_url"].Value;
+                        string modifiedString = date.Replace("//", "http://");
+                        myList.Add(modifiedString);
+                    }
+                }
+                finally
+                {
+                    string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+                    char ch;
+                    string randomString2 = "";
+                    Random rand = new Random();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        ch = input[rand.Next(0, input.Length)];
+                        randomString2 += ch;
+                    }
+                    Random r = new Random();
+                    int index = r.Next(myList.Count);
+                    string randomString = myList[index];
+                    string localFilename = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\" + randomString2 + ".jpg";
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(randomString, localFilename);
+                    }
+                    if (idd == 0)
+                    {
+                        message =
+                            await ReplyAsync($"**Downloaded 1 image**");
+                        idd++;
+                    }
+                    else if (idd > 0)
+                    {
+                        await message.ModifyAsync(msg =>
+                            msg.Content =
+                                ($"**Downloaded: {idd} images**"));
+                        idd++;
+                    }
+                }
+            }
+        }
+        static int i= 0;
         [Command("rule34")]
         [Alias("r34")]
         [Summary(".r34 **<tag>**")]
@@ -418,20 +482,46 @@ namespace Luxary
                         }
                         finally
                         {
+                            string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+                            char ch;
+                            string randomString2 = "";
+                            Random rand = new Random();
+                            for (int i = 0; i < 8; i++)
+                            {
+                                ch = input[rand.Next(0, input.Length)];
+                                randomString2 += ch;
+                            }
                             Random r = new Random();
                             int index = r.Next(myList.Count);
                             string randomString = myList[index];
-                            var embed = new EmbedBuilder
+                            string localFilename = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\"+randomString2+".jpg";
+                            using (WebClient client = new WebClient())
                             {
-                                Title = $"{xd}",
-                                ImageUrl = randomString
-                            };
-                            await ReplyAsync("", false, embed.Build());
+                                client.DownloadFile(randomString, localFilename);
+                            }
+                            await Context.Channel.SendFileAsync(localFilename);
+
                         }
                     }
-                    catch (Exception e)
+                    catch
                     {
-                        Console.WriteLine(e);
+                        var auth = new EmbedAuthorBuilder()
+                        {
+                            Name = $"Error",
+                        };
+                        var rnd = new Random();
+                        int g1 = rnd.Next(1, 255);
+                        int g2 = rnd.Next(1, 255);
+                        int g3 = rnd.Next(1, 255);
+                        var builder = new EmbedBuilder
+                        {
+                            Color = new Discord.Color(g1, g2, g3),
+                            Author = auth,
+                            Description = $"Tag not found.",
+                            ThumbnailUrl =
+                                $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/shy.png",
+                        };
+                        await ReplyAsync("", false, builder.Build());
                     }
                 }
             }
@@ -483,7 +573,7 @@ namespace Luxary
             {
                 try
                 {
-                StreamReader sr = new StreamReader("riotkey.txt");
+                    StreamReader sr = new StreamReader("riotkey.txt");
                     string key = sr.ReadLine();
                     string Summonerid =
                         $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
