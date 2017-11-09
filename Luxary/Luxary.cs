@@ -458,8 +458,9 @@ namespace Luxary
             try
             {
                 string currentTime = DateTime.Now.ToString("H:mm:ss");
-                TimeSpan duration = DateTime.Parse("12:41:00").Subtract(DateTime.Parse(currentTime));
+                TimeSpan duration = DateTime.Parse("15:50:00").Subtract(DateTime.Parse(currentTime));
                 int x = int.Parse(duration.Minutes.ToString());
+                int z = int.Parse(duration.Seconds.ToString());
                 if (x > 0)
                 {
                     if (i == 0)
@@ -475,6 +476,22 @@ namespace Luxary
                             msg.Content =
                                 ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
                     }                   
+                }
+                else if (z > 0)
+                {
+                    if (i == 0)
+                    {
+                        message =
+                            await ReplyAsync($"**{duration}**" +
+                                             " till your work day ends. <:mad:362497418291314688>");
+                        i = 1;
+                    }
+                    else if (i > 0)
+                    {
+                        await message.ModifyAsync(msg =>
+                            msg.Content =
+                                ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
+                    }
                 }
                 else
                 {
