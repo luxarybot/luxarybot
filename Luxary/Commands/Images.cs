@@ -364,9 +364,9 @@ namespace Luxary
             }
         }
         [Command("rule34")]
-        [Alias("r34", "ht")]
+        [Alias("r34")]
         [Summary(".r34 **<tag>**")]
-        [Remarks("For some great r34 content.( ͡° ͜ʖ ͡°)")]
+        [Remarks("( ͡° ͜ʖ ͡°)")]
         public async Task BoobsAsync([Remainder] string tag)
         {
             int Delete = 1;
@@ -427,7 +427,6 @@ namespace Luxary
                                 ImageUrl = randomString
                             };
                             await ReplyAsync("", false, embed.Build());
-                            Console.WriteLine(randomString);
                         }
                     }
                     catch (Exception e)
@@ -867,19 +866,43 @@ namespace Luxary
             embed.ImageUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/lol.jpg";
             await ReplyAsync("", false, embed.Build());
         }
+        static string live = "offline";
+        private static System.Timers.Timer timer2;
         [Command("cover")]
         [Alias("gyb", "thistakessolongtotypesoyoubetterbefastattyping")]
         [Summary(".cover")]
         [Remarks("Covers some content.")]
         [RequireBotPermission(GuildPermission.ManageMessages)]
         [RequireUserPermission(GuildPermission.ManageMessages)]
-        public async Task cover()
+        public async Task Cover()
         {
-            int Delete = 1;
-            foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
+            if (live == "online")
             {
-                await Item.DeleteAsync();
+                await ReplyAsync($"This command can be used every 10 sec");
             }
+            else
+            {
+                live = "online";
+                await CoverUp();
+                var seconds = 10000;
+                timer2 = new System.Timers.Timer
+                {
+                    Enabled = true,
+                    Interval = (seconds),
+                    AutoReset = false
+                };
+                timer2.Start();
+                timer2.Elapsed += Elapsed2;
+            }
+        }
+
+        public async void Elapsed2(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            live = "offline";
+            await ReplyAsync($".gyb is back online");
+        }
+        public async Task CoverUp()
+        {
             await Context.Channel.SendFileAsync("pic/blank.png");
             await Context.Channel.SendFileAsync("pic/blank.png");
             await Context.Channel.SendFileAsync("pic/blank.png");

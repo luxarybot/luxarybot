@@ -410,30 +410,91 @@ namespace Luxary
             embed.Description = $"Me like pong";
             await Context.Channel.SendMessageAsync("", false, embed.Build());
         }
+        private static IUserMessage message;
+        private static int i = 0;
+        private static string hi = "offline"; 
+        private static System.Timers.Timer timer1;
+
         [Command("time")]
         [Summary(".time")]
         [Remarks("How much time left")]
-        public async Task time()
+        public async Task UpdateTimer()
         {
             try
             {
-                string currentTime = DateTime.Now.ToString("HH:mm");
-                TimeSpan duration = DateTime.Parse("15:50").Subtract(DateTime.Parse(currentTime));
-                int x = int.Parse(duration.Minutes.ToString());
-                if (x > 0)
+                timer1 = new System.Timers.Timer();
+
+                if (hi == "online")
                 {
-                    await Context.Channel.SendMessageAsync($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>");
+                    timer1.Stop();
+                    hi = "offline";
+                    await message.DeleteAsync();
+                    i = 0;
                 }
                 else
                 {
-                    await Context.Channel.SendMessageAsync($"You're free, for now. <:happy:362565108032995329>");
+                    hi = "online";
+                    timer1.Enabled = true;
+                    timer1.Start();
+                    timer1.Interval = (5000);
+                    timer1.AutoReset = true;
+                    timer1.Elapsed += StartBoi;
                 }
             }
             catch (Exception)
             {
                 await Context.Channel.SendMessageAsync($"Wrong usage, .time");
+                hi = "offline";
             }
         }
+
+        public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            await GoingTimer();
+        }
+
+        public async Task GoingTimer()
+        {
+            try
+            {
+                string currentTime = DateTime.Now.ToString("H:mm:ss");
+                TimeSpan duration = DateTime.Parse("12:41:00").Subtract(DateTime.Parse(currentTime));
+                int x = int.Parse(duration.Minutes.ToString());
+                if (x > 0)
+                {
+                    if (i == 0)
+                    {
+                        message =
+                            await ReplyAsync($"**{duration}**" +
+                                             " till your work day ends. <:mad:362497418291314688>");
+                        i = 1;
+                    }
+                    else if (i > 0)
+                    {
+                        await message.ModifyAsync(msg =>
+                            msg.Content =
+                                ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
+                    }                   
+                }
+                else
+                {
+                    await DoneTimer();
+                    timer1.Stop();
+                }
+            }
+            catch
+            {
+                await ReplyAsync("fuker stopped");
+
+            }
+        }
+
+        public async Task DoneTimer()
+        {
+            await Context.Channel.SendMessageAsync(
+                $"You're free, for now. <:happy:362565108032995329>");
+        }
+
         [Command("hoursleft")]
         [Alias("hl")]
         [Summary(".hoursleft **<hours>**")]
