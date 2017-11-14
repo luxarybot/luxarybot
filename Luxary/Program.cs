@@ -72,7 +72,7 @@ namespace Luxary
         public async Task UserLeft(SocketGuildUser user)
         {
             var channel = user.Guild.DefaultChannel;
-            await channel.SendMessageAsync(user.Mention + " Left the channel <:mad:362497418291314688>");
+            await channel.SendMessageAsync(user.Mention + " Left the channel! <:mad:362497418291314688>");
         }
         public async Task InstallCommands()
         {
@@ -127,9 +127,7 @@ namespace Luxary
             var msg = msgParam as SocketUserMessage;
             char prefix = '.';
             if (msg == null) return;
-
             int argPos = 0;
-
             if (!(msg.HasCharPrefix(prefix, ref argPos) ||
                   msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
 

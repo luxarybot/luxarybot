@@ -380,7 +380,6 @@ namespace Luxary
                 Doc.Load(url);
                 XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
                 List<string> myList = new List<string>();
-
                 try
                 {
                     foreach (XmlNode currNode in itemList)
@@ -1172,8 +1171,7 @@ namespace Luxary
                     var result = await response.Content.ReadAsStringAsync();
                     var json = JObject.Parse(result);
                     JArray items = (JArray) json["results"];
-                    int length = items.Count;
-                    for (int i = 0; i < length; i++)
+                    for (int i = 0; i < items.Count; i++)
                     {
                         var joke = json["results"][i]["media"][0]["gif"]["url"].ToString();
                         myList.Add(joke);
