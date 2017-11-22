@@ -366,65 +366,65 @@ namespace Luxary
         
         private static IUserMessage message;
         private int idd = 0;
-        [Command("xdd")]
-        [Alias("xdd")]
-        [Summary(".xdd **<tag>**")]
-        [Remarks("( ͡° ͜ʖ ͡°)")]
-        public async Task BoobsAsyncd([Remainder] string tag)
-        {
-            for (; ; )
-            {
-                var xd = tag.Replace(" ", "_");
-                string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={xd}";
-                XmlDocument Doc = new XmlDocument();
-                Doc.Load(url);
-                XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
-                List<string> myList = new List<string>();
-                try
-                {
-                    foreach (XmlNode currNode in itemList)
-                    {
-                        string date = string.Empty;
-                        date = currNode.Attributes["file_url"].Value;
-                        string modifiedString = date.Replace("//", "http://");
-                        myList.Add(modifiedString);
-                    }
-                }
-                finally
-                {
-                    string input = "abcdefghijklmnopqrstuvwxyz0123456789";
-                    char ch;
-                    string randomString2 = "";
-                    Random rand = new Random();
-                    for (int i = 0; i < 8; i++)
-                    {
-                        ch = input[rand.Next(0, input.Length)];
-                        randomString2 += ch;
-                    }
-                    Random r = new Random();
-                    int index = r.Next(myList.Count);
-                    string randomString = myList[index];
-                    string localFilename = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\" + randomString2 + ".jpg";
-                    using (WebClient client = new WebClient())
-                    {
-                        client.DownloadFile(randomString, localFilename);
-                    }
-                    if (idd == 0)
-                    {
-                        message =
-                            await ReplyAsync($"**Downloaded 1 image**");
-                        idd++;
-                    }
-                    else if (idd > 0)
-                    {
-                        await message.ModifyAsync(msg =>
-                            msg.Content =
-                                ($"**Downloaded: {idd} images**"));
-                        idd++;
-                    }
-                }
-            }
-        }
+        //[Command("xdd")]
+        //[Alias("xdd")]
+        //[Summary(".xdd **<tag>**")]
+        //[Remarks("( ͡° ͜ʖ ͡°)")]
+        //public async Task BoobsAsyncd([Remainder] string tag)
+        //{
+        //    for (; ; )
+        //    {
+        //        var xd = tag.Replace(" ", "_");
+        //        string url = $"https://rule34.xxx/index.php?page=dapi&s=post&q=index&tags={xd}";
+        //        XmlDocument Doc = new XmlDocument();
+        //        Doc.Load(url);
+        //        XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
+        //        List<string> myList = new List<string>();
+        //        try
+        //        {
+        //            foreach (XmlNode currNode in itemList)
+        //            {
+        //                string date = string.Empty;
+        //                date = currNode.Attributes["file_url"].Value;
+        //                string modifiedString = date.Replace("//", "http://");
+        //                myList.Add(modifiedString);
+        //            }
+        //        }
+        //        finally
+        //        {
+        //            string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+        //            char ch;
+        //            string randomString2 = "";
+        //            Random rand = new Random();
+        //            for (int i = 0; i < 8; i++)
+        //            {
+        //                ch = input[rand.Next(0, input.Length)];
+        //                randomString2 += ch;
+        //            }
+        //            Random r = new Random();
+        //            int index = r.Next(myList.Count);
+        //            string randomString = myList[index];
+        //            string localFilename = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\" + randomString2 + ".jpg";
+        //            using (WebClient client = new WebClient())
+        //            {
+        //                client.DownloadFile(randomString, localFilename);
+        //            }
+        //            if (idd == 0)
+        //            {
+        //                message =
+        //                    await ReplyAsync($"**Downloaded 1 image**");
+        //                idd++;
+        //            }
+        //            else if (idd > 0)
+        //            {
+        //                await message.ModifyAsync(msg =>
+        //                    msg.Content =
+        //                        ($"**Downloaded: {idd} images**"));
+        //                idd++;
+        //            }
+        //        }
+        //    }
+        //}
         static int i= 0;
         [Command("rule34")]
         [Alias("r34")]
@@ -502,7 +502,7 @@ namespace Luxary
 
                         }
                     }
-                    catch
+                    catch (Exception ee)
                     {
                         var auth = new EmbedAuthorBuilder()
                         {
@@ -521,6 +521,7 @@ namespace Luxary
                                 $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/shy.png",
                         };
                         await ReplyAsync("", false, builder.Build());
+                        Console.WriteLine(ee);
                     }
                 }
             }
@@ -852,7 +853,6 @@ namespace Luxary
                                         int winrate = resultt * 100 / totalFilesToProcess;
                                         builder.AddField(x =>
                                         {
-
                                             x.Name = queueType;
                                             x.Value =
                                                 $"Rank: **{tier} {tier2} - {lp}LP**\nWins: **{wins}**\nLosses: **{Losses}**\nWinrate: **{winrate}%**";
@@ -998,6 +998,72 @@ namespace Luxary
             await Context.Channel.SendFileAsync("pic/blank.png");
             await ReplyAsync("Covered some weird shit for " + Context.User.Mention + " your welcome");
         }
+
+        static string width2;
+        static string height2;
+        [Command("wallpaper")]
+        [Alias("background", "wp", "bg")]
+        [Summary(".wallpaper **<tag>**")]
+        [Remarks("Shows a wallpaper")]
+        public async Task Wallpaper([Remainder]string tag)
+        {
+            try
+            {
+                List<string> myList = new List<string>();
+                using (var client = new HttpClient(new HttpClientHandler
+                {
+                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                }))
+                {
+                    var websiteurl = $"https://wall.alphacoders.com/api2.0/get.php?auth=140c472dacc84cf043a7384eebf5282d&method=search&term={tag}";
+                    client.BaseAddress = new Uri(websiteurl);
+                    var response = client.GetAsync("").Result;
+                    response.EnsureSuccessStatusCode();
+                    var result = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(result);
+                    var build = new EmbedBuilder();
+                    
+                    JArray items = (JArray)json["wallpapers"];
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        var width = json["wallpapers"][i]["width"].ToString();
+                        var height = json["wallpapers"][i]["height"].ToString();
+                        var joke = json["wallpapers"][i]["url_image"].ToString();
+                        myList.Add(joke);
+                        build.Title = $"{tag} wallpaper: {width}x{height}";
+                    }
+                    Random r = new Random();
+                    int index = r.Next(myList.Count);
+                    string randomString = myList[index];      
+                    build.ImageUrl = randomString;
+                    build.WithImageUrl(randomString);
+                    await ReplyAsync("", false, build.Build());
+                    myList.Clear();
+                }
+            }
+            catch (Exception ee)
+            {
+                var auth = new EmbedAuthorBuilder()
+                {
+                    Name = $"Error",
+                };
+                var rnd = new Random();
+                int g1 = rnd.Next(1, 255);
+                int g2 = rnd.Next(1, 255);
+                int g3 = rnd.Next(1, 255);
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Discord.Color(g1, g2, g3),
+                    Author = auth,
+                };
+                builder.Description = $"Wallpaper not found.";
+                builder.ThumbnailUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+                await ReplyAsync("", false, builder.Build());
+                Console.WriteLine(ee);
+            }
+        }
+
         [Command("slav")]
         [Alias("cyka", "blyat")]
         [Summary(".slav")]

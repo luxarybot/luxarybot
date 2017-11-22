@@ -161,7 +161,7 @@ namespace Luxary
 
                         Title = "Error",
                         Color = new Color(g11, g12, g13),
-                        Description = $"the command: **{command}** doesn't excist.\n.cmds for all commands."
+                        Description = $"the command: **{command}** doesn't exorcist.\n.cmds for all commands."
                     };
                     await ReplyAsync("", false, builder1.Build());
                     return;
@@ -435,11 +435,21 @@ namespace Luxary
                 else
                 {
                     hi = "online";
-                    timer1.Enabled = true;
-                    timer1.Start();
-                    timer1.Interval = (5000);
-                    timer1.AutoReset = true;
-                    timer1.Elapsed += StartBoi;
+                    if (timer1.Enabled == false)
+                    {
+                        i = 0;
+                        timer1.Start();
+                        timer1.Enabled = true;
+                        timer1.Interval = 5000;
+                        timer1.AutoReset = true;
+                        timer1.Elapsed += StartBoi;
+                    }
+                    else
+                    {
+                        timer1.Start();
+                        timer1.AutoReset = true;
+                        timer1.Elapsed += StartBoi;
+                    }
                 }
             }
             catch (Exception)
@@ -460,55 +470,23 @@ namespace Luxary
             {
                 string currentTime = DateTime.Now.ToString("H:mm:ss");
                 TimeSpan duration = DateTime.Parse("15:50:00").Subtract(DateTime.Parse(currentTime));
+                string final = duration.ToString();
                 int y = int.Parse(duration.Hours.ToString());
                 int x = int.Parse(duration.Minutes.ToString());
                 int z = int.Parse(duration.Seconds.ToString());
-                if (y > 0)
+                if (!final.Contains("-"))
                 {
                     if (i == 0)
                     {
                         message =
-                            await ReplyAsync($"**{duration}**" +
+                            await ReplyAsync($"**{final}**" +
                                              " till your work day ends. <:mad:362497418291314688>");
                         i = 1;
                     }
                     else if (i > 0)
                     {
                         await message.ModifyAsync(msg =>
-                            msg.Content =
-                                ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
-                    }
-                }
-                if (x > 0)
-                {
-                    if (i == 0)
-                    {
-                        message =
-                            await ReplyAsync($"**{duration}**" +
-                                             " till your work day ends. <:mad:362497418291314688>");
-                        i = 1;
-                    }
-                    else if (i > 0)
-                    {
-                        await message.ModifyAsync(msg =>
-                            msg.Content =
-                                ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
-                    }                   
-                }
-                else if (z > 0)
-                {
-                    if (i == 0)
-                    {
-                        message =
-                            await ReplyAsync($"**{duration}**" +
-                                             " till your work day ends. <:mad:362497418291314688>");
-                        i = 1;
-                    }
-                    else if (i > 0)
-                    {
-                        await message.ModifyAsync(msg =>
-                            msg.Content =
-                                ($"**{duration}**" + " till your work day ends. <:mad:362497418291314688>"));
+                            msg.Content =$"**{final}**" + " till your work day ends. <:mad:362497418291314688>");
                     }
                 }
                 else
@@ -527,7 +505,7 @@ namespace Luxary
         public async Task DoneTimer()
         {
             await Context.Channel.SendMessageAsync(
-                $"You're free, for now. <:happy:362565108032995329>");
+                $"**You're free, for now.** <:happy:362565108032995329>");
         }
 
         [Command("hoursleft")]

@@ -130,7 +130,6 @@ namespace Luxary
             int argPos = 0;
             if (!(msg.HasCharPrefix(prefix, ref argPos) ||
                   msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
-
             var context = new CommandContext(_client, msg);
 
             var result = await _commands.ExecuteAsync(context, argPos, _services);
