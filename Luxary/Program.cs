@@ -9,6 +9,7 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.IO;
+using System.Windows.Forms;
 using Luxary.Service;
 
 namespace Luxary
@@ -16,18 +17,21 @@ namespace Luxary
     
     class Program
     {
-        private CommandService _commands;
-        private DiscordSocketClient _client;
-        private IServiceProvider _services;
+        private static CommandService _commands;
+        private static DiscordSocketClient _client;
+        private static IServiceProvider _services;
 
-        string _token = "";
+        static string _token = "";
 
-        public static void Main(string[] args)
+        [STAThread]
+        static void Main()
         {
-            new Program().Start().GetAwaiter().GetResult();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new FormConsole());
         }
 
-        public async Task Start()
+        public static async Task Start()
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
             {
@@ -40,7 +44,6 @@ namespace Luxary
 
             try
             {
-                Console.WriteLine("Hi master, token found :3");
                 StreamReader sr = new StreamReader("token.txt");
                 _token = sr.ReadLine();
             }
@@ -59,27 +62,30 @@ namespace Luxary
 
         await Task.Delay(-1);
         }
-
-        public async Task Game()
+        public static async Task Stop()
+        {
+            await _client.StopAsync();
+        }
+        public static async Task Game()
         {
             await _client.SetGameAsync(".cmds for commands");
         }
-        public async Task UserJoined(SocketGuildUser user)
+        public static async Task UserJoined(SocketGuildUser user)
         {
             var channel = user.Guild.DefaultChannel;
             await channel.SendMessageAsync("Welcome to the server " + user.Mention + "! <:happy:362565108032995329>");
         }
-        public async Task UserLeft(SocketGuildUser user)
+        public static async Task UserLeft(SocketGuildUser user)
         {
             var channel = user.Guild.DefaultChannel;
             await channel.SendMessageAsync(user.Mention + " Left the channel! <:mad:362497418291314688>");
         }
-        public async Task InstallCommands()
+        public static async Task InstallCommands()
         {
             _client.MessageReceived += HandleCommand;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly());
         }
-        public async Task Message(SocketMessage message)
+        public static async Task Message(SocketMessage message)
         {
             if (!message.Author.IsBot)
             {
@@ -122,7 +128,7 @@ namespace Luxary
             }
         }
 
-        public async Task HandleCommand(SocketMessage msgParam)
+        public static async Task HandleCommand(SocketMessage msgParam)
         {
             var msg = msgParam as SocketUserMessage;
             char prefix = '.';
@@ -146,34 +152,33 @@ namespace Luxary
             }
         }
 
-        private Task Log(LogMessage msg)
+        private static Task Log(LogMessage msg)
         {
-            var c = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            switch (msg.Severity)
-            {
-                case LogSeverity.Critical:
-                    Console.ForegroundColor = ConsoleColor.Magenta;
-                    break;
-                case LogSeverity.Error:
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    break;
-                case LogSeverity.Warning:
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    break;
-                case LogSeverity.Info:
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case LogSeverity.Verbose:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case LogSeverity.Debug:
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    break;
-            }
+            //var c = Console.ForegroundColor;
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //switch (msg.Severity)
+            //{
+            //    case LogSeverity.Critical:
+            //        Console.ForegroundColor = ConsoleColor.Magenta;
+            //        break;
+            //    case LogSeverity.Error:
+            //        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            //        break;
+            //    case LogSeverity.Warning:
+            //        Console.ForegroundColor = ConsoleColor.DarkRed;
+            //        break;
+            //    case LogSeverity.Info:
+            //        Console.ForegroundColor = ConsoleColor.Yellow;
+            //        break;
+            //    case LogSeverity.Verbose:
+            //        Console.ForegroundColor = ConsoleColor.Green;
+            //        break;
+            //    case LogSeverity.Debug:
+            //        Console.ForegroundColor = ConsoleColor.DarkMagenta;
+            //        break;
+            //}
             Console.WriteLine($"{DateTime.Now,-19} [{msg.Severity,8}] {msg.Source}: {msg.Message}");
-            Console.ForegroundColor = c;
-
+            //Console.ForegroundColor = c;
             return Task.CompletedTask;
             //COPYRIGHT THIJMEN HOGENKAMP
         }
