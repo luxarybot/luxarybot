@@ -342,16 +342,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Audio_Player.cs">
+    <Compile Include="Forms\Audio_Player.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Audio_Player.Designer.cs">
+    <Compile Include="Forms\Audio_Player.Designer.cs">
       <DependentUpon>Audio_Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="Channel_Editor.cs">
+    <Compile Include="Forms\Channel_Editor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Channel_Editor.Designer.cs">
+    <Compile Include="Forms\Channel_Editor.Designer.cs">
       <DependentUpon>Channel_Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Commands\Abuse.cs" />
@@ -359,23 +359,29 @@
     <Compile Include="Commands\Images.cs" />
     <Compile Include="Commands\lux.cs" />
     <Compile Include="Commands\Minigames.cs" />
-    <Compile Include="Embed_Messages.cs">
+    <Compile Include="Forms\Embed_Messages.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Embed_Messages.Designer.cs">
+    <Compile Include="Forms\Embed_Messages.Designer.cs">
       <DependentUpon>Embed_Messages.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Forms\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Thumbnail_Select.cs">
+    <Compile Include="Forms\Thumbnail_Select.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Thumbnail_Select.Designer.cs">
+    <Compile Include="Forms\Thumbnail_Select.Designer.cs">
       <DependentUpon>Thumbnail_Select.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\normal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\normal.Designer.cs">
+      <DependentUpon>normal.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\AudioModule.cs" />
     <Compile Include="Commands\Admin.cs" />
@@ -389,8 +395,7 @@
     <Compile Include="Services\prefix.cs" />
     <Compile Include="Services\quotes.cs" />
     <Compile Include="Services\trengo.cs" />
-    <Compile Include="TextBoxStreamWriter.cs" />
-    <Compile Include="txt.cs" />
+    <Compile Include="Services\TextBoxStreamWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -416,20 +421,23 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Audio_Player.resx">
+    <EmbeddedResource Include="Forms\Audio_Player.resx">
       <DependentUpon>Audio_Player.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Channel_Editor.resx">
+    <EmbeddedResource Include="Forms\Channel_Editor.resx">
       <DependentUpon>Channel_Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Embed_Messages.resx">
+    <EmbeddedResource Include="Forms\Embed_Messages.resx">
       <DependentUpon>Embed_Messages.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Thumbnail_Select.resx">
+    <EmbeddedResource Include="Forms\Thumbnail_Select.resx">
       <DependentUpon>Thumbnail_Select.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\normal.resx">
+      <DependentUpon>normal.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

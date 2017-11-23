@@ -101,5 +101,18 @@ namespace Luxary
                 txtConsole.Text="Bot is not online.";
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (xd == "hello")
+            {
+                normal open = new normal();
+                open.Show();
+            }
+            else
+            {
+                txtConsole.Text = "Bot is not online.";
+            }
+        }
     }
 }
