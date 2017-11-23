@@ -33,20 +33,25 @@ namespace Luxary
             this.txtSayHello = new System.Windows.Forms.Button();
             this.sleep = new System.Windows.Forms.Button();
             this.Close = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtConsole
             // 
             this.txtConsole.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtConsole.Cursor = System.Windows.Forms.Cursors.Default;
             this.txtConsole.Font = new System.Drawing.Font("Berlin Sans FB", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtConsole.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.txtConsole.ForeColor = System.Drawing.SystemColors.Desktop;
             this.txtConsole.Location = new System.Drawing.Point(12, 55);
             this.txtConsole.Multiline = true;
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
+            this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtConsole.Size = new System.Drawing.Size(576, 306);
             this.txtConsole.TabIndex = 0;
+            this.txtConsole.TabStop = false;
             this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
             // 
             // txtSayHello
@@ -81,13 +86,33 @@ namespace Luxary
             this.Close.UseVisualStyleBackColor = true;
             this.Close.Click += new System.EventHandler(this.Close_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(427, 12);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 37);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Message";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(346, 12);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 37);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Channel";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(427, 12);
+            this.button1.Location = new System.Drawing.Point(265, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 37);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "button1";
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Music";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -98,6 +123,8 @@ namespace Luxary
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(600, 373);
             this.Controls.Add(this.button1);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.Close);
             this.Controls.Add(this.sleep);
             this.Controls.Add(this.txtSayHello);
@@ -117,6 +144,8 @@ namespace Luxary
         private System.Windows.Forms.Button txtSayHello;
         private System.Windows.Forms.Button sleep;
         private System.Windows.Forms.Button Close;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button1;
     }
 }

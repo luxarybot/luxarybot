@@ -18,7 +18,7 @@ namespace Luxary
     class Program
     {
         private static CommandService _commands;
-        private static DiscordSocketClient _client;
+        public static DiscordSocketClient _client;
         private static IServiceProvider _services;
 
         static string _token = "";

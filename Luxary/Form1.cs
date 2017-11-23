@@ -22,7 +22,7 @@ namespace Luxary
     public partial class FormConsole : Form
     {
         TextWriter _writer = null;
-
+        private static string xd = "hi";
         public FormConsole()
         {
             InitializeComponent();
@@ -33,13 +33,16 @@ namespace Luxary
             _writer = new TextBoxStreamWriter(txtConsole);
             Console.SetOut(_writer);
         }
-
         private void txtSayHello_Click(object sender, EventArgs e)
         {
-            txtConsole.Clear();
-            Program.Start();
+            FormConsole form1 = this;
+            if (xd == "hi")
+            {
+                txtConsole.Clear();
+                Program.Start();
+                xd = "hello";
+            }
         }
-
         private void txtConsole_TextChanged(object sender, EventArgs e)
         {
 
@@ -47,8 +50,12 @@ namespace Luxary
 
         private void sleep_Click(object sender, EventArgs e)
         {
-            txtConsole.Clear();
-            Program.Stop();
+            if (xd == "hello")
+            {
+                txtConsole.Clear();
+                Program.Stop();
+                xd = "hi";
+            }
         }
 
         private void Close_Click(object sender, EventArgs e)
@@ -56,10 +63,43 @@ namespace Luxary
             Application.Exit();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (xd == "hello")
+            {
+                Embed_Messages open = new Embed_Messages(new DiscordSocketClient());
+                open.Show();
+            }
+            else
+            {
+                txtConsole.Text = "Bot is not online.";
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (xd == "hello")
+            {
+                Channel_Editor open = new Channel_Editor(new DiscordSocketClient());
+                open.Show();
+            }
+            else
+            {
+                txtConsole.Text = "Bot is not online.";
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            MSG open = new MSG();
-            open.Show();
+            if (xd == "hello")
+            {
+                Audio_Player open = new Audio_Player(new DiscordSocketClient());
+                open.Show();
+            }
+            else
+            {
+                txtConsole.Text="Bot is not online.";
+            }
         }
     }
 }
