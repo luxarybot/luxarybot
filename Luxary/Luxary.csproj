@@ -342,6 +342,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\osu.cs" />
     <Compile Include="Forms\Audio_Player.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -386,7 +387,7 @@
     <Compile Include="Services\AudioModule.cs" />
     <Compile Include="Commands\Admin.cs" />
     <Compile Include="Commands\Fight.cs" />
-    <Compile Include="Luxary.cs" />
+    <Compile Include="Commands\Luxary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\away.cs" />

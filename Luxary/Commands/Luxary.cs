@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.IO.Compression;
 using Luxary.Service;
 using System.Web;
+using Newtonsoft.Json;
 
 
 namespace Luxary
@@ -328,9 +329,7 @@ namespace Luxary
                     Color = new Color(g1, g2, g3),
                     Author = auth
                 };
-
                 var us = user as SocketGuildUser;
-
                 var username = us.Username;
                 var discr = us.Discriminator;
                 var id = us.Id;
@@ -340,7 +339,8 @@ namespace Luxary
                 var nick = us.Nickname;
                 var muted = us.IsMuted;
                 embed.Title = $"**{us.Username}** Informatie";
-                embed.Description = $"Username: **{username}\n"
+                embed.Description = 
+                  $"Username: **{username}**\n"
                 + $"Tag: **{discr}**\n"
                 + $"ID: **{id}**\n"
                 + $"Nickname: **{nick}**\n"
@@ -349,12 +349,9 @@ namespace Luxary
                 + $"Joined server at: **{cc}**\n"
                 + $"Muted: **{muted}**\n"
                 + $"Playing: **{game}**\n";
-
                 await ReplyAsync("", false, embed.Build());
-
             }
         }
-
         [Command("say")]
         [Summary(".say **<message>**")]
         [Remarks("Bot will echo something back")]
