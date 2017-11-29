@@ -44,10 +44,12 @@ namespace Luxary
             {
                 return PartName;
             }
+
             public override int GetHashCode()
             {
                 return PartID;
             }
+
             public override bool Equals(object obj)
             {
                 if (obj == null) return false;
@@ -55,19 +57,25 @@ namespace Luxary
                 if (objAsPart == null) return false;
                 else return Equals(objAsPart);
             }
+
             public bool Equals(Part22 other)
             {
                 if (other == null) return false;
                 return (this.PartId.Equals(other.PartId));
             }
         }
+
         private static List<Part22> parts22 = new List<Part22>();
+
         [Command("gu")]
-        public async Task Ossu(string name)
+        public async Task Ossu([Remainder] string name)
         {
             try
             {
-                var request = WebRequest.Create($"https://osu.ppy.sh/api/get_user?k=00b5c6aaae0d1a09091f08fc294836c893c591de&u={name}") as HttpWebRequest;
+                var request =
+                    WebRequest.Create(
+                            $"https://osu.ppy.sh/api/get_user?k=00b5c6aaae0d1a09091f08fc294836c893c591de&u={name}") as
+                        HttpWebRequest;
                 if (request == null) return;
                 request.Method = "GET";
                 request.ContentType = "application/json";
@@ -95,15 +103,17 @@ namespace Luxary
                     EmbedBuilder xd = new EmbedBuilder
                     {
                         Title = $"{username}'s Osu! profile",
-                        Description = $"**Level: {quickmaffs}**\n**Playcount:** {pcount}\n**Accuracy:** {quickmaffs3}%\n**Country:** {country}\n**Rank:** {pprank}\n**PP:** {quickmaffs2}",
-                        ThumbnailUrl = $"https://a.ppy.sh/{userid}"
-                    };
-                    await ReplyAsync("", false, xd.Build());
+                        Description =
+                            $"**Level: {quickmaffs}**\n**Playcount:** {pcount}\n**Accuracy:** {quickmaffs3}%\n**Country:** {country}\n**Rank:** {pprank}\n**PP:** {quickmaffs2}",
 
+                    };
+                    xd.ThumbnailUrl = $"https://a.ppy.sh/{userid}_1511865832.jpg";
+                    await ReplyAsync("", false, xd.Build());
                 }
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 await erroruser();
             }
         }
@@ -129,8 +139,9 @@ namespace Luxary
             await ReplyAsync("", false, builder.Build());
             return;
         }
+
         [Command("gub")]
-        public async Task Osssu(string name)
+        public async Task Osssu([Remainder] string name)
         {
             //https://osu.ppy.sh/api/get_beatmaps?k=00b5c6aaae0d1a09091f08fc294836c893c591de&b=275265"
             try
@@ -153,7 +164,12 @@ namespace Luxary
                     var container = (JContainer) JsonConvert.DeserializeObject(result);
                     var userid = container[0]["user_id"].ToString();
                     var username = container[0]["username"].ToString();
-                    EmbedBuilder xd = new EmbedBuilder {Title = username, Description = "Top 10 plays.\n----", ThumbnailUrl = $"https://a.ppy.sh/{userid}" };
+                    EmbedBuilder xd = new EmbedBuilder
+                    {
+                        Title = username,
+                        Description = "Top 10 plays.\n----",
+                        ThumbnailUrl = $"https://a.ppy.sh/{userid}_1511865832.jpg"
+                    };
                     for (int xdd = 0; xdd < 10; xdd++)
                     {
                         var request2 =
@@ -208,14 +224,203 @@ namespace Luxary
                                     x.Value = $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}\n";
                                 });
                             }
-                        }                  
+                        }
                     }
                     await ReplyAsync("", false, xd.Build());
                 }
             }
+
+
+
             catch (Exception e)
             {
                 await erroruser();
+            }
+        }
+
+        [Command("bm")]
+        public async Task BM(string url)
+        {
+            try
+            {
+                int t = 0;
+                string code = "";
+                foreach (char x in url)
+                {
+                    if (x == '/')
+                    {
+                        t = t + 1;
+                    }
+                    else if (t == 4)
+                    {
+                        code += x.ToString();
+                    }
+                }
+                string img = "";
+                foreach (char x in url)
+                {
+                    if (x == '/')
+                    {
+                        t = t + 1;
+                    }
+                    else if (t == 4)
+                    {
+                        code += x.ToString();
+                    }
+                }
+                var request3 =
+                    WebRequest.Create(
+                            $"https://osu.ppy.sh/api/get_beatmaps?k=00b5c6aaae0d1a09091f08fc294836c893c591de&b={code}")
+                        as
+                        HttpWebRequest;
+                if (request3 == null) return;
+
+                request3.Method = "GET";
+                request3.ContentType = "application/json";
+                var myWebResponse3 = (HttpWebResponse) request3.GetResponse();
+                var encoding3 = Encoding.ASCII;
+                using (var reader3 =
+                    new StreamReader(
+                        myWebResponse3.GetResponseStream() ?? throw new InvalidOperationException(),
+                        encoding3))
+                {
+                    var result3 = reader3.ReadToEnd();
+                    var container3 = (JContainer) JsonConvert.DeserializeObject(result3);
+
+                    var title = container3[0]["title"].ToString();
+                    var bpm= container3[0]["bpm"].ToString();
+                    var version = container3[0]["version"].ToString();
+                    var creator = container3[0]["creator"].ToString();
+                    var max_combo = container3[0]["max_combo"].ToString();
+                    double difficultyrating = Convert.ToDouble(container3[0]["difficultyrating"]);
+                    var approved_date = container3[0]["approved_date"].ToString();
+                    var diff_approach = container3[0]["diff_approach"].ToString();
+                    var approved = container3[0]["approved"].ToString();
+                    var mlg = container3[0]["beatmapset_id"].ToString();
+                    var mlg2 = container3[0]["beatmap_id"].ToString();
+                    var shee = Math.Round(difficultyrating, 2);
+                    if (approved.Contains("0"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** Pending\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}\n**Approve date:** {approved_date}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("-1"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** WIP\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                           
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("-2"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** In the graveyard ;(\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("1"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** Ranked\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}\n**Approve date:** {approved_date}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("2"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** Approved\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}\n**Approve date:** {approved_date}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("3"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** qualified\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}\n**Approve date:** {approved_date}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else if (approved.Contains("4"))
+                    {
+                        EmbedBuilder xd = new EmbedBuilder
+                        {
+                            Title = title + $"({version})",
+                            Description =
+                                $"**Type:** LOVED ❤\n**Creator:** {creator}\n**BPM** {bpm}\n**Max combo:** {max_combo}\n**Difficulty:** {shee}\n**AR:** {diff_approach}\n**Approve date:** {approved_date}",
+                           ImageUrl = $"https://b.ppy.sh/thumb/{mlg}l.jpg"
+                        };
+                        await ReplyAsync($"**Download:** " + $"https://osu.ppy.sh/d/{mlg}", false, xd.Build());
+                    }
+                    else
+                    {
+                        var auth = new EmbedAuthorBuilder()
+                        {
+                            Name = $"Error",
+                        };
+                        var rnd = new Random();
+                        int g1 = rnd.Next(1, 255);
+                        int g2 = rnd.Next(1, 255);
+                        int g3 = rnd.Next(1, 255);
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Discord.Color(g1, g2, g3),
+                            Author = auth,
+                        };
+                        builder.Description = $"No data yet....\nosu ples";
+                        builder.ThumbnailUrl =
+                            $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+                        await ReplyAsync("", false, builder.Build());
+                    }
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                var auth = new EmbedAuthorBuilder()
+                {
+                    Name = $"Error",
+                };
+                var rnd = new Random();
+                int g1 = rnd.Next(1, 255);
+                int g2 = rnd.Next(1, 255);
+                int g3 = rnd.Next(1, 255);
+                var builder = new EmbedBuilder()
+                {
+                    Color = new Discord.Color(g1, g2, g3),
+                    Author = auth,
+                };
+                builder.Description = $"No data yet....\nosu ples";
+                builder.ThumbnailUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+                await ReplyAsync("", false, builder.Build());
+                Console.WriteLine(e);
+                throw;
             }
         }
     }
