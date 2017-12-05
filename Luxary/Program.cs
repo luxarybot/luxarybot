@@ -9,7 +9,9 @@ using Discord;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.IO;
+using System.Timers;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Luxary.Service;
 
 namespace Luxary
@@ -26,11 +28,11 @@ namespace Luxary
         [STAThread]
         static void Main()
         {
+            Program.Start();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormConsole());
+            Application.Run(new FormConsole());     
         }
-
         public static async Task Start()
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig
@@ -68,7 +70,7 @@ namespace Luxary
         }
         public static async Task Game()
         {
-            await _client.SetGameAsync(".cmds for commands");
+            await _client.SetGameAsync($"{Admin.prefgl}cmds for commands");
         }
         public static async Task UserJoined(SocketGuildUser user)
         {
@@ -131,7 +133,7 @@ namespace Luxary
         public static async Task HandleCommand(SocketMessage msgParam)
         {
             var msg = msgParam as SocketUserMessage;
-            char prefix = '.';
+            var prefix = Admin.prefgl;
             if (msg == null) return;
             int argPos = 0;
             if (!(msg.HasCharPrefix(prefix, ref argPos) ||

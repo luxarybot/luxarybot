@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -16,6 +17,8 @@ using ImageSharp;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Point = ImageSharp.Point;
+using Size = System.Drawing.Size;
 
 namespace Luxary
 {
@@ -1274,52 +1277,29 @@ namespace Luxary
                 await ReplyAsync("", false, builder.Build());
             }
         }
-        //[Command("giphy")]
-        //[Summary(".giphy **<message>**")]
-        //[Remarks("Shows a gif.")]
-        //[Alias("gp")]
-        //public async Task giphy([Remainder] string tag = null)
-        //{
-        //    try
-        //    {
-        //        int Delete = 1;
-        //        foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
-        //        {
-        //            await Item.DeleteAsync();
-        //        }
-        //        Console.WriteLine("Making API Call...");
-        //        using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
-        //        {
-        //            string websiteurl = $"https://api.giphy.com/v1/gifs/random?api_key=BJLJx6TDsXhXKdAIo5qw0ItokQHku6rr&tag={tag}&rating=G";
-        //            client.BaseAddress = new Uri(websiteurl);
-        //            HttpResponseMessage response = client.GetAsync("").Result;
-        //            response.EnsureSuccessStatusCode();
-        //            string result = await response.Content.ReadAsStringAsync();
-        //            var json = JObject.Parse(result);
-        //            string Joke = json["data"]["url"].ToString();
-        //            await ReplyAsync(Joke);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        var auth = new EmbedAuthorBuilder()
-        //        {
-        //            Name = $"Error",
-        //        };
-        //        var rnd = new Random();
-        //        int g1 = rnd.Next(1, 255);
-        //        int g2 = rnd.Next(1, 255);
-        //        int g3 = rnd.Next(1, 255);
-        //        var builder = new EmbedBuilder()
-        //        {
-        //            Color = new Discord.Color(g1, g2, g3),
-        //            Author = auth,
-        //        };
-        //        builder.Description = $"Gif not found.";
-        //        builder.ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
-        //        await ReplyAsync("", false, builder.Build());
-        //    }
-        //}
+        [Command("ps")]
+        [Summary(".giphy **<message>**")]
+        [Remarks("Shows a gif.")]
+        public async Task Ps([Remainder] string url)
+        {
+            try
+            {
+                HttpWebRequest request =
+                WebRequest.Create($"http://images.shrinktheweb.com/xino.php?stwembed=1&stwaccesskeyid=11628f627e26928&stwurl={url}") as HttpWebRequest;
+                using (Stream stream = request.GetResponse().GetResponseStream())
+                {
+                    System.Drawing.Image img =
+                    System.Drawing.Image.FromStream(stream ?? throw new InvalidOperationException());
+                    img.Save("pic/myImage.Jpeg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                    await Context.Channel.SendFileAsync("pic/myImage.Jpeg");
+                    img.Dispose();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }          
+        }
         [Command("weeb")]
         [Summary(".weeb")]
         [Remarks("Sends a weeb gif")]

@@ -164,7 +164,7 @@ namespace Luxary
 
         private void btn_LogOut_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            this.Close();
         }
 
         private void frmMain_Load(object sender, EventArgs e)

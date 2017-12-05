@@ -15,14 +15,16 @@ using Discord.Commands;
 using System.Net.Http;
 using Luxary.Services;
 using Newtonsoft.Json;
+using System.Windows.Forms.VisualStyles;
 using System.Threading;
+using SixLabors.Shapes;
 
 namespace Luxary
 {
     public partial class FormConsole : Form
     {
         TextWriter _writer = null;
-        private static string xd = "hi";
+        private static string xd = "hello";
         public FormConsole()
         {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace Luxary
             _writer = new TextBoxStreamWriter(txtConsole);
             Console.SetOut(_writer);
         }
+        static System.Timers.Timer xxd;
         private void txtSayHello_Click(object sender, EventArgs e)
         {
             FormConsole form1 = this;
@@ -41,13 +44,21 @@ namespace Luxary
                 txtConsole.Clear();
                 Program.Start();
                 xd = "hello";
+                xxd = new System.Timers.Timer();
+                xxd.Start();
+                xxd.Interval = 1000;
+                xxd.AutoReset = true;
+                xxd.Elapsed += StartBoi;
             }
         }
         private void txtConsole_TextChanged(object sender, EventArgs e)
         {
 
         }
-
+        public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            await Stats();
+        }
         private void sleep_Click(object sender, EventArgs e)
         {
             if (xd == "hello")
@@ -113,6 +124,62 @@ namespace Luxary
             {
                 txtConsole.Text = "Bot is not online.";
             }
+        }
+
+        private static bool che = true;
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (che == true)
+                {
+                button4.Show();
+                    che = false;
+                }
+            else if (che == false)
+            {
+                button4.Hide();
+                che = true;
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            
+        }
+        public async Task Stats()
+        {
+            PerformanceCounter cpuCounter;
+            PerformanceCounter ramCounter;
+
+            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            using (var process = Process.GetCurrentProcess())
+            {
+                var time = DateTime.Now - process.StartTime; /* Subtracts current time and start time to get Uptime*/
+                var sb = new StringBuilder();
+                if (time.Days > 0)
+                {
+                    sb.Append($"{time.Days}d ");
+                }
+                if (time.Hours > 0)
+                {
+                    sb.Append($"{time.Hours}h ");
+                }
+                if (time.Minutes > 0)
+                {
+                    sb.Append($"{time.Minutes}m ");
+                }
+                sb.Append($"{time.Seconds}s ");
+                TRNG.Text = sb.ToString();
+            }
+
+            string getCurrentCpuUsage()
+            {
+                return cpuCounter.NextValue() + "%";
+            }
+            Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
+            long rofl = currentProcess.WorkingSet64;
+            CPU.Text = getCurrentCpuUsage();
+            RAM.Text = rofl.ToString();
+
         }
     }
 }

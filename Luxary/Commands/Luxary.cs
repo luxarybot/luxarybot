@@ -410,7 +410,7 @@ namespace Luxary
         }
         private static IUserMessage message;
         private static int i = 0;
-        private static string hi = "offline"; 
+        private static string hi = "offline";
         private static System.Timers.Timer timer1;
 
         [Command("time")]

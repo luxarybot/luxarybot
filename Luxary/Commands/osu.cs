@@ -117,6 +117,128 @@ namespace Luxary
                 await erroruser();
             }
         }
+        [Command("ur")]
+        public async Task usebest([Remainder] string name)
+        {
+            try
+            {
+                var request =
+                    WebRequest.Create(
+                            $"https://osu.ppy.sh/api/get_user?k=00b5c6aaae0d1a09091f08fc294836c893c591de&u={name}")
+                        as
+                        HttpWebRequest;
+                if (request == null) return;
+                request.Method = "GET";
+                request.ContentType = "application/json";
+
+                var myWebResponse = (HttpWebResponse) request.GetResponse();
+                var encoding = Encoding.ASCII;
+                using (var reader =
+                    new StreamReader(myWebResponse.GetResponseStream() ?? throw new InvalidOperationException(),
+                        encoding))
+                {
+                    var result = reader.ReadToEnd();
+                    var container = (JContainer) JsonConvert.DeserializeObject(result);
+                    var userid = container[0]["user_id"].ToString();
+                    var username = container[0]["username"].ToString();
+                    EmbedBuilder xd = new EmbedBuilder
+                    {
+                        Title = username,
+                        Description = "10 Recent plays.\n----",
+                        ThumbnailUrl = $"https://a.ppy.sh/{userid}_1511865832.jpg"
+                    };
+                    try
+                    {
+                        for (int xdd = 0; xdd < 10; xdd++)
+                        {
+                            var request2 =
+                                WebRequest.Create(
+                                        $"https://osu.ppy.sh/api/get_user_recent?k=00b5c6aaae0d1a09091f08fc294836c893c591de&u={userid}&type=id")
+                                    as
+                                    HttpWebRequest;
+                            if (request2 == null) return;
+                            request2.Method = "GET";
+                            request2.ContentType = "application/json";
+
+                            var myWebResponse2 = (HttpWebResponse) request2.GetResponse();
+                            var encoding2 = Encoding.ASCII;
+                            using (var reader2 =
+                                new StreamReader(
+                                    myWebResponse2.GetResponseStream() ?? throw new InvalidOperationException(),
+                                    encoding2))
+                            {
+                                var result2 = reader2.ReadToEnd();
+
+                                var container2 = (JContainer) JsonConvert.DeserializeObject(result2);
+                                var date = container2[xdd]["maxcombo"].ToString();
+                                var bmap = container2[xdd]["beatmap_id"].ToString();
+                                var rank = container2[xdd]["rank"].ToString();
+                                if (rank.Contains("F"))
+                                {
+                                    rank = "Forfeit";
+                                }
+                                //------------------------------------------------
+                                var request3 =
+                                    WebRequest.Create(
+                                            $"https://osu.ppy.sh/api/get_beatmaps?k=00b5c6aaae0d1a09091f08fc294836c893c591de&b={bmap}")
+                                        as
+                                        HttpWebRequest;
+                                if (request3 == null) return;
+
+                                request3.Method = "GET";
+                                request3.ContentType = "application/json";
+                                var myWebResponse3 = (HttpWebResponse) request3.GetResponse();
+                                var encoding3 = Encoding.ASCII;
+                                using (var reader3 =
+                                    new StreamReader(
+                                        myWebResponse3.GetResponseStream() ?? throw new InvalidOperationException(),
+                                        encoding3))
+                                {
+                                    var result3 = reader3.ReadToEnd();
+                                    var container3 = (JContainer) JsonConvert.DeserializeObject(result3);
+
+                                    var title = container3[0]["title"].ToString();
+                                    var diff = container3[0]["version"].ToString();
+                                    xd.AddField(x =>
+                                    {
+                                        x.Name = $"{title} ({diff})";
+                                        x.Value = $"**Rank:** {rank} **Combo**: {date}\n";
+                                    });
+                                }
+                            }
+                        }
+                        await ReplyAsync("", false, xd.Build());
+                    }
+                    catch (Exception x)
+                    {
+                        Console.WriteLine(x);
+                        var auth = new EmbedAuthorBuilder()
+                        {
+                            Name = $"Error",
+                        };
+                        var rnd = new Random();
+                        int g1 = rnd.Next(1, 255);
+                        int g2 = rnd.Next(1, 255);
+                        int g3 = rnd.Next(1, 255);
+                        var builder = new EmbedBuilder()
+                        {
+                            Color = new Discord.Color(g1, g2, g3),
+                            Author = auth,
+                        };
+                        builder.Description = $"No recent plays.";
+                        builder.ThumbnailUrl =
+                            $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png";
+                        await ReplyAsync("", false, builder.Build());
+                        return;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                await erroruser();
+            }
+        }
 
         public async Task erroruser()
         {
@@ -140,6 +262,7 @@ namespace Luxary
             return;
         }
 
+            
         [Command("gub")]
         public async Task Osssu([Remainder] string name)
         {

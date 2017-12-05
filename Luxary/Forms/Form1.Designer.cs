@@ -37,6 +37,13 @@ namespace Luxary
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.CPU = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.RAM = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.TRNG = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -128,12 +135,89 @@ namespace Luxary
             this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // button5
+            // 
+            this.button5.BackColor = System.Drawing.SystemColors.Control;
+            this.button5.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.button5.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.button5.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Control;
+            this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button5.ForeColor = System.Drawing.SystemColors.Control;
+            this.button5.Location = new System.Drawing.Point(589, 355);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(10, 19);
+            this.button5.TabIndex = 9;
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // CPU
+            // 
+            this.CPU.Location = new System.Drawing.Point(604, 29);
+            this.CPU.Name = "CPU";
+            this.CPU.ReadOnly = true;
+            this.CPU.Size = new System.Drawing.Size(120, 20);
+            this.CPU.TabIndex = 10;
+            this.CPU.TabStop = false;
+            this.CPU.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(601, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 13);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "CPU Usage:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(601, 56);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Available RAM:";
+            // 
+            // RAM
+            // 
+            this.RAM.Location = new System.Drawing.Point(604, 73);
+            this.RAM.Name = "RAM";
+            this.RAM.ReadOnly = true;
+            this.RAM.Size = new System.Drawing.Size(120, 20);
+            this.RAM.TabIndex = 13;
+            this.RAM.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(600, 100);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(71, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "Time running:";
+            // 
+            // TRNG
+            // 
+            this.TRNG.Location = new System.Drawing.Point(603, 117);
+            this.TRNG.Name = "TRNG";
+            this.TRNG.ReadOnly = true;
+            this.TRNG.Size = new System.Drawing.Size(121, 20);
+            this.TRNG.TabIndex = 15;
+            this.TRNG.TabStop = false;
+            // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(600, 373);
+            this.ClientSize = new System.Drawing.Size(736, 373);
+            this.Controls.Add(this.TRNG);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.RAM);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.CPU);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button3);
@@ -161,6 +245,13 @@ namespace Luxary
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.TextBox CPU;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox RAM;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox TRNG;
     }
 }
 

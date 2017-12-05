@@ -9,6 +9,7 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Net.Http;
 using System.Text;
+using System.Diagnostics;
 using Luxary.Services;
 using Newtonsoft.Json;
 using static Luxary.Services.WeatherDataCurrent;
@@ -18,7 +19,59 @@ namespace Luxary
 {
     public class Admin : ModuleBase
     {
+        public static char prefgl = '.';
+        [Command("prefix")]
+        [Alias("sinfo", "servinfo")]
+        [Summary(".serverinfo")]
+        [Remarks("Info about the server you're currently in")]
+        public async Task Prefix(char pref)
+        {
+            try
+            {
+                await (Context.Client as DiscordSocketClient).SetGameAsync($"{pref}cmds for my commands");
+                var xd = new EmbedBuilder
+                {
+                    Title = "Did it :D",
+                    Description = $"Changed the prefix to: **{pref}**"
+                };
+                await ReplyAsync("", false, xd.Build());
+                prefgl = pref;
+                
+            }
+            catch (Exception e)
+            {
+                var xd = new EmbedBuilder
+                {
+                    Title = "Error",
+                    Description = "You can only use **1** character."
+                };
+                await ReplyAsync("", false, xd.Build());
+                Console.WriteLine(e);
+                await ReplyAsync($"Changed the prefix to: **{pref}**");
+            }
+        }
+        [Command("stats")]
+        public async Task tehee()
+        {
+            PerformanceCounter cpuCounter;
+            PerformanceCounter ramCounter;
 
+            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            
+            string getCurrentCpuUsage()
+            {
+                return cpuCounter.NextValue() + "%";
+            }
+
+            string getAvailableRAM()
+            {
+                return ramCounter.NextValue() + "MB";
+            }
+            await ReplyAsync($"CPU Usage: **{getCurrentCpuUsage()}**\nAvailable RAM: **{getAvailableRAM()}**");
+        }
+
+        
         [Command("ServerInfo")]
         [Alias("sinfo", "servinfo")]
         [Summary(".serverinfo")]
