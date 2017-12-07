@@ -28,7 +28,7 @@ namespace Luxary
         [STAThread]
         static void Main()
         {
-            Program.Start();
+            Program.Start();          
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormConsole());     
@@ -60,7 +60,7 @@ namespace Luxary
             _client.UserJoined += UserJoined;
             _client.UserLeft += UserLeft;
             _client.MessageReceived += Message;
-            _client.Ready += Game;
+            _client.Ready += Game;            
 
         await Task.Delay(-1);
         }

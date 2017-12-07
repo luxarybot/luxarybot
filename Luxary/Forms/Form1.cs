@@ -34,9 +34,10 @@ namespace Luxary
         {
             _writer = new TextBoxStreamWriter(txtConsole);
             Console.SetOut(_writer);
+            Timer();
         }
         static System.Timers.Timer xxd;
-        private void txtSayHello_Click(object sender, EventArgs e)
+        public void txtSayHello_Click(object sender, EventArgs e)
         {
             FormConsole form1 = this;
             if (xd == "hi")
@@ -44,16 +45,16 @@ namespace Luxary
                 txtConsole.Clear();
                 Program.Start();
                 xd = "hello";
-                xxd = new System.Timers.Timer();
-                xxd.Start();
-                xxd.Interval = 1000;
-                xxd.AutoReset = true;
-                xxd.Elapsed += StartBoi;
+                
             }
         }
-        private void txtConsole_TextChanged(object sender, EventArgs e)
+        private void Timer()
         {
-
+            xxd = new System.Timers.Timer();
+            xxd.Start();
+            xxd.Interval = 1000;
+            xxd.AutoReset = true;
+            xxd.Elapsed += StartBoi;
         }
         public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
         {
@@ -147,10 +148,8 @@ namespace Luxary
         }
         public async Task Stats()
         {
-            PerformanceCounter cpuCounter;
-            PerformanceCounter ramCounter;
-
-            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            PerformanceCounter ramCounter = new PerformanceCounter("Process", "Working Set - Private", Process.GetCurrentProcess().ProcessName);
             using (var process = Process.GetCurrentProcess())
             {
                 var time = DateTime.Now - process.StartTime; /* Subtracts current time and start time to get Uptime*/
@@ -175,10 +174,14 @@ namespace Luxary
             {
                 return cpuCounter.NextValue() + "%";
             }
-            Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
-            long rofl = currentProcess.WorkingSet64;
+            int memsize = Convert.ToInt32((ramCounter.NextValue() / (int)(1024)) / 1024);
             CPU.Text = getCurrentCpuUsage();
-            RAM.Text = rofl.ToString();
+            RAM.Text = memsize+"MB";
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
 
         }
     }

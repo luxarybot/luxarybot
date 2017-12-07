@@ -363,7 +363,7 @@ namespace Luxary
                 await Item.DeleteAsync();
             }
             {
-                await ReplyAsync($"**{echo}**");
+                await ReplyAsync($"**{echo}**", true);
             }
         }
         [Command("Delano")]
@@ -406,7 +406,7 @@ namespace Luxary
                 Color = new Color(g1, g2, g3),
             };
             embed.Description = $"Me like pong";
-            await Context.Channel.SendMessageAsync("", false, embed.Build());
+            await Context.Channel.SendMessageAsync($"{embed.Description}", true, embed.Build());
         }
         private static IUserMessage message;
         private static int i = 0;

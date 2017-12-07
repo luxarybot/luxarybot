@@ -435,11 +435,6 @@ namespace Luxary
         [Remarks("( ͡° ͜ʖ ͡°)")]
         public async Task BoobsAsync([Remainder] string tag)
         {
-            int Delete = 1;
-            foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
-            {
-                await Item.DeleteAsync();
-            }
             {
                 var nsfw = Context.Channel.IsNsfw;
                 if (!nsfw)
@@ -502,7 +497,7 @@ namespace Luxary
                                 client.DownloadFile(randomString, localFilename);
                             }
                             await Context.Channel.SendFileAsync(localFilename);
-
+                            myList.Clear();
                         }
                     }
                     catch (Exception ee)
@@ -529,6 +524,78 @@ namespace Luxary
                 }
             }
         }
+        static int i2 = 0;
+        [Command("img")]
+        [Alias("img")]
+        [Summary(".img **<tag>**")]
+        [Remarks("( ͡° ͜ʖ ͡°)")]
+        public async Task weebsAsync([Remainder] string tag)
+        {
+            try
+            {
+                var xd = tag.Replace(" ", "_");
+                string url = $"https://konachan.com/post.xml?tags={xd}&limit=100";
+                XmlDocument Doc = new XmlDocument();
+                Doc.Load(url);
+                XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
+                List<string> myList = new List<string>();
+                try
+                {
+                    foreach (XmlNode currNode in itemList)
+                    {
+                        string date = string.Empty;
+                        date = currNode.Attributes["jpeg_url"].Value;
+                        myList.Add(date);
+                    }
+                }
+                finally
+                {                   
+                    string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+                    char ch;
+                    string randomString2 = "";
+                    Random rand = new Random();
+                    for (int i2 = 0; i2 < 8; i2++)
+                    {
+                        ch = input[rand.Next(0, input.Length)];
+                        randomString2 += ch;
+                    }
+                    Random r = new Random();
+                    int index = r.Next(myList.Count);
+                    string randomString = myList[index];
+                    
+                    string localFilename = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\" + randomString2 + ".jpg";
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(randomString, localFilename);
+                        await Context.Channel.SendFileAsync(localFilename);
+                        myList.Clear();
+                        client.Dispose();                       
+                    }                   
+                }
+            }
+            catch (Exception ee)
+            {
+                var auth = new EmbedAuthorBuilder()
+                {
+                    Name = $"Error",
+                };
+                var rnd = new Random();
+                int g1 = rnd.Next(1, 255);
+                int g2 = rnd.Next(1, 255);
+                int g3 = rnd.Next(1, 255);
+                var builder = new EmbedBuilder
+                {
+                    Color = new Discord.Color(g1, g2, g3),
+                    Author = auth,
+                    Description = $"Tag not found.",
+                    ThumbnailUrl =
+                        $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/shy.png",
+                };
+                await ReplyAsync("", false, builder.Build());
+                Console.WriteLine(ee);
+            }
+        }
+
         public class Part2 : IEquatable<Part2>
         {
             public string PartName { get; set; }

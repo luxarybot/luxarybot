@@ -60,7 +60,6 @@ namespace Luxary
             this.txtConsole.Size = new System.Drawing.Size(576, 306);
             this.txtConsole.TabIndex = 0;
             this.txtConsole.TabStop = false;
-            this.txtConsole.TextChanged += new System.EventHandler(this.txtConsole_TextChanged);
             // 
             // txtSayHello
             // 
@@ -174,9 +173,9 @@ namespace Luxary
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(601, 56);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 12;
-            this.label2.Text = "Available RAM:";
+            this.label2.Text = "RAM Usage:";
             // 
             // RAM
             // 
@@ -251,7 +250,7 @@ namespace Luxary
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox RAM;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox TRNG;
+        public System.Windows.Forms.TextBox TRNG;
     }
 }
 

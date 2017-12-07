@@ -50,28 +50,23 @@ namespace Luxary
                 await ReplyAsync($"Changed the prefix to: **{pref}**");
             }
         }
+
+        
         [Command("stats")]
         public async Task tehee()
         {
-            PerformanceCounter cpuCounter;
-            PerformanceCounter ramCounter;
+            PerformanceCounter ramCounter = new PerformanceCounter("Process", "Working Set - Private", Process.GetCurrentProcess().ProcessName);
+            PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
-            cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-            
             string getCurrentCpuUsage()
             {
                 return cpuCounter.NextValue() + "%";
             }
+                int memsize = Convert.ToInt32((ramCounter.NextValue() / (int)(1024)) / 1024);
 
-            string getAvailableRAM()
-            {
-                return ramCounter.NextValue() + "MB";
-            }
-            await ReplyAsync($"CPU Usage: **{getCurrentCpuUsage()}**\nAvailable RAM: **{getAvailableRAM()}**");
+            await ReplyAsync($"CPU Usage: **{getCurrentCpuUsage()}**\nRAM Usage: **{memsize}MB**");
         }
 
-        
         [Command("ServerInfo")]
         [Alias("sinfo", "servinfo")]
         [Summary(".serverinfo")]
