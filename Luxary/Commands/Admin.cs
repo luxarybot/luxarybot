@@ -9,7 +9,6 @@ using Discord.WebSocket;
 using Discord.Commands;
 using System.Net.Http;
 using System.Text;
-using System.Diagnostics;
 using Luxary.Services;
 using Newtonsoft.Json;
 using static Luxary.Services.WeatherDataCurrent;
@@ -442,11 +441,13 @@ namespace Luxary
                 double tmax = weather.Main.TempMax;
                 string country = weather.Sys.Country;
                 string naam = weather.Name;
-
+                var tmaxr = Math.Round(tmax, 0);
+                var tminr = Math.Round(tmin, 0);
+                var tempr = Math.Round(temp, 0);
                 int clouds = weather.Clouds.All;
-                var tmin1 = tmin - 274;
-                var tmin2 = tmax - 274;
-                var temp2 = temp - 274;
+                var tmin1 = tminr - 274;
+                var tmax1 = tmaxr - 274;
+                var temp2 = tempr - 274;
                 var embed = new EmbedBuilder()
                 {
                     Title = $"{naam}'s weather information",
@@ -468,7 +469,7 @@ namespace Luxary
                 {
                     d.Name = $"Conditions";
                     d.Value =
-                    ($"Current Temp: **{temp2}℃**\nHigh Temp: **{tmin2}℃**\nLow Temp: **{tmin1}℃**\nHumidity: **{humi}**\nBarometric Pressure: **{pres}**\nClouds: **{clouds}%**"
+                    ($"Current Temp: **{temp2}℃**\nHighest Temp: **{tmax1}℃**\nLowest Temp: **{tmin1}℃**\nHumidity: **{humi}**\nBarometric Pressure: **{pres}**\nClouds: **{clouds}%**"
                     );
                     d.IsInline = false;
                 });
