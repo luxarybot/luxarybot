@@ -345,12 +345,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\Anime.cs" />
     <Compile Include="Commands\osu.cs" />
     <Compile Include="Forms\Audio_Player.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Audio_Player.Designer.cs">
       <DependentUpon>Audio_Player.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Bot_Settings.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Channel_Editor.cs">
       <SubType>Form</SubType>

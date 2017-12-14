@@ -184,5 +184,18 @@ namespace Luxary
         {
 
         }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            if (xd == "hello")
+            {
+                Bot_Settings open = new Bot_Settings(new DiscordSocketClient());
+                open.Show();
+            }
+            else
+            {
+                txtConsole.Text = "Bot is not online.";
+            }
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace Luxary
         private static List<Part22> parts22 = new List<Part22>();
 
         [Command("user")]
-        [Alias("us")]
+        [Alias("us","u")]
         public async Task Ossu([Remainder] string name)
         {
             try
@@ -220,7 +220,7 @@ namespace Luxary
                                         xd.AddField(x =>
                                         {
                                             x.Name = $"{title} ({diff})";
-                                            x.Value = $"**Rank:** {rank} **Combo**: {date} **Accuracy:** {acc}\n";
+                                            x.Value = $"**Rank:** {rank} **Combo**: {date} **Accuracy:** {acc}[Link](https://osu.ppy.sh/b/{bmap}?m=0)\n";
                                         });
                                     }
                                     ;
@@ -378,7 +378,8 @@ namespace Luxary
                                 xd.AddField(x =>
                                 {
                                     x.Name = $"{title} ({diff})";
-                                    x.Value = $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}**Accuracy:** {acc}\n";
+                                    x.Value = $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}**Accuracy:** {acc}[Link](https://osu.ppy.sh/b/{bmap}?m=0)\n";
+                                    
                                 });
                             }
                         }

@@ -44,6 +44,7 @@ namespace Luxary
             this.RAM = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.TRNG = new System.Windows.Forms.TextBox();
+            this.Settings = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -204,12 +205,25 @@ namespace Luxary
             this.TRNG.TabIndex = 15;
             this.TRNG.TabStop = false;
             // 
+            // Settings
+            // 
+            this.Settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.Settings.Cursor = System.Windows.Forms.Cursors.Default;
+            this.Settings.Location = new System.Drawing.Point(603, 144);
+            this.Settings.Name = "Settings";
+            this.Settings.Size = new System.Drawing.Size(121, 32);
+            this.Settings.TabIndex = 16;
+            this.Settings.Text = "Settings";
+            this.Settings.UseVisualStyleBackColor = false;
+            this.Settings.Click += new System.EventHandler(this.Settings_Click);
+            // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(736, 373);
+            this.Controls.Add(this.Settings);
             this.Controls.Add(this.TRNG);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.RAM);
@@ -251,6 +265,7 @@ namespace Luxary
         private System.Windows.Forms.TextBox RAM;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.TextBox TRNG;
+        private System.Windows.Forms.Button Settings;
     }
 }
 
