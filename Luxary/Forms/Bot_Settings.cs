@@ -9,6 +9,7 @@ using Discord.WebSocket;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
 using System.Resources;
 using System.Windows.Forms;
 
@@ -26,8 +27,12 @@ namespace Luxary
     private Label game;
     private TextBox current_game;
     private Button apply_change;
+    private Button selector;
+      private OpenFileDialog folderBrowserDialog1;
+      private static string path;
+      private static string directoryPath;
 
-    public Bot_Settings(DiscordSocketClient bott)
+        public Bot_Settings(DiscordSocketClient bott)
     {
           InitializeComponent();
           bott = Program._client;
@@ -49,7 +54,15 @@ namespace Luxary
     {
     }
 
-    private void apply_change_Click(object sender, EventArgs e)
+      private void selector_Click(object sender, EventArgs e)
+      {
+          if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+          {
+              path = folderBrowserDialog1.InitialDirectory + folderBrowserDialog1.FileName;
+                Console.WriteLine(path);
+          }
+        }
+        private void apply_change_Click(object sender, EventArgs e)
     {
         if ((bot.CurrentUser.Username != username_box.Text))
             bot.CurrentUser.ModifyAsync(u => u.Username = username_box.Text);
@@ -57,7 +70,10 @@ namespace Luxary
         if ((bot.CurrentUser.Game.ToString() != current_game.Text))
             return;
         bot.SetGameAsync(current_game.Text);
-        bot.CurrentUser.ModifyAsync(u => u.Avatar = image_box.Image);
+        image_box.Image = System.Drawing.Image.FromFile(path);
+
+            var hehe = new Discord.Image(path);
+            bot.CurrentUser.ModifyAsync(u => u.Avatar = hehe);
         }
 
     protected override void Dispose(bool disposing)
@@ -69,11 +85,13 @@ namespace Luxary
 
     private void InitializeComponent()
     {
-      this.username_box = new TextBox();
+        this.folderBrowserDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.username_box = new TextBox();
       this.image_box = new PictureBox();
       this.label2 = new Label();
       this.label3 = new Label();
       this.game = new Label();
+        this.selector = new Button();
       this.current_game = new TextBox();
       this.apply_change = new Button();
       ((ISupportInitialize) this.image_box).BeginInit();
@@ -87,6 +105,7 @@ namespace Luxary
       this.image_box.Name = "image_box";
       this.image_box.Size = new Size(256, 256);
       this.image_box.TabIndex = 2;
+      this.image_box.SizeMode = PictureBoxSizeMode.CenterImage;
       this.image_box.TabStop = false;
       this.image_box.Click += new EventHandler(this.image_box_Click);
       this.label2.AutoSize = true;
@@ -100,7 +119,14 @@ namespace Luxary
       this.label3.Name = "label3";
       this.label3.Size = new Size(284, 2);
       this.label3.TabIndex = 5;
-      this.game.AutoSize = true;
+      this.selector.AutoSize = true;
+      this.selector.Location = new Point(12, 63);
+      this.selector.Name = "Select";
+      this.selector.Size = new Size(97, 20);
+      this.selector.Text = "Select Path";
+      this.selector.AutoSize = true;
+      this.selector.UseVisualStyleBackColor = true;
+      this.selector.Click += new EventHandler(this.selector_Click);
       this.game.Location = new Point(12, 37);
       this.game.Name = "game";
       this.game.Size = new Size(97, 17);
@@ -126,7 +152,8 @@ namespace Luxary
       this.Controls.Add((Control) this.game);
       this.Controls.Add((Control) this.label3);
       this.Controls.Add((Control) this.label2);
-      this.Controls.Add((Control) this.image_box);
+        this.Controls.Add((Control)this.selector);
+            this.Controls.Add((Control) this.image_box);
       this.Controls.Add((Control) this.username_box);
       this.FormBorderStyle = FormBorderStyle.FixedDialog;
       this.MaximizeBox = false;

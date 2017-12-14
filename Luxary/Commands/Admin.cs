@@ -108,10 +108,11 @@ namespace Luxary
         {
             using (var process = Process.GetCurrentProcess())
             {
+                var xd = Program._client;
                 /*this is required for up time*/
                 var embed = new EmbedBuilder();
                 var application = await Context.Client.GetApplicationInfoAsync(); /*for lib version*/
-                embed.ThumbnailUrl = application.IconUrl; /*pulls bot Avatar. Not needed can be removed*/
+                embed.ThumbnailUrl = xd.CurrentUser.GetAvatarUrl();/*pulls bot Avatar. Not needed can be removed*/
                 embed.WithColor(new Color(0x4900ff)) /*Hexacode colours*/
 
                 .AddField(y =>
