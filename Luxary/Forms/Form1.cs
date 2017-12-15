@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Threading.Tasks;
 using Discord;
@@ -17,7 +18,9 @@ using Luxary.Services;
 using Newtonsoft.Json;
 using System.Windows.Forms.VisualStyles;
 using System.Threading;
+using Luxary.Forms;
 using SixLabors.Shapes;
+using Color = System.Drawing.Color;
 
 namespace Luxary
 {
@@ -44,8 +47,7 @@ namespace Luxary
             {
                 txtConsole.Clear();
                 Program.Start();
-                xd = "hello";
-                
+                xd = "hello";              
             }
         }
         private void Timer()
@@ -185,17 +187,53 @@ namespace Luxary
 
         }
 
+        private void pictureBox2_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            g.FillRectangle(new HatchBrush(HatchStyle.Cross, Color.Green), pictureBox1.ClientRectangle);
+            if(mem_pt.Count > 1)
+               g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(255, 0, 255, 100))), mem_pt.ToArray());
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            if (x > pictureBox1.Width || x > pictureBox2.Width)
+            {
+                x = 0;
+                cpu_pt.Clear();
+                mem_pt.Clear();
+            }
+            g.FillRectangle(new HatchBrush(HatchStyle.Cross, Color.Green), pictureBox1.ClientRectangle);
+            if (cpu_pt.Count > 2)
+                g.DrawLines(new Pen(new SolidBrush(Color.FromArgb(255,0,255,100))), cpu_pt.ToArray());
+        }
+        private List<Point> cpu_pt = new List<Point>();
+        private List<Point> mem_pt = new List<Point>();
+        private int x = 0;
         private void Settings_Click(object sender, EventArgs e)
         {
             if (xd == "hello")
             {
-                Bot_Settings open = new Bot_Settings(new DiscordSocketClient());
+                Settings open = new Settings(new DiscordSocketClient());
                 open.Show();
             }
             else
             {
                 txtConsole.Text = "Bot is not online.";
             }
+        }
+
+        private void cmemtimer_Tick(object sender, EventArgs e)
+        {
+            x += 2;
+            int cpu_val = (pictureBox1.Height * (int) Math.Round(cpuc.NextValue())) / 100;
+            int mem_val = (pictureBox2.Height * (int)Math.Round(memc.NextValue())) / 100;
+
+            cpu_pt.Add(new Point(x, pictureBox1.Height - cpu_val));
+            mem_pt.Add(new Point(x, pictureBox1.Height - mem_val));
+            pictureBox1.Invalidate();
+            pictureBox2.Invalidate();
         }
     }
 }

@@ -353,9 +353,6 @@
     <Compile Include="Forms\Audio_Player.Designer.cs">
       <DependentUpon>Audio_Player.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Bot_Settings.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\Channel_Editor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -379,6 +376,12 @@
     <Compile Include="Forms\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Thumbnail_Select.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -395,6 +398,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AudioModule.cs" />
     <Compile Include="Commands\Admin.cs" />
@@ -413,6 +421,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="stylecop.json" />
   </ItemGroup>
   <ItemGroup>
@@ -446,6 +458,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Thumbnail_Select.resx">
       <DependentUpon>Thumbnail_Select.cs</DependentUpon>

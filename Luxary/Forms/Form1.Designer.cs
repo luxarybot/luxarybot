@@ -28,6 +28,7 @@ namespace Luxary
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormConsole));
             this.txtConsole = new System.Windows.Forms.TextBox();
             this.txtSayHello = new System.Windows.Forms.Button();
@@ -45,6 +46,15 @@ namespace Luxary
             this.label3 = new System.Windows.Forms.Label();
             this.TRNG = new System.Windows.Forms.TextBox();
             this.Settings = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.cpuc = new System.Diagnostics.PerformanceCounter();
+            this.memc = new System.Diagnostics.PerformanceCounter();
+            this.cmemtimer = new System.Windows.Forms.Timer(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpuc)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memc)).BeginInit();
             this.SuspendLayout();
             // 
             // txtConsole
@@ -172,7 +182,7 @@ namespace Luxary
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(601, 56);
+            this.label2.Location = new System.Drawing.Point(601, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 12;
@@ -180,7 +190,7 @@ namespace Luxary
             // 
             // RAM
             // 
-            this.RAM.Location = new System.Drawing.Point(604, 73);
+            this.RAM.Location = new System.Drawing.Point(604, 155);
             this.RAM.Name = "RAM";
             this.RAM.ReadOnly = true;
             this.RAM.Size = new System.Drawing.Size(120, 20);
@@ -190,7 +200,7 @@ namespace Luxary
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(600, 100);
+            this.label3.Location = new System.Drawing.Point(600, 264);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 13);
             this.label3.TabIndex = 14;
@@ -198,10 +208,10 @@ namespace Luxary
             // 
             // TRNG
             // 
-            this.TRNG.Location = new System.Drawing.Point(603, 117);
+            this.TRNG.Location = new System.Drawing.Point(604, 281);
             this.TRNG.Name = "TRNG";
             this.TRNG.ReadOnly = true;
-            this.TRNG.Size = new System.Drawing.Size(121, 20);
+            this.TRNG.Size = new System.Drawing.Size(120, 20);
             this.TRNG.TabIndex = 15;
             this.TRNG.TabStop = false;
             // 
@@ -209,7 +219,7 @@ namespace Luxary
             // 
             this.Settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.Settings.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Settings.Location = new System.Drawing.Point(603, 144);
+            this.Settings.Location = new System.Drawing.Point(603, 329);
             this.Settings.Name = "Settings";
             this.Settings.Size = new System.Drawing.Size(121, 32);
             this.Settings.TabIndex = 16;
@@ -217,12 +227,51 @@ namespace Luxary
             this.Settings.UseVisualStyleBackColor = false;
             this.Settings.Click += new System.EventHandler(this.Settings_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Black;
+            this.pictureBox1.Location = new System.Drawing.Point(603, 55);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(121, 75);
+            this.pictureBox1.TabIndex = 17;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Black;
+            this.pictureBox2.Location = new System.Drawing.Point(603, 181);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(121, 75);
+            this.pictureBox2.TabIndex = 18;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
+            // 
+            // cpuc
+            // 
+            this.cpuc.CategoryName = "Processor";
+            this.cpuc.CounterName = "% Processor Time";
+            this.cpuc.InstanceName = "_Total";
+            // 
+            // memc
+            // 
+            this.memc.CategoryName = "Memory";
+            this.memc.CounterName = "% Committed Bytes In Use";
+            // 
+            // cmemtimer
+            // 
+            this.cmemtimer.Enabled = true;
+            this.cmemtimer.Interval = 250;
+            this.cmemtimer.Tick += new System.EventHandler(this.cmemtimer_Tick);
+            // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(736, 373);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Settings);
             this.Controls.Add(this.TRNG);
             this.Controls.Add(this.label3);
@@ -243,6 +292,10 @@ namespace Luxary
             this.Name = "FormConsole";
             this.Text = "Luxary Console";
             this.Load += new System.EventHandler(this.FormConsole_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cpuc)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.memc)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,6 +319,11 @@ namespace Luxary
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.TextBox TRNG;
         private System.Windows.Forms.Button Settings;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Diagnostics.PerformanceCounter cpuc;
+        private System.Diagnostics.PerformanceCounter memc;
+        private System.Windows.Forms.Timer cmemtimer;
     }
 }
 
