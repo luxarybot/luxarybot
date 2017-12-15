@@ -1,56 +1,51 @@
-﻿using Discord.Audio;
-using Discord.WebSocket;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using Discord.Audio;
+using Discord.WebSocket;
 
 namespace Luxary
 {
     public class Audio_Player : Form
     {
+        private readonly DiscordSocketClient bot;
         private IAudioClient client;
-        private string currentpath;
-        private DiscordSocketClient bot;
-        private Process currentsong;
-        private FolderBrowserDialog selectsongfolder;
         private IContainer components;
+        private string currentpath;
+        private Process currentsong;
         private ComboBox guild_combobox;
-        private ComboBox vchannel_combobox;
         private Button join_channel;
-        private Button select_songs_folder;
-        private ComboBox songs_combobox;
-        private Button play_song;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
+        private Button play_song;
+        private Button select_songs_folder;
+        private readonly FolderBrowserDialog selectsongfolder;
+        private ComboBox songs_combobox;
+        private ComboBox vchannel_combobox;
 
         public Audio_Player(DiscordSocketClient bott)
         {
-            this.InitializeComponent();
+            InitializeComponent();
             bott = Program._client;
             bot = bott;
-            foreach (SocketGuild guild in (IEnumerable<SocketGuild>)bot.Guilds)
-                this.guild_combobox.Items.Add((object)guild.Name);
-            this.selectsongfolder = new FolderBrowserDialog();
-            this.guild_combobox.SelectedIndexChanged += new EventHandler(this.guild_combobox_SelectedIndexChanged);
+            foreach (var guild in bot.Guilds)
+                guild_combobox.Items.Add(guild.Name);
+            selectsongfolder = new FolderBrowserDialog();
+            guild_combobox.SelectedIndexChanged += guild_combobox_SelectedIndexChanged;
         }
 
         private void guild_combobox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.vchannel_combobox.Items.Clear();
-            foreach (SocketGuild guild in (IEnumerable<SocketGuild>)this.bot.Guilds)
-            {
-                if (guild.Name == this.guild_combobox.Text)
-                {
-                    foreach (SocketGuildChannel voiceChannel in (IEnumerable<SocketVoiceChannel>)guild.VoiceChannels)
-                        this.vchannel_combobox.Items.Add((object)voiceChannel.Name);
-                }
-            }
+            vchannel_combobox.Items.Clear();
+            foreach (var guild in bot.Guilds)
+                if (guild.Name == guild_combobox.Text)
+                    foreach (SocketGuildChannel voiceChannel in guild.VoiceChannels)
+                        vchannel_combobox.Items.Add(voiceChannel.Name);
         }
 
         private void vchannel_combobox_SelectedIndexChanged(object sender, EventArgs e)
@@ -63,98 +58,93 @@ namespace Luxary
 
         private void join_channel_Click(object sender, EventArgs e)
         {
-            if (this.guild_combobox.Text == "")
+            if (guild_combobox.Text == "")
             {
-                int num1 = (int)MessageBox.Show("Select a Guild first!", "Error");
+                var num1 = (int) MessageBox.Show("Select a Guild first!", "Error");
             }
-            else if (this.vchannel_combobox.Text == "")
+            else if (vchannel_combobox.Text == "")
             {
-                int num2 = (int)MessageBox.Show("Select a Voice Channel first!", "Error");
+                var num2 = (int) MessageBox.Show("Select a Voice Channel first!", "Error");
             }
             else
-                this.joinChannel();
+            {
+                joinChannel();
+            }
         }
 
         private void select_songs_folder_Click(object sender, EventArgs e)
         {
-            this.songs_combobox.Items.Clear();
-            this.selectsongfolder.Description = "Select a folder containing songs";
-            int num = (int)this.selectsongfolder.ShowDialog();
-            this.currentpath = this.selectsongfolder.SelectedPath + "\\";
-            if (!(this.selectsongfolder.SelectedPath != ""))
+            songs_combobox.Items.Clear();
+            selectsongfolder.Description = "Select a folder containing songs";
+            var num = (int) selectsongfolder.ShowDialog();
+            currentpath = selectsongfolder.SelectedPath + "\\";
+            if (!(selectsongfolder.SelectedPath != ""))
                 return;
-            foreach (string file in Directory.GetFiles(this.selectsongfolder.SelectedPath))
-            {
+            foreach (var file in Directory.GetFiles(selectsongfolder.SelectedPath))
                 if (file.EndsWith(".mp3") || file.EndsWith(".wav") || file.EndsWith(".m4a"))
-                    this.songs_combobox.Items.Add((object)file.Remove(0, this.selectsongfolder.SelectedPath.Length + 1));
-            }
+                    songs_combobox.Items.Add(file.Remove(0, selectsongfolder.SelectedPath.Length + 1));
         }
 
         private void play_song_Click(object sender, EventArgs e)
         {
-            if (this.guild_combobox.Text == "")
+            if (guild_combobox.Text == "")
             {
-                int num1 = (int)MessageBox.Show("Select a Guild first!", "Error");
+                var num1 = (int) MessageBox.Show("Select a Guild first!", "Error");
             }
-            else if (this.vchannel_combobox.Text == "")
+            else if (vchannel_combobox.Text == "")
             {
-                int num2 = (int)MessageBox.Show("Select a Voice Channel first!", "Error");
+                var num2 = (int) MessageBox.Show("Select a Voice Channel first!", "Error");
             }
-            else if (this.songs_combobox.Text == "")
+            else if (songs_combobox.Text == "")
             {
-                int num3 = (int)MessageBox.Show("Select a Song first!", "Error");
+                var num3 = (int) MessageBox.Show("Select a Song first!", "Error");
             }
             else
             {
-                Stream baseStream = this.CreateStream(this.songs_combobox.Text).StandardOutput.BaseStream;
-                AudioOutStream pcmStream = this.client.CreatePCMStream(AudioApplication.Music, new int?(131072), 1000);
-                AudioOutStream audioOutStream = pcmStream;
-                baseStream.CopyToAsync((Stream)audioOutStream);
+                var baseStream = CreateStream(songs_combobox.Text).StandardOutput.BaseStream;
+                var pcmStream = client.CreatePCMStream(AudioApplication.Music, 131072, 1000);
+                var audioOutStream = pcmStream;
+                baseStream.CopyToAsync(audioOutStream);
                 pcmStream.FlushAsync().ConfigureAwait(false);
             }
         }
 
         public async void joinChannel()
         {
-            Audio_Player audioPlayer1 = this;
-            foreach (SocketGuild guild in (IEnumerable<SocketGuild>)audioPlayer1.bot.Guilds)
+            var audioPlayer1 = this;
+            foreach (var guild in audioPlayer1.bot.Guilds)
+            if (guild.Name == audioPlayer1.guild_combobox.Text)
+            foreach (var voiceChannel in guild.VoiceChannels)
+            if (voiceChannel.Name == audioPlayer1.vchannel_combobox.Text)
+            try
             {
-                if (guild.Name == audioPlayer1.guild_combobox.Text)
-                {
-                    foreach (SocketVoiceChannel voiceChannel in (IEnumerable<SocketVoiceChannel>)guild.VoiceChannels)
-                    {
-                        if (voiceChannel.Name == audioPlayer1.vchannel_combobox.Text)
-                        {
-                            try
-                            {
-                                Audio_Player audioPlayer = audioPlayer1;
-                                IAudioClient client = audioPlayer.client;
-                                IAudioClient audioClient = await voiceChannel.ConnectAsync((Action<IAudioClient>)null);
-                                audioPlayer.client = audioClient;
-                                audioPlayer = (Audio_Player)null;
-                            }
-                            catch
-                            {
-                            }
-                        }
-                    }
-                }
+                var audioPlayer = audioPlayer1;
+                var client = audioPlayer.client;
+
+                var audioClient = await voiceChannel.ConnectAsync(null);
+                audioPlayer.client = audioClient;
+                audioPlayer = null;
+            }
+            catch
+            {
+                            
             }
         }
 
         private Process CreateStream(string path)
         {
             this.currentsong = new Process();
-            Process currentsong = this.currentsong;
-            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            var currentsong = this.currentsong;
+            var processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = "ffmpeg.exe";
-            string str = string.Format("-hide_banner -loglevel panic -i \"{0}\" -ac 2 -f s16le -ar 48000 pipe:1", (object)(this.currentpath + path));
+            var str = string.Format("-hide_banner -loglevel panic -i \"{0}\" -ac 2 -f s16le -ar 48000 pipe:1",
+                currentpath + path);
             processStartInfo.Arguments = str;
-            int num1 = 0;
+            var num1 = 0;
             processStartInfo.UseShellExecute = num1 != 0;
-            int num2 = 1;
+            var num2 = 1;
             processStartInfo.RedirectStandardOutput = num2 != 0;
-            int num3 = 1;
+            var num3 = 1;
             processStartInfo.CreateNoWindow = num3 != 0;
             currentsong.StartInfo = processStartInfo;
             this.currentsong.Start();
@@ -163,105 +153,105 @@ namespace Luxary
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && this.components != null)
-                this.components.Dispose();
+            if (disposing && components != null)
+                components.Dispose();
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
-            this.guild_combobox = new ComboBox();
-            this.vchannel_combobox = new ComboBox();
-            this.join_channel = new Button();
-            this.select_songs_folder = new Button();
-            this.songs_combobox = new ComboBox();
-            this.play_song = new Button();
-            this.label1 = new Label();
-            this.label2 = new Label();
-            this.label3 = new Label();
-            this.label4 = new Label();
-            this.SuspendLayout();
-            this.guild_combobox.FormattingEnabled = true;
-            this.guild_combobox.Location = new Point(78, 12);
-            this.guild_combobox.Name = "guild_combobox";
-            this.guild_combobox.Size = new Size(236, 24);
-            this.guild_combobox.TabIndex = 0;
-            this.guild_combobox.SelectedIndexChanged += new EventHandler(this.guild_combobox_SelectedIndexChanged);
-            this.vchannel_combobox.FormattingEnabled = true;
-            this.vchannel_combobox.Location = new Point(78, 39);
-            this.vchannel_combobox.Name = "vchannel_combobox";
-            this.vchannel_combobox.Size = new Size(236, 24);
-            this.vchannel_combobox.TabIndex = 1;
-            this.vchannel_combobox.SelectedIndexChanged += new EventHandler(this.vchannel_combobox_SelectedIndexChanged);
-            this.join_channel.Location = new Point(78, 69);
-            this.join_channel.Name = "join_channel";
-            this.join_channel.Size = new Size(236, 26);
-            this.join_channel.TabIndex = 2;
-            this.join_channel.Text = "Join Channel";
-            this.join_channel.UseVisualStyleBackColor = true;
-            this.join_channel.Click += new EventHandler(this.join_channel_Click);
-            this.select_songs_folder.Location = new Point(78, 121);
-            this.select_songs_folder.Name = "select_songs_folder";
-            this.select_songs_folder.Size = new Size(236, 35);
-            this.select_songs_folder.TabIndex = 3;
-            this.select_songs_folder.Text = "Select Songs Folder";
-            this.select_songs_folder.UseVisualStyleBackColor = true;
-            this.select_songs_folder.Click += new EventHandler(this.select_songs_folder_Click);
-            this.songs_combobox.FormattingEnabled = true;
-            this.songs_combobox.Location = new Point(78, 162);
-            this.songs_combobox.Name = "songs_combobox";
-            this.songs_combobox.Size = new Size(236, 24);
-            this.songs_combobox.TabIndex = 4;
-            this.songs_combobox.SelectedIndexChanged += new EventHandler(this.songs_combobox_SelectedIndexChanged);
-            this.play_song.Location = new Point(78, 192);
-            this.play_song.Name = "play_song";
-            this.play_song.Size = new Size(236, 49);
-            this.play_song.TabIndex = 5;
-            this.play_song.Text = "Play Song";
-            this.play_song.UseVisualStyleBackColor = true;
-            this.play_song.Click += new EventHandler(this.play_song_Click);
-            this.label1.AutoSize = true;
-            this.label1.Location = new Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new Size(41, 17);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Guild";
-            this.label2.AutoSize = true;
-            this.label2.Location = new Point(12, 42);
-            this.label2.Name = "label2";
-            this.label2.Size = new Size(60, 17);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "Channel";
-            this.label3.BorderStyle = BorderStyle.Fixed3D;
-            this.label3.Location = new Point(0, 107);
-            this.label3.Name = "label3";
-            this.label3.Size = new Size(327, 2);
-            this.label3.TabIndex = 8;
-            this.label4.AutoSize = true;
-            this.label4.Location = new Point(12, 165);
-            this.label4.Name = "label4";
-            this.label4.Size = new Size(41, 17);
-            this.label4.TabIndex = 9;
-            this.label4.Text = "Song";
-            this.AutoScaleDimensions = new SizeF(8f, 16f);
-            this.AutoScaleMode = AutoScaleMode.Font;
-            this.ClientSize = new Size(326, 253);
-            this.Controls.Add((Control)this.label4);
-            this.Controls.Add((Control)this.label3);
-            this.Controls.Add((Control)this.label2);
-            this.Controls.Add((Control)this.label1);
-            this.Controls.Add((Control)this.play_song);
-            this.Controls.Add((Control)this.songs_combobox);
-            this.Controls.Add((Control)this.select_songs_folder);
-            this.Controls.Add((Control)this.join_channel);
-            this.Controls.Add((Control)this.vchannel_combobox);
-            this.Controls.Add((Control)this.guild_combobox);
-            this.MinimizeBox = false;
-            this.Name = nameof(Audio_Player);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Audio Player";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            guild_combobox = new ComboBox();
+            vchannel_combobox = new ComboBox();
+            join_channel = new Button();
+            select_songs_folder = new Button();
+            songs_combobox = new ComboBox();
+            play_song = new Button();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            SuspendLayout();
+            guild_combobox.FormattingEnabled = true;
+            guild_combobox.Location = new Point(78, 12);
+            guild_combobox.Name = "guild_combobox";
+            guild_combobox.Size = new Size(236, 24);
+            guild_combobox.TabIndex = 0;
+            guild_combobox.SelectedIndexChanged += guild_combobox_SelectedIndexChanged;
+            vchannel_combobox.FormattingEnabled = true;
+            vchannel_combobox.Location = new Point(78, 39);
+            vchannel_combobox.Name = "vchannel_combobox";
+            vchannel_combobox.Size = new Size(236, 24);
+            vchannel_combobox.TabIndex = 1;
+            vchannel_combobox.SelectedIndexChanged += vchannel_combobox_SelectedIndexChanged;
+            join_channel.Location = new Point(78, 69);
+            join_channel.Name = "join_channel";
+            join_channel.Size = new Size(236, 26);
+            join_channel.TabIndex = 2;
+            join_channel.Text = "Join Channel";
+            join_channel.UseVisualStyleBackColor = true;
+            join_channel.Click += join_channel_Click;
+            select_songs_folder.Location = new Point(78, 121);
+            select_songs_folder.Name = "select_songs_folder";
+            select_songs_folder.Size = new Size(236, 35);
+            select_songs_folder.TabIndex = 3;
+            select_songs_folder.Text = "Select Songs Folder";
+            select_songs_folder.UseVisualStyleBackColor = true;
+            select_songs_folder.Click += select_songs_folder_Click;
+            songs_combobox.FormattingEnabled = true;
+            songs_combobox.Location = new Point(78, 162);
+            songs_combobox.Name = "songs_combobox";
+            songs_combobox.Size = new Size(236, 24);
+            songs_combobox.TabIndex = 4;
+            songs_combobox.SelectedIndexChanged += songs_combobox_SelectedIndexChanged;
+            play_song.Location = new Point(78, 192);
+            play_song.Name = "play_song";
+            play_song.Size = new Size(236, 49);
+            play_song.TabIndex = 5;
+            play_song.Text = "Play Song";
+            play_song.UseVisualStyleBackColor = true;
+            play_song.Click += play_song_Click;
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 15);
+            label1.Name = "label1";
+            label1.Size = new Size(41, 17);
+            label1.TabIndex = 6;
+            label1.Text = "Guild";
+            label2.AutoSize = true;
+            label2.Location = new Point(12, 42);
+            label2.Name = "label2";
+            label2.Size = new Size(60, 17);
+            label2.TabIndex = 7;
+            label2.Text = "Channel";
+            label3.BorderStyle = BorderStyle.Fixed3D;
+            label3.Location = new Point(0, 107);
+            label3.Name = "label3";
+            label3.Size = new Size(327, 2);
+            label3.TabIndex = 8;
+            label4.AutoSize = true;
+            label4.Location = new Point(12, 165);
+            label4.Name = "label4";
+            label4.Size = new Size(41, 17);
+            label4.TabIndex = 9;
+            label4.Text = "Song";
+            AutoScaleDimensions = new SizeF(8f, 16f);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(326, 253);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(play_song);
+            Controls.Add(songs_combobox);
+            Controls.Add(select_songs_folder);
+            Controls.Add(join_channel);
+            Controls.Add(vchannel_combobox);
+            Controls.Add(guild_combobox);
+            MinimizeBox = false;
+            Name = nameof(Audio_Player);
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Audio Player";
+            ResumeLayout(false);
+            PerformLayout();
         }
     }
 }
