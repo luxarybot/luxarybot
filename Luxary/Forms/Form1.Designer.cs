@@ -51,6 +51,7 @@ namespace Luxary
             this.cpuc = new System.Diagnostics.PerformanceCounter();
             this.memc = new System.Diagnostics.PerformanceCounter();
             this.cmemtimer = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpuc)).BeginInit();
@@ -264,6 +265,15 @@ namespace Luxary
             this.cmemtimer.Interval = 250;
             this.cmemtimer.Tick += new System.EventHandler(this.cmemtimer_Tick);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "Sneaking away...";
+            this.notifyIcon1.BalloonTipTitle = "Shhh";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Double click this to show me ;x";
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -292,6 +302,7 @@ namespace Luxary
             this.Name = "FormConsole";
             this.Text = "Luxary Console";
             this.Load += new System.EventHandler(this.FormConsole_Load);
+            this.Resize += new System.EventHandler(this.FormConsole_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpuc)).EndInit();
@@ -324,6 +335,7 @@ namespace Luxary
         private System.Diagnostics.PerformanceCounter cpuc;
         private System.Diagnostics.PerformanceCounter memc;
         private System.Windows.Forms.Timer cmemtimer;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

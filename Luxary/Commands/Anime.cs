@@ -35,10 +35,12 @@ namespace Luxary
         {
             try
             {
+                StreamReader sr = new StreamReader("password.txt");
+                string password = sr.ReadLine();
                 var xd = tag.Replace(" ", "+");
                 WebRequest request = WebRequest.Create($"https://myanimelist.net/api/anime/search.xml?q={xd}");
                 request.Method = "GET";
-                request.Credentials = new NetworkCredential("Luxedo", "Thijmen4711!");
+                request.Credentials = new NetworkCredential("Luxedo", password);
                 request.PreAuthenticate = true;
                 request.ContentType = "application/x-www-form-urlencoded";
                 WebResponse response = request.GetResponse();

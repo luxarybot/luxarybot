@@ -1003,11 +1003,13 @@ namespace Luxary
             embed.ImageUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/monkey.jpg";
             await ReplyAsync("", false, embed.Build());
         }
+        static int xd = 1;
         [Command("lol")]
         [Summary(".lol")]
         [Remarks("ECKSDEEEE")]
         public async Task lol()
         {
+            
             int Delete = 1;
             foreach (var Item in await Context.Channel.GetMessagesAsync(Delete).Flatten())
             {
@@ -1022,7 +1024,18 @@ namespace Luxary
                 Color = new Discord.Color(g1, g2, g3),
             };
             embed.Title = "Ayylmao";
-            embed.ImageUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/lol.jpg";
+            if(xd == 1)
+            {
+                embed.ImageUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/lol.jpg";
+                xd = 0;
+            }
+            else
+            {
+                embed.ImageUrl =
+                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/lol2.jpg";
+                xd = 1;
+            }
             await ReplyAsync("", false, embed.Build());
         }
         static string live = "offline";
