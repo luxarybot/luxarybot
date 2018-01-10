@@ -37,6 +37,7 @@ namespace Luxary
         {
             _writer = new TextBoxStreamWriter(txtConsole);
             Console.SetOut(_writer);
+
             Timer();
         }
         static System.Timers.Timer xxd;

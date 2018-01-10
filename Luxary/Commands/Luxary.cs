@@ -19,6 +19,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 using Luxary.Service;
 using System.Web;
 using Newtonsoft.Json;
@@ -563,6 +564,16 @@ namespace Luxary
                 await ReplyAsync("", false, embed.Build());
             }
         }
+
+        [Command("spam")]
+        public async Task spam([Remainder]string tag)
+        {
+            for (;;)
+            {
+                await ReplyAsync(tag);
+            }
+        }
+
         [Command("Ask")]
         [Summary(".ask **<question>**")]
         [Remarks("Will answer questions")]
@@ -695,6 +706,20 @@ namespace Luxary
                         await ReplyAsync("", false, embed.Build());
                     }
                 }
+
+        [Command("roll")]
+        [Summary(".roll **<number>**")]
+        [Remarks("Rick rolling")]
+        public async Task Roll([Optional]string kek)
+        {
+            if (kek == null)
+            {
+                kek = "100";
+            };
+            var rnd = new Random();
+            int getal = rnd.Next(1, Convert.ToInt32(kek));
+            await ReplyAsync(getal.ToString());
+        }
         [Command("choose")]
         [Summary(".choose **<option1>** or **<option2>**")]
         [Remarks("Chooses between option1 and option2")]

@@ -60,10 +60,11 @@ namespace Luxary
             _client.UserJoined += UserJoined;
             _client.UserLeft += UserLeft;
             _client.MessageReceived += Message;
-            _client.Ready += Game;            
+            _client.Ready += Game;
 
         await Task.Delay(-1);
         }
+
         public static async Task Stop()
         {
             await _client.StopAsync();
@@ -143,14 +144,15 @@ namespace Luxary
             var result = await _commands.ExecuteAsync(context, argPos, _services);
             if (!result.IsSuccess)
             {
-                //    var builder = new EmbedBuilder
-                //    {
-                //        Title = "Oh no..",
-                //        Color = new Discord.Color(178, 34, 34),
-                //        Description = result.ErrorReason,
-                //        ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
-                //    };
-                //    await context.Channel.SendMessageAsync("", false, builder.Build());
+                //var builder = new EmbedBuilder
+                //{
+                //    Title = "Oh no..", 
+                //    Color = new Discord.Color(178, 34, 34),
+                //    Description = result.ErrorReason,
+                //    ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                //};
+                //await context.Channel.SendMessageAsync("", false, builder.Build());
+                Console.WriteLine(result.ErrorReason);
             }
         }
 
