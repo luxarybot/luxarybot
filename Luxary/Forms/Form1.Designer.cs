@@ -39,7 +39,6 @@ namespace Luxary
             this.button1 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
-            this.CPU = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.RAM = new System.Windows.Forms.TextBox();
@@ -52,6 +51,7 @@ namespace Luxary
             this.memc = new System.Diagnostics.PerformanceCounter();
             this.cmemtimer = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.Hide = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpuc)).BeginInit();
@@ -69,7 +69,7 @@ namespace Luxary
             this.txtConsole.Name = "txtConsole";
             this.txtConsole.ReadOnly = true;
             this.txtConsole.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtConsole.Size = new System.Drawing.Size(576, 306);
+            this.txtConsole.Size = new System.Drawing.Size(576, 317);
             this.txtConsole.TabIndex = 0;
             this.txtConsole.TabStop = false;
             // 
@@ -161,20 +161,10 @@ namespace Luxary
             this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
-            // CPU
-            // 
-            this.CPU.Location = new System.Drawing.Point(604, 29);
-            this.CPU.Name = "CPU";
-            this.CPU.ReadOnly = true;
-            this.CPU.Size = new System.Drawing.Size(120, 20);
-            this.CPU.TabIndex = 10;
-            this.CPU.TabStop = false;
-            this.CPU.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(601, 12);
+            this.label1.Location = new System.Drawing.Point(603, 39);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(66, 13);
             this.label1.TabIndex = 11;
@@ -220,7 +210,7 @@ namespace Luxary
             // 
             this.Settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
             this.Settings.Cursor = System.Windows.Forms.Cursors.Default;
-            this.Settings.Location = new System.Drawing.Point(603, 329);
+            this.Settings.Location = new System.Drawing.Point(603, 340);
             this.Settings.Name = "Settings";
             this.Settings.Size = new System.Drawing.Size(121, 32);
             this.Settings.TabIndex = 16;
@@ -231,7 +221,7 @@ namespace Luxary
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
-            this.pictureBox1.Location = new System.Drawing.Point(603, 55);
+            this.pictureBox1.Location = new System.Drawing.Point(604, 55);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(121, 75);
             this.pictureBox1.TabIndex = 17;
@@ -272,14 +262,27 @@ namespace Luxary
             this.notifyIcon1.BalloonTipTitle = "Shhh";
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Double click this to show me ;x";
+            this.notifyIcon1.BalloonTipClicked += new System.EventHandler(this.notifyIcon1_DoubleClick);
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
+            // 
+            // Hide
+            // 
+            this.Hide.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(255)))));
+            this.Hide.Location = new System.Drawing.Point(604, 307);
+            this.Hide.Name = "Hide";
+            this.Hide.Size = new System.Drawing.Size(120, 30);
+            this.Hide.TabIndex = 19;
+            this.Hide.Text = "Hide";
+            this.Hide.UseVisualStyleBackColor = false;
+            this.Hide.Click += new System.EventHandler(this.Hide_Click);
             // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(736, 373);
+            this.ClientSize = new System.Drawing.Size(736, 384);
+            this.Controls.Add(this.Hide);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.Settings);
@@ -288,7 +291,6 @@ namespace Luxary
             this.Controls.Add(this.RAM);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.CPU);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button1);
@@ -323,7 +325,6 @@ namespace Luxary
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.TextBox CPU;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox RAM;
@@ -336,6 +337,7 @@ namespace Luxary
         private System.Diagnostics.PerformanceCounter memc;
         private System.Windows.Forms.Timer cmemtimer;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.Button Hide;
     }
 }
 

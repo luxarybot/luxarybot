@@ -19,7 +19,9 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Timers;
 using Luxary.Service;
 using System.Web;
 using Newtonsoft.Json;
@@ -412,6 +414,7 @@ namespace Luxary
         private static IUserMessage message;
         private static int i = 0;
         private static string hi = "offline";
+        private static string hi2 = "offline";
         private static System.Timers.Timer timer1;
 
         [Command("time")]
@@ -419,42 +422,42 @@ namespace Luxary
         [Remarks("How much time left")]
         public async Task UpdateTimer()
         {
-            try
+            timer1 = new System.Timers.Timer();
+            if (hi == "online")
             {
-                timer1 = new System.Timers.Timer();
-
-                if (hi == "online")
+                timer1.Stop();
+                hi = "offline";
+                await message.DeleteAsync();
+                await UpdateTimer();
+                i = 0;
+            }
+            else
+            {
+                if (hi == "offline" && timer1.Enabled == false)
                 {
-                    timer1.Stop();
-                    hi = "offline";
-                    await message.DeleteAsync();
-                    i = 0;
+                    await GoingTimer();
+                    i = 1;
+                    timer1.Start();
+                    timer1.Enabled = true;
+                    timer1.Interval = 5000;
+                    timer1.Elapsed += StartBoi;
+                    timer1.AutoReset = true;                   
+                    hi = "online";
                 }
                 else
                 {
-                    hi = "online";
-                    if (timer1.Enabled == false)
-                    {
-                        i = 0;
-                        timer1.Start();
-                        timer1.Enabled = true;
-                        timer1.Interval = 5000;
-                        timer1.AutoReset = true;
-                        timer1.Elapsed += StartBoi;
-                    }
-                    else
-                    {
-                        timer1.Start();
-                        timer1.AutoReset = true;
-                        timer1.Elapsed += StartBoi;
-                    }
+                    timer1.Elapsed += StartBoi;
+                    timer1.AutoReset = true;
                 }
             }
-            catch (Exception)
-            {
-                await Context.Channel.SendMessageAsync($"Wrong usage, .time");
-                hi = "offline";
-            }
+        }
+
+        [Command("timestop")]
+        [Summary(".timestop")]
+        [Remarks("Stops the timer")]
+        public async Task StopTimer()
+        {
+            timer1.Stop();
         }
 
         public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
@@ -477,8 +480,7 @@ namespace Luxary
                     if (i == 0)
                     {
                         message =
-                            await ReplyAsync($"**{final}**" +
-                                             " till your work day ends. <:mad:362497418291314688>");
+                            await ReplyAsync($"**{final}**" + " till your work day ends. <:mad:362497418291314688>");
                         i = 1;
                     }
                     else if (i > 0)
@@ -493,9 +495,9 @@ namespace Luxary
                     timer1.Stop();
                 }
             }
-            catch
+            catch(Exception e)
             {
-                await ReplyAsync("fuker stopped");
+                Console.WriteLine(e.ToString());
 
             }
         }
@@ -504,6 +506,7 @@ namespace Luxary
         {
             await Context.Channel.SendMessageAsync(
                 $"**You're free, for now.** <:happy:362565108032995329>");
+            timer1.Stop();
         }
 
         [Command("hoursleft")]

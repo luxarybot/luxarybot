@@ -101,10 +101,6 @@ namespace Luxary
                     var quickmaffs = Math.Truncate(lvl);
                     var quickmaffs2 = Math.Round(ppr, 0);
                     var quickmaffs3 = Math.Round(pacc, 1);
-                    if (username == "Tyrael54")
-                    {
-                        quickmaffs2 = 1205;                     
-                    }
                     EmbedBuilder xd = new EmbedBuilder
                     {
                         Title = $"{username}'s Osu! profile",
@@ -193,9 +189,33 @@ namespace Luxary
                                     var cmiss = Convert.ToDouble(container2[xdd]["countmiss"]);
                                     var acc2 = 100.0 * (6 * c300 + 2 * c100 + c50) / (6 * (c50 + c100 + c300 + cmiss));
                                     var acc = Math.Round(acc2, 2);
+                                    if (rank.Contains("A"))
+                                    {
+                                        rank = "<:rankingAsmall:400920344593956867>";
+                                    }
+                                    if (rank.Contains("B"))
+                                    {
+                                        rank = "<:rankingBsmall:400920320925761538>";
+                                    }
+                                    if (rank.Contains("C"))
+                                    {
+                                        rank = "<:rankingCsmall:400920375053254656>";
+                                    }
+                                    if (rank.Contains("D"))
+                                    {
+                                        rank = "<:rankingDsmall:400920408884510721>";
+                                    }
+                                    if (rank.Contains("S"))
+                                    {
+                                        rank = "<:rankingSsmall:400920431344746517>";
+                                    }
                                     if (rank.Contains("F"))
                                     {
-                                        rank = "Forfeit";
+                                        rank = "<:sectionfail:400920942408368128>";
+                                    }
+                                    if (rank.Contains("X"))
+                                    {
+                                        rank = "<:rankingXsmall:400920039479574532>";
                                     }
                                     if (mod.Contains("64"))
                                     {
@@ -213,11 +233,11 @@ namespace Luxary
                                     {
                                         mods.AppendLine("HR");
                                     }
-                                    if (mod.Contains("128"))
+                                    if (mod.Contains("8"))
                                     {
                                         mods.AppendLine("RL Pleb");
                                     }
-                                    if (mod.Contains("8"))
+                                    if (mod.Contains("576"))
                                     {
                                         mods.AppendLine("HD");
                                     }
@@ -248,6 +268,8 @@ namespace Luxary
                                         var title = container3[0]["title"].ToString();
                                         var diff = container3[0]["version"].ToString();
                                         var url = container3[0]["beatmapset_id"].ToString();
+                                        var mc = container3[0]["max_combo"].ToString();
+                                        var ar = container3[0]["artist"].ToString();
 
                                         xd.Title = username;
                                         xd.Description = $"{length} Recent plays.\n----";
@@ -256,18 +278,18 @@ namespace Luxary
                                         {
                                             xd.AddField(x =>
                                             {
-                                                x.Name = $"{title} ({diff})";
+                                                x.Name = $"{ar} - {title} ({diff})";
                                                 x.Value =
-                                                    $"**Rank:** {rank} **Combo**: {date} **Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
+                                                    $"**Rank:** {rank} **Combo**: {date}({mc}) **Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
                                             });
                                         }                                    
                                         else
                                         {
                                             xd.AddField(x =>
                                             {
-                                                x.Name = $"{title} ({diff}) +{mods}";
+                                                x.Name = $"{ar} - {title} ({diff}) +{mods}";
                                                 x.Value =
-                                                    $"**Rank:** {rank} **Combo**: {date} **Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
+                                                    $"**Rank:** {rank} **Combo**: {date}({mc}) **Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
                                             });
                                             mods.Clear();
                                         }
@@ -410,6 +432,34 @@ namespace Luxary
                                     as
                                     HttpWebRequest;
                             if (request3 == null) return;
+                            if (rank.Contains("A"))
+                            {
+                                rank = "<:rankingAsmall:400920344593956867>";
+                            }
+                            if (rank.Contains("B"))
+                            {
+                                rank = "<:rankingBsmall:400920320925761538>";
+                            }
+                            if (rank.Contains("C"))
+                            {
+                                rank = "<:rankingCsmall:400920375053254656>";
+                            }
+                            if (rank.Contains("D"))
+                            {
+                                rank = "<:rankingDsmall:400920408884510721>";
+                            }
+                            if (rank.Contains("S"))
+                            {
+                                rank = "<:rankingSsmall:400920431344746517>";
+                            }
+                            if (rank.Contains("F"))
+                            {
+                                rank = "<:sectionfail:400920942408368128>";
+                            }
+                            if (rank.Contains("X"))
+                            {
+                                rank = "<:rankingXsmall:400920039479574532>";
+                            }
                             if (mod.Contains("64"))
                             {
                                 mods.AppendLine("DT");
@@ -426,11 +476,11 @@ namespace Luxary
                             {
                                 mods.AppendLine("HR");
                             }
-                            if (mod.Contains("128"))
+                            if (mod.Contains("8"))
                             {
                                 mods.AppendLine("RL Pleb");
                             }
-                            if (mod.Contains("8"))
+                            if (mod.Contains("576"))
                             {
                                 mods.AppendLine("HD");
                             }
@@ -454,13 +504,16 @@ namespace Luxary
                                 var title = container3[0]["title"].ToString();
                                 var diff = container3[0]["version"].ToString();
                                 var url = container3[0]["beatmapset_id"].ToString();
-                                if (mod == "0"&&quickmaffs!=150)
+                                var mc = container3[0]["max_combo"].ToString();
+                                var ar = container3[0]["artist"].ToString();
+
+                                if (mod == "0")
                                 {
                                     xd.AddField(x =>
                                     {
-                                        x.Name = $"{title} ({diff})";
+                                        x.Name = $"{ar} - {title} ({diff})";
                                         x.Value =
-                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
+                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}({mc})**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
 
                                     });                                    
                                 }
@@ -468,28 +521,19 @@ namespace Luxary
                                 {
                                     xd.AddField(x =>
                                     {
-                                        x.Name = $"{title} ({diff})";
+                                        x.Name = $"{ar} - {title} ({diff})";
                                         x.Value =
-                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
+                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}({mc})**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
 
-                                    });
-                                }
-                                else if (quickmaffs==150)
-                                {
-                                    xd.AddField(x =>
-                                    {
-                                        x.Name = $"{title} ({diff})";
-                                        x.Value =
-                                            $"**PP**: - **Rank:** F **Combo**: - **Accuracy:** - [:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
                                     });
                                 }
                                 else
                                 {
                                     xd.AddField(x =>
                                     {
-                                        x.Name = $"{title} ({diff}) +{mods}";
+                                        x.Name = $"{ar} - {title} ({diff}) +{mods}";
                                         x.Value =
-                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
+                                            $"**PP**: {quickmaffs} **Rank:** {rank} **Combo**: {date}({mc})**Accuracy:** {acc}[:arrow_down:](https://osu.ppy.sh/d/{url}) [:information_source:](https://osu.ppy.sh/s/{url})";
 
                                     });
                                     mods.Clear();
