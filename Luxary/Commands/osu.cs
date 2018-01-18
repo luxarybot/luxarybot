@@ -468,7 +468,7 @@ namespace Luxary
                             {
                                 mods.AppendLine("FL");
                             }
-                            if (mod.Contains("512"))
+                            if (mod.Contains("576"))
                             {
                                 mods.AppendLine("NC");
                             }
@@ -480,13 +480,13 @@ namespace Luxary
                             {
                                 mods.AppendLine("RL Pleb");
                             }
-                            if (mod.Contains("576"))
+                            if (mod.Contains("8"))
                             {
                                 mods.AppendLine("HD");
                             }
-                            if (mod.Contains("16416"))
+                            if (mod.Contains("72"))
                             {
-                                mods.AppendLine("FC");
+                                mods.AppendLine("HDDT");
                             }
 
                             request3.Method = "GET";
