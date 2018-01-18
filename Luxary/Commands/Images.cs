@@ -923,6 +923,22 @@ namespace Luxary
                                             {
                                                 CLVL = "<:m5:375555589310513153>";
                                             }
+                                            else if (CLVL.Contains("4"))
+                                            {
+                                                CLVL = "<:m4:375623810105344020>";
+                                            }
+                                            else if (CLVL.Contains("3"))
+                                            {
+                                                CLVL = "<:m3:375623860462157825>";
+                                            }
+                                            else if (CLVL.Contains("2"))
+                                            {
+                                                CLVL = "<:m2:375624600626790400>";
+                                            }
+                                            else
+                                            {
+                                                CLVL = "<:m1:375624581114888193>";
+                                            }
                                             var builder = new EmbedBuilder
                                             {
                                                 Color = new Discord.Color(218, 165, 32),
@@ -935,8 +951,6 @@ namespace Luxary
                                                 x.Value =
                                                     $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
                                                 x.IsInline = false;
-
-
                                             });
                                             builder.ThumbnailUrl =
                                                 $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
@@ -967,7 +981,7 @@ namespace Luxary
                                                     x.Value +=
                                                         $"**{queueType}:** {tier} {tier2} - **{lp}LP** {wins}W {Losses}L / Winrate: {winrate}%";
                                                     i = i + 1;
-                                                    x.IsInline = true;
+                                                    x.IsInline = false;
                                                 }
                                             });
                                             await ReplyAsync("", false, builder.Build());
@@ -1022,6 +1036,22 @@ namespace Luxary
                                             {
                                                 CLVL = "<:m5:375555589310513153>";
                                             }
+                                            else if (CLVL.Contains("4"))
+                                            {
+                                                CLVL = "<:m4:375623810105344020>";
+                                            }
+                                            else if (CLVL.Contains("3"))
+                                            {
+                                                CLVL = "<:m3:375623860462157825>";
+                                            }
+                                            else if (CLVL.Contains("2"))
+                                            {
+                                                CLVL = "<:m2:375624600626790400>";
+                                            }
+                                            else
+                                            {
+                                                CLVL = "<:m1:375624581114888193>";
+                                            }
                                             var builder = new EmbedBuilder
                                             {
                                                 Color = new Discord.Color(218, 165, 32),
@@ -1045,7 +1075,7 @@ namespace Luxary
                                                 x.Name = "Ranked Stats";
                                                 x.Value +=
                                                     $"**Unranked**";
-                                                x.IsInline = true;
+                                                x.IsInline = false;
                             
                                             });
                                             await ReplyAsync("", false, builder.Build());

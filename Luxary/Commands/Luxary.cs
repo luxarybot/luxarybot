@@ -426,6 +426,7 @@ namespace Luxary
             if (hi == "online")
             {
                 timer1.Stop();
+                timer1.Enabled = false;
                 hi = "offline";
                 await message.DeleteAsync();
                 await UpdateTimer();
@@ -458,6 +459,7 @@ namespace Luxary
         public async Task StopTimer()
         {
             timer1.Stop();
+            timer1.Enabled = false;
         }
 
         public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
@@ -493,6 +495,7 @@ namespace Luxary
                 {
                     await DoneTimer();
                     timer1.Stop();
+                    timer1.Enabled = false;
                 }
             }
             catch(Exception e)
