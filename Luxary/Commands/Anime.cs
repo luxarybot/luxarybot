@@ -56,17 +56,18 @@ namespace Luxary
                 kanna.Description = $"---";
                 foreach (XmlNode xn in xnList)
                 {      
-                        string title = xn["title"].InnerText;
-                        string score = xn["score"].InnerText;
-                        string epi = xn["episodes"].InnerText;
-                        string status = xn["status"].InnerText;
-                        string pic = xn["image"].InnerText;
-                        kanna.ThumbnailUrl = pic;
-                        kanna.AddField(x =>
-                        {
-                            x.Name = $"{title}";
-                            x.Value = $"**Episodes:** {epi} **Score:** {score}\n**Status:** {status}";
-                        });
+                    string title = xn["title"].InnerText;
+                    string score = xn["score"].InnerText;
+                    string epi = xn["episodes"].InnerText;
+                    string status = xn["status"].InnerText;
+                    string pic = xn["image"].InnerText;
+                    string id = xn["id"].InnerText;
+                    kanna.ThumbnailUrl = pic;
+                    kanna.AddField(x =>
+                    {
+                        x.Name = $"{title}";
+                        x.Value = $"**Episodes:** {epi} **Score:** {score}\n**Status:** {status}[:information_source:](https://myanimelist.net/anime/{id})";
+                    });
                 }
                 await ReplyAsync("", false, kanna.Build());
 

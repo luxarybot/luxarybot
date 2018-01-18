@@ -152,7 +152,6 @@ namespace Luxary
                 //    ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
                 //};
                 //await context.Channel.SendMessageAsync("", false, builder.Build());
-                Console.WriteLine(result.ErrorReason);
             }
         }
 

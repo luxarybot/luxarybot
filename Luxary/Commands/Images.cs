@@ -15,8 +15,10 @@ using Luxary.Service;
 using Luxary.Services;
 using ImageSharp;
 using System.IO;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 using Point = ImageSharp.Point;
 using Size = System.Drawing.Size;
 
@@ -531,6 +533,28 @@ namespace Luxary
         [Remarks("( ͡° ͜ʖ ͡°)")]
         public async Task weebsAsync([Remainder] string tag)
         {
+            var nsfw = Context.Channel.IsNsfw;
+            if (!nsfw)
+            {
+                var auth = new EmbedAuthorBuilder()
+                {
+                    Name = $"Error",
+                };
+                var rnd = new Random();
+                int g1 = rnd.Next(1, 255);
+                int g2 = rnd.Next(1, 255);
+                int g3 = rnd.Next(1, 255);
+                var builder = new EmbedBuilder
+                {
+                    Color = new Discord.Color(g1, g2, g3),
+                    Author = auth,
+                    Description = $"Not a NSFW channel.",
+                    ThumbnailUrl =
+                        $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/shy.png",
+                };
+                await ReplyAsync("", false, builder.Build());
+            }
+            else
             try
             {
                 var xd = tag.Replace(" ", "_");
@@ -629,6 +653,16 @@ namespace Luxary
                 return (this.PartId.Equals(other.PartId));
             }
         }
+
+        public class Item
+        {
+            public int millis;
+            public string stamp;
+            public DateTime datetime;
+            public string light;
+            public float temp;
+            public float vcc;
+        }
         private static List<Part2> parts2 = new List<Part2>();
         [Command("mastery")]
         [Alias("mas")]
@@ -636,6 +670,7 @@ namespace Luxary
         [Remarks("Shows your summoner mastery information")]
         public async Task Mastery([Remainder] string tag)
         {
+            parts2.Clear();
             using (var client = new HttpClient(new HttpClientHandler
             {
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
@@ -645,133 +680,142 @@ namespace Luxary
                 {
                     StreamReader sr = new StreamReader("riotkey.txt");
                     string key = sr.ReadLine();
-                    string Summonerid =
-                        $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
-                    client.BaseAddress = new Uri(Summonerid);
-                    HttpResponseMessage response = client.GetAsync("").Result;
-                    response.EnsureSuccessStatusCode();
-
-                    string result = await response.Content.ReadAsStringAsync();
-                    var jsonn = JObject.Parse(result);
-                    string id = jsonn["id"].ToString();
-                    string Name = jsonn["name"].ToString();
-                    string icon = jsonn["profileIconId"].ToString();
-                    try
+                    HttpWebRequest httpWebRequest =
+                    WebRequest.Create($"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}") as HttpWebRequest;
+                    httpWebRequest.Method = "GET";
+                    httpWebRequest.ContentType = "application/json";                  
+                    HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse();
+                    Encoding ascii = Encoding.ASCII;
+                    Stream responseStream = response.GetResponseStream();
+                    Encoding encoding = ascii;
+                    using (StreamReader streamReader = new StreamReader(responseStream, encoding))
                     {
-                        var auth = new EmbedAuthorBuilder()
+                        string all = "";
+                        string end = streamReader.ReadToEnd();
+                        var jsonn = (JObject) JsonConvert.DeserializeObject(end);
+                        var id = jsonn["id"].ToString();
+                        var Name = jsonn["name"].ToString();
+                        var icon = jsonn["profileIconId"].ToString();
+                        try
                         {
-                            Name = $"{Name}'s mastery",
-                        };
-                        StreamReader vr = new StreamReader("version.txt");
-                        string version = vr.ReadLine();
-
-
-                        var master = new EmbedBuilder
-                        {
-                            Author = auth,
-                            ThumbnailUrl =
-                                $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
-                        };
-                        using (var keee = new HttpClient(new HttpClientHandler
-                        {
-                            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-                        }))
-                        {
-
-                            string Mastery =
-                                $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
-                            keee.BaseAddress = new Uri(Mastery);
-                            HttpResponseMessage yeboi = keee.GetAsync("").Result;
-                            yeboi.EnsureSuccessStatusCode();
-                            string result3 = await yeboi.Content.ReadAsStringAsync();
-                            var json3 = JArray.Parse(result3);
-                            for (int xd = 0; xd <= 9; xd++)
+                            var auth = new EmbedAuthorBuilder()
                             {
-                                using (var keee1 = new HttpClient(new HttpClientHandler
-                                {
-                                    AutomaticDecompression =
-                                        DecompressionMethods.GZip | DecompressionMethods.Deflate
-                                }))
-                                {
-                                    var CID = json3[xd]["championId"].ToString();
-                                    var CPT = json3[xd]["championPoints"].ToString();
-                                    var CLVL = json3[xd]["championLevel"].ToString();
+                                Name = $"{Name}'s mastery",
+                            };
+                            StreamReader vr = new StreamReader("version.txt");
+                            string version = vr.ReadLine();
 
-                                    string Mastery1 =
-                                        $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
-                                    keee1.BaseAddress = new Uri(Mastery1);
-                                    HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
-                                    yeboi1.EnsureSuccessStatusCode();
-                                    string result31 = await yeboi1.Content.ReadAsStringAsync();
-                                    var json31 = JObject.Parse(result31);
-                                    var title = json31["title"].ToString();
-                                    var name = json31["name"].ToString();
-                                    if (CLVL.Contains("7"))
+
+                            var master = new EmbedBuilder
+                            {
+                                Author = auth,
+                                ThumbnailUrl =
+                                    $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png"
+                            };
+                            using (var keee = new HttpClient(new HttpClientHandler
+                            {
+                                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                            }))
+                            {
+
+                                string Mastery =
+                                    $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
+                                keee.BaseAddress = new Uri(Mastery);
+                                HttpResponseMessage yeboi = keee.GetAsync("").Result;
+                                string result3 = await yeboi.Content.ReadAsStringAsync();
+                                var json3 = JArray.Parse(result3);
+                                for (int xd = 0; xd <= 9; xd++)
+                                {
+                                    using (var keee1 = new HttpClient(new HttpClientHandler
                                     {
-                                        CLVL = "<:m7:375555291108081664>";
+                                        AutomaticDecompression =
+                                            DecompressionMethods.GZip | DecompressionMethods.Deflate
+                                    }))
+                                    {
+                                        var CID = json3[xd]["championId"].ToString();
+                                        var CPT = json3[xd]["championPoints"].ToString();
+                                        var CLVL = json3[xd]["championLevel"].ToString();
+                                        using (FileStream fs = new FileStream(@"D:\Discord\Luxary\Luxary\bin\Debug\champs.txt", FileMode.Open,
+                                            FileAccess.Read))
+                                        using (StreamReader srr = new StreamReader(fs))
+                                        using (JsonTextReader reader = new JsonTextReader(srr))
+                                        {
+                                            while (reader.Read())
+                                            {
+                                                if (reader.TokenType == JsonToken.StartObject)
+                                                {
+                                                    JObject json31 = JObject.Load(reader);
+                                                    var name = json31["data"][CID]["name"].ToString();
+                                                    if (CLVL.Contains("7"))
+                                                    {
+                                                        CLVL = "<:m7:375555291108081664>";
+                                                    }
+                                                    else if (CLVL.Contains("6"))
+                                                    {
+                                                        CLVL = "<:m6:375555126880108545>";
+                                                    }
+                                                    else if (CLVL.Contains("5"))
+                                                    {
+                                                        CLVL = "<:m5:375555589310513153>";
+                                                    }
+                                                    else if (CLVL.Contains("4"))
+                                                    {
+                                                        CLVL = "<:m4:375623810105344020>";
+                                                    }
+                                                    else if (CLVL.Contains("3"))
+                                                    {
+                                                        CLVL = "<:m3:375623860462157825>";
+                                                    }
+                                                    else if (CLVL.Contains("2"))
+                                                    {
+                                                        CLVL = "<:m2:375624600626790400>";
+                                                    }
+                                                    else
+                                                    {
+                                                        CLVL = "<:m1:375624581114888193>";
+                                                    }
+                                                    parts2.Add(new Part2()
+                                                    {
+                                                        PartName = name,
+                                                        PartTitle = CPT,
+                                                        PartMas = CLVL
+                                                    });
+                                                }
+                                            }
+
+
+                                        }
                                     }
-                                    else if (CLVL.Contains("6"))
-                                    {
-                                        CLVL = "<:m6:375555126880108545>";
-                                    }
-                                    else if (CLVL.Contains("5"))
-                                    {
-                                        CLVL = "<:m5:375555589310513153>";
-                                    }
-                                    else if (CLVL.Contains("4"))
-                                    {
-                                        CLVL = "<:m4:375623810105344020>";
-                                    }
-                                    else if (CLVL.Contains("3"))
-                                    {
-                                        CLVL = "<:m3:375623860462157825>";
-                                    }
-                                    else if (CLVL.Contains("2"))
-                                    {
-                                        CLVL = "<:m2:375624600626790400>";
-                                    }
-                                    else
-                                    {
-                                        CLVL = "<:m1:375624581114888193>";
-                                    }
-                                    parts2.Add(new Part2()
-                                    {
-                                        PartName = name,
-                                        PartId = title,
-                                        PartTitle = CPT,
-                                        PartMas = CLVL
-                                    });
                                 }
+                                foreach (Part2 songs in parts2)
+                                {
+                                    master.Description +=
+                                        $"{songs.PartMas}. **{songs.PartName}** ``-`` {songs.PartTitle}\n";
+                                }
+                                await ReplyAsync("", false, master.Build());
                             }
-                            foreach (Part2 songs in parts2)
-                            {
-                                master.Description +=
-                                    $"{songs.PartMas}. **{songs.PartName}** ``-`` {songs.PartTitle}\n";
-                            }
-                            await ReplyAsync("", false, master.Build());
-                            parts2.Clear();
                         }
-                    }
-                    catch (Exception c)
-                    {
-                        var auth = new EmbedAuthorBuilder()
+                        catch (Exception c)
                         {
-                            Name = $"Error",
-                        };
-                        var rnd = new Random();
-                        int g1 = rnd.Next(1, 255);
-                        int g2 = rnd.Next(1, 255);
-                        int g3 = rnd.Next(1, 255);
-                        var builder = new EmbedBuilder
-                        {
-                            Color = new Discord.Color(g1, g2, g3),
-                            Author = auth,
-                            Description = $"Data not available\nError 429",
-                            ThumbnailUrl =
-                                $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/mad.png",
-                        };
-                        await ReplyAsync("", false, builder.Build());
-                        Console.WriteLine(c);
+                            var auth = new EmbedAuthorBuilder()
+                            {
+                                Name = $"Error",
+                            };
+                            var rnd = new Random();
+                            int g1 = rnd.Next(1, 255);
+                            int g2 = rnd.Next(1, 255);
+                            int g3 = rnd.Next(1, 255);
+                            var builder = new EmbedBuilder
+                            {
+                                Color = new Discord.Color(g1, g2, g3),
+                                Author = auth,
+                                Description = $"Data not available\nError 429",
+                                ThumbnailUrl =
+                                    $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/mad.png",
+                            };
+                            await ReplyAsync("", false, builder.Build());
+                            Console.WriteLine(c);
+                        }
                     }
                 }
                 catch (Exception e)
@@ -816,15 +860,12 @@ namespace Luxary
                         $"https://euw1.api.riotgames.com/lol/summoner/v3/summoners/by-name/{tag}?api_key={key}";
                     client.BaseAddress = new Uri(Summonerid);
                     HttpResponseMessage response = client.GetAsync("").Result;
-                    response.EnsureSuccessStatusCode();
-
                     string result = await response.Content.ReadAsStringAsync();
                     var jsonn = JObject.Parse(result);
                     string id = jsonn["id"].ToString();
                     string Name = jsonn["name"].ToString();
                     string lvl = jsonn["summonerLevel"].ToString();
                     string icon = jsonn["profileIconId"].ToString();
-                    System.Threading.Thread.Sleep(2000);
                     using (var ke = new HttpClient(new HttpClientHandler
                     {
                         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
@@ -836,7 +877,6 @@ namespace Luxary
                                 $"https://euw1.api.riotgames.com/lol/league/v3/positions/by-summoner/{id}?api_key={key}";
                             ke.BaseAddress = new Uri(Elo);
                             HttpResponseMessage kee = ke.GetAsync("").Result;
-                            kee.EnsureSuccessStatusCode();
                             string result2 = await kee.Content.ReadAsStringAsync();
                             var json = JArray.Parse(result2);
                             using (var keee = new HttpClient(new HttpClientHandler
@@ -848,113 +888,171 @@ namespace Luxary
                                     $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
                                 keee.BaseAddress = new Uri(Mastery);
                                 HttpResponseMessage yeboi = keee.GetAsync("").Result;
-                                yeboi.EnsureSuccessStatusCode();
                                 string result3 = await yeboi.Content.ReadAsStringAsync();
                                 var json3 = JArray.Parse(result3);
                                 var CID = json3[0]["championId"].ToString();
                                 var CLVL = json3[0]["championLevel"].ToString();
                                 var CPT = json3[0]["championPoints"].ToString();
-                                System.Threading.Thread.Sleep(2000);
-                                
-                                using (var keee1 = new HttpClient(new HttpClientHandler
+                                using (FileStream fs = new FileStream(@"D:\Discord\Luxary\Luxary\bin\Debug\champs.txt", FileMode.Open,
+                                    FileAccess.Read))
+                                using (StreamReader srr = new StreamReader(fs))
+                                using (JsonTextReader reader = new JsonTextReader(srr))
                                 {
-                                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-                                }))
-                                {
-                                    string Mastery1 =
-                                        $"https://euw1.api.riotgames.com/lol/static-data/v3/champions/{CID}?api_key={key}";
-                                    keee1.BaseAddress = new Uri(Mastery1);
-                                    HttpResponseMessage yeboi1 = keee1.GetAsync("").Result;
-                                    yeboi1.EnsureSuccessStatusCode();
-                                    string result31 = await yeboi1.Content.ReadAsStringAsync();
-                                    var json31 = JObject.Parse(result31);
-                                    var title = json31["title"].ToString();
-                                    var name = json31["name"].ToString();
-                                    var auth = new EmbedAuthorBuilder()
+                                    while (reader.Read())
                                     {
-                                        Name = $"{Name}'s profile",
-                                    };
-                                    StreamReader vr = new StreamReader("version.txt");
-                                    string version = vr.ReadLine();
-                                    if (CLVL.Contains("7"))
-                                    {
-                                        CLVL = "<:m7:375555291108081664>";
-                                    }
-                                    else if (CLVL.Contains("6"))
-                                    {
-                                        CLVL = "<:m6:375555126880108545>";
-                                    }
-                                    else if (CLVL.Contains("5"))
-                                    {
-                                        CLVL = "<:m5:375555589310513153>";
-                                    }
-                                    var builder = new EmbedBuilder
-                                    {
-                                        Color = new Discord.Color(218, 165, 32),
-                                        Author = auth,
-                                        Description = $"Level: {lvl}"
-                                    };
-                                    builder.AddField(x =>
-                                    {                                       
-                                        x.Name = "Main";
-                                        x.Value =
-                                            $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
-                                        x.IsInline = false;
-
-                                         
-                                    });
-                                    builder.ThumbnailUrl =
-                                        $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
-                                    int i = 0;
-                                    foreach (var lh in json)
-                                    {
-
-                                        string tier = json[i]["tier"].ToString();
-                                        string tier2 = json[i]["rank"].ToString();
-                                        string check = json[i]["playerOrTeamName"].ToString();
-                                        string wins = json[i]["wins"].ToString();
-                                        string lp = json[i]["leaguePoints"].ToString();
-                                        string league = json[i]["leagueName"].ToString();
-                                        string queueType = json[i]["queueType"].ToString();
-                                        string Losses = json[i]["losses"].ToString();
-                                        int resultt = int.Parse(wins);
-                                        int resultt2 = int.Parse(Losses);
-                                        int totalFilesToProcess = resultt + resultt2;
-                                        int winrate = resultt * 100 / totalFilesToProcess;
-                                        builder.AddField(x =>
+                                        if (reader.TokenType == JsonToken.StartObject)
                                         {
-                                            x.Name = queueType;
-                                            x.Value =
-                                                $"Rank: **{tier} {tier2} - {lp}LP**\nWins: **{wins}**\nLosses: **{Losses}**\nWinrate: **{winrate}%**";
-                                            i = i + 1;
-                                            x.IsInline = false;
-                                        });
-                                    }
-                                    await ReplyAsync("", false, builder.Build());
+                                            JObject json31 = JObject.Load(reader);
+                                            var name = json31["data"][CID]["name"].ToString();
+                                            var title = json31["data"][CID]["title"].ToString();
+                                            var auth = new EmbedAuthorBuilder()
+                                            {
+                                                Name = $"{Name}'s profile",
+                                            };
+                                            StreamReader vr = new StreamReader("version.txt");
+                                            string version = vr.ReadLine();
+                                            if (CLVL.Contains("7"))
+                                            {
+                                                CLVL = "<:m7:375555291108081664>";
+                                            }
+                                            else if (CLVL.Contains("6"))
+                                            {
+                                                CLVL = "<:m6:375555126880108545>";
+                                            }
+                                            else if (CLVL.Contains("5"))
+                                            {
+                                                CLVL = "<:m5:375555589310513153>";
+                                            }
+                                            var builder = new EmbedBuilder
+                                            {
+                                                Color = new Discord.Color(218, 165, 32),
+                                                Author = auth,
+                                                Description = $"Level: {lvl}"
+                                            };
+                                            builder.AddField(x =>
+                                            {
+                                                x.Name = "Main";
+                                                x.Value =
+                                                    $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
+                                                x.IsInline = false;
+
+
+                                            });
+                                            builder.ThumbnailUrl =
+                                                $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
+                                            int i = 0;
+                                            builder.AddField(x =>
+                                            {
+                                                x.Name = "Ranked Stats";
+                                                foreach (var lh in json)
+                                                {
+
+                                                    string tier = json[i]["tier"].ToString();
+                                                    string tier2 = json[i]["rank"].ToString();
+                                                    string check = json[i]["playerOrTeamName"].ToString();
+                                                    string wins = json[i]["wins"].ToString();
+                                                    string lp = json[i]["leaguePoints"].ToString();
+                                                    string league = json[i]["leagueName"].ToString();
+                                                    string queueType = json[i]["queueType"].ToString();
+                                                    string Losses = json[i]["losses"].ToString();
+                                                    int resultt = int.Parse(wins);
+                                                    int resultt2 = int.Parse(Losses);
+                                                    int totalFilesToProcess = resultt + resultt2;
+                                                    int winrate = resultt * 100 / totalFilesToProcess;
+                                                    if (queueType == "RANKED_SOLO_5x5")
+                                                    {
+                                                        queueType = "Solo/Duo";
+                                                    }
+
+                                                    x.Value +=
+                                                        $"**{queueType}:** {tier} {tier2} - **{lp}LP** {wins}W {Losses}L / Winrate: {winrate}%";
+                                                    i = i + 1;
+                                                    x.IsInline = true;
+                                                }
+                                            });
+                                            await ReplyAsync("", false, builder.Build());
+                                        }
+                                    }                                   
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            var auth = new EmbedAuthorBuilder()
+                            using (var keee = new HttpClient(new HttpClientHandler
                             {
-                                Name = $"{Name}'s profile",
-                            };
-                            string version = "7.19.1";
-                            var rnd = new Random();
-                            int g1 = rnd.Next(1, 255);
-                            int g2 = rnd.Next(1, 255);
-                            int g3 = rnd.Next(1, 255);
-                            var builder = new EmbedBuilder
+                                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+                            }))
                             {
-                                Color = new Discord.Color(g1, g2, g3),
-                                Author = auth,
-                                Description = $"Level: {lvl}\nNo ranked data.",
-                                ThumbnailUrl =
-                                    $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png",
-                            };
-                            await ReplyAsync("", false, builder.Build());
-                            Console.WriteLine(e);
+                                string Mastery =
+                                    $"https://euw1.api.riotgames.com/lol/champion-mastery/v3/champion-masteries/by-summoner/{id}?api_key={key}";
+                                keee.BaseAddress = new Uri(Mastery);
+                                HttpResponseMessage yeboi = keee.GetAsync("").Result;
+                                string result3 = await yeboi.Content.ReadAsStringAsync();
+                                var json3 = JArray.Parse(result3);
+                                var CID = json3[0]["championId"].ToString();
+                                var CLVL = json3[0]["championLevel"].ToString();
+                                var CPT = json3[0]["championPoints"].ToString();
+                                using (FileStream fs = new FileStream(@"D:\Discord\Luxary\Luxary\bin\Debug\champs.txt", FileMode.Open,
+                                    FileAccess.Read))
+                                using (StreamReader srr = new StreamReader(fs))
+                                using (JsonTextReader reader = new JsonTextReader(srr))
+                                {
+                                    while (reader.Read())
+                                    {
+                                        if (reader.TokenType == JsonToken.StartObject)
+                                        {
+                                            JObject json31 = JObject.Load(reader);
+                                            var name = json31["data"][CID]["name"].ToString();
+                                            var title = json31["data"][CID]["title"].ToString();
+                                            var auth = new EmbedAuthorBuilder()
+                                            {
+                                                Name = $"{Name}'s profile",
+                                            };
+                                            StreamReader vr = new StreamReader("version.txt");
+                                            string version = vr.ReadLine();
+                                            if (CLVL.Contains("7"))
+                                            {
+                                                CLVL = "<:m7:375555291108081664>";
+                                            }
+                                            else if (CLVL.Contains("6"))
+                                            {
+                                                CLVL = "<:m6:375555126880108545>";
+                                            }
+                                            else if (CLVL.Contains("5"))
+                                            {
+                                                CLVL = "<:m5:375555589310513153>";
+                                            }
+                                            var builder = new EmbedBuilder
+                                            {
+                                                Color = new Discord.Color(218, 165, 32),
+                                                Author = auth,
+                                                Description = $"Level: {lvl}"
+                                            };
+                                            builder.AddField(x =>
+                                            {
+                                                x.Name = "Main";
+                                                x.Value =
+                                                    $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
+                                                x.IsInline = false;
+
+
+                                            });
+                                            builder.ThumbnailUrl =
+                                                $"http://ddragon.leagueoflegends.com/cdn/{version}/img/profileicon/{icon}.png";
+                                            int i = 0;
+                                            builder.AddField(x =>
+                                            {
+                                                x.Name = "Ranked Stats";
+                                                x.Value +=
+                                                    $"**Unranked**";
+                                                x.IsInline = true;
+                            
+                                            });
+                                            await ReplyAsync("", false, builder.Build());
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
