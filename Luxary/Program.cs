@@ -131,27 +131,31 @@ namespace Luxary
             }
         }
 
+        public static string Status = "awake";
         public static async Task HandleCommand(SocketMessage msgParam)
         {
-            var msg = msgParam as SocketUserMessage;
-            var prefix = Admin.prefgl;
-            if (msg == null) return;
-            int argPos = 0;
-            if (!(msg.HasCharPrefix(prefix, ref argPos) ||
-                  msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
-            var context = new CommandContext(_client, msg);
-
-            var result = await _commands.ExecuteAsync(context, argPos, _services);
-            if (!result.IsSuccess)
+            if (Status == "awake")
             {
-                //var builder = new EmbedBuilder
-                //{
-                //    Title = "Oh no..", 
-                //    Color = new Discord.Color(178, 34, 34),
-                //    Description = result.ErrorReason,
-                //    ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
-                //};
-                //await context.Channel.SendMessageAsync("", false, builder.Build());
+                var msg = msgParam as SocketUserMessage;
+                var prefix = Admin.prefgl;
+                if (msg == null) return;
+                int argPos = 0;
+                if (!(msg.HasCharPrefix(prefix, ref argPos) ||
+                      msg.HasMentionPrefix(_client.CurrentUser, ref argPos))) return;
+                var context = new CommandContext(_client, msg);
+
+                var result = await _commands.ExecuteAsync(context, argPos, _services);
+                if (!result.IsSuccess)
+                {
+                    //var builder = new EmbedBuilder
+                    //{
+                    //    Title = "Oh no..", 
+                    //    Color = new Discord.Color(178, 34, 34),
+                    //    Description = result.ErrorReason,
+                    //    ThumbnailUrl = $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/oh.png",
+                    //};
+                    //await context.Channel.SendMessageAsync("", false, builder.Build());
+                }
             }
         }
 

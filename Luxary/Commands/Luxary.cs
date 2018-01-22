@@ -453,6 +453,111 @@ namespace Luxary
             }
         }
 
+        [Command("twitch")]
+        [Summary(".twitch **<username>**")]
+        [Remarks("Searchs stuff")]
+        public async Task Twitch(string name)
+        {
+            try
+            {
+                HttpWebRequest httpWebRequest = WebRequest.Create($"https://api.twitch.tv/helix/users?login={name}")as HttpWebRequest;
+                httpWebRequest.Method = "GET";
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Headers.Add("Client-ID",
+                    "dwcn7987e3v8rftt8dbhg0ecneaxkr");
+                HttpWebResponse response = (HttpWebResponse) httpWebRequest.GetResponse();
+
+                Encoding ascii = Encoding.ASCII;
+                Stream responseStream = response.GetResponseStream();
+                if (responseStream == null)
+                    throw new InvalidOperationException();
+                Encoding encoding = ascii;
+                using (StreamReader streamReader = new StreamReader(responseStream, encoding))
+                {
+                    string end = streamReader.ReadToEnd();
+                    var container = (JObject) JsonConvert.DeserializeObject(end);
+                    var des = container["data"][0]["description"].ToString();
+                    var view = container["data"][0]["view_count"].ToString();
+                    var dn = container["data"][0]["display_name"].ToString();
+                    var link = container["data"][0]["login"].ToString();
+                    var url = container["data"][0]["profile_image_url"].ToString();
+                    var Rem = new EmbedBuilder
+                    {
+                        Title = $"{dn}'s twitch profile",
+                        Description =
+                            $"**Name:** {dn}\n**Description:** {des}\n**Views:** {view}\n**[Go to profile](https://www.twitch.tv/{link})**",
+                        ThumbnailUrl = url
+                    };
+                    await ReplyAsync("", false, Rem.Build());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+        [Command("twitch play")]
+        [Summary(".twitch play **<username>**")]
+        [Remarks("Searchs stuff")]
+        public async Task Twitchw(string name)
+        {
+            await ReplyAsync($"https://www.twitch.tv/{name}");
+        }
+ 
+        [Command("twitch video")]
+        [Summary(".twitch **<username>**")]
+        [Remarks("Searchs stuff")]
+        public async Task Twitchv(string name)
+        {
+            try
+            {
+                HttpWebRequest httpWebRequest =
+                    WebRequest.Create($"https://api.twitch.tv/kraken/channels/{name}/videos?client_id=g8vz0dctlo417o6dz3gvol1ssws1ih") as HttpWebRequest;
+                httpWebRequest.Method = "GET";
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Headers.Add("Client-ID",
+                    "dwcn7987e3v8rftt8dbhg0ecneaxkr");
+                HttpWebResponse response = (HttpWebResponse) httpWebRequest.GetResponse();
+
+                Encoding ascii = Encoding.ASCII;
+                Stream responseStream = response.GetResponseStream();
+                if (responseStream == null)
+                    throw new InvalidOperationException();
+                Encoding encoding = ascii;
+                using (StreamReader streamReader = new StreamReader(responseStream, encoding))
+                {
+                    string end = streamReader.ReadToEnd();
+                    var container = JObject.Parse(end);
+                    var xd = new Random();
+                    var count = container["videos"].Count();
+                    var next = xd.Next(1, count);
+                    var des = container["videos"][next]["url"];
+                    await ReplyAsync(des.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                var auth = new EmbedAuthorBuilder()
+                {
+                    Name = $"Error",
+                };
+                var rnd = new Random();
+                int g1 = rnd.Next(1, 255);
+                int g2 = rnd.Next(1, 255);
+                int g3 = rnd.Next(1, 255);
+                var builder = new EmbedBuilder
+                {
+                    Color = new Discord.Color(g1, g2, g3),
+                    Author = auth,
+                    Description = $"No video's found.",
+                    ThumbnailUrl =
+                        $"https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/silly.png",
+                };
+                await ReplyAsync("", false, builder.Build());
+                Console.WriteLine(e.ToString());
+            }
+        }
+
         [Command("timestop")]
         [Summary(".timestop")]
         [Remarks("Stops the timer")]

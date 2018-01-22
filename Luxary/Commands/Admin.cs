@@ -244,7 +244,7 @@ namespace Luxary
                 await Context.Channel.SendMessageAsync("", false, embed); ///sends embed///
             }
         }
-
+      
         [Command("role")]
         [RequireUserPermission(GuildPermission.ManageRoles)]
         public async Task Role(IGuildUser user, string roles)

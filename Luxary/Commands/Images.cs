@@ -981,7 +981,7 @@ namespace Luxary
                                                     x.Value +=
                                                         $"**{queueType}:** {tier} {tier2} - **{lp}LP** {wins}W {Losses}L / Winrate: {winrate}%";
                                                     i = i + 1;
-                                                    x.IsInline = false;
+                                                    x.IsInline = true;
                                                 }
                                             });
                                             await ReplyAsync("", false, builder.Build());
@@ -1063,7 +1063,7 @@ namespace Luxary
                                                 x.Name = "Main";
                                                 x.Value =
                                                     $"Champion: **{name}, {title}**\nMastery: **{CLVL}** **{CPT}**";
-                                                x.IsInline = false;
+                                                x.IsInline = true;
 
 
                                             });
@@ -1075,9 +1075,10 @@ namespace Luxary
                                                 x.Name = "Ranked Stats";
                                                 x.Value +=
                                                     $"**Unranked**";
-                                                x.IsInline = false;
+                                                x.IsInline = true;
                             
                                             });
+                                            
                                             await ReplyAsync("", false, builder.Build());
                                         }
                                     }

@@ -35,7 +35,6 @@ namespace Luxary
             this.sleep = new System.Windows.Forms.Button();
             this.Close = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -52,6 +51,7 @@ namespace Luxary
             this.cmemtimer = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.Hide = new System.Windows.Forms.Button();
+            this.Kek = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cpuc)).BeginInit();
@@ -114,16 +114,6 @@ namespace Luxary
             this.button2.Text = "Message";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(346, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 37);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Channel";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button1
             // 
@@ -276,12 +266,23 @@ namespace Luxary
             this.Hide.UseVisualStyleBackColor = false;
             this.Hide.Click += new System.EventHandler(this.Hide_Click);
             // 
+            // Kek
+            // 
+            this.Kek.Location = new System.Drawing.Point(347, 12);
+            this.Kek.Name = "Kek";
+            this.Kek.Size = new System.Drawing.Size(75, 37);
+            this.Kek.TabIndex = 20;
+            this.Kek.Text = "Awake";
+            this.Kek.UseVisualStyleBackColor = true;
+            this.Kek.Click += new System.EventHandler(this.Kek_Click);
+            // 
             // FormConsole
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(736, 384);
+            this.Controls.Add(this.Kek);
             this.Controls.Add(this.Hide);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
@@ -294,7 +295,6 @@ namespace Luxary
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.Close);
             this.Controls.Add(this.sleep);
@@ -321,7 +321,6 @@ namespace Luxary
         private System.Windows.Forms.Button sleep;
         private System.Windows.Forms.Button Close;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
@@ -338,6 +337,7 @@ namespace Luxary
         private System.Windows.Forms.Timer cmemtimer;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.Button Hide;
+        private System.Windows.Forms.Button Kek;
     }
 }
 

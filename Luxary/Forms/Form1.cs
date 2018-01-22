@@ -253,5 +253,19 @@ namespace Luxary
             notifyIcon1.ShowBalloonTip(500);
             this.Hide();
         }
+
+        private void Kek_Click(object sender, EventArgs e)
+        {
+            if (Program.Status == "awake")
+            {
+                Program.Status = "sleepy";
+                Kek.Text = "Sleepy";
+            }
+            else
+            {
+                Program.Status = "awake";
+                Kek.Text = "Awake";
+            }
+        }
     }
 }
