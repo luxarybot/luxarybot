@@ -97,6 +97,9 @@
       <HintPath>..\packages\ImageSharp.Drawing.1.0.0-alpha9-00143\lib\netstandard1.1\ImageSharp.Drawing.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="LiteDB, Version=4.1.1.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.1\lib\net40\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Hosting, Version=1.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Hosting.1.1.2\lib\net451\Microsoft.AspNetCore.Hosting.dll</HintPath>
       <Private>True</Private>
@@ -352,6 +355,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\Anime.cs" />
+    <Compile Include="Commands\Money.cs" />
     <Compile Include="Commands\osu.cs" />
     <Compile Include="Forms\Audio_Player.cs">
       <SubType>Form</SubType>
@@ -418,6 +422,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\away.cs" />
     <Compile Include="Services\awayxd.cs" />
+    <Compile Include="Services\DB.cs" />
+    <Compile Include="Services\DB2.cs" />
+    <Compile Include="Services\DB3.cs" />
+    <Compile Include="Services\DB4.cs" />
     <Compile Include="Services\ImageCore.cs" />
     <Compile Include="Services\prefix.cs" />
     <Compile Include="Services\quotes.cs" />
@@ -426,6 +434,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="database.db" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
