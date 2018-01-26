@@ -70,7 +70,7 @@ namespace Luxary
                     ThumbnailUrl = url,
                     Color = new Color(pickcolor.Color.R, pickcolor.Color.G, pickcolor.Color.B)
                 });
-                var num3 = (int) MessageBox.Show("Successfully sent Message", "Success");
+                
             }
         }
 

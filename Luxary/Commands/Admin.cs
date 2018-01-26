@@ -411,6 +411,9 @@ namespace Luxary
                     await ReplyAsync("", false, embed.Build());
                     live = "offline";
                 }
+                amountOne = 0;
+                amountTwo = 0;
+                users.Clear();
                 checkVote = false;
             }
         }

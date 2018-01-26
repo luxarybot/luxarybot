@@ -475,7 +475,7 @@ namespace Luxary
                             {
                                 string date = string.Empty;
                                 date = currNode.Attributes["file_url"].Value;
-                                string modifiedString = date.Replace("//", "http://");
+                                string modifiedString = date.Replace("//", "//");
                                 myList.Add(modifiedString);
                             }
                         }
@@ -497,9 +497,11 @@ namespace Luxary
                             using (WebClient client = new WebClient())
                             {
                                 client.DownloadFile(randomString, localFilename);
+                                await Context.Channel.SendFileAsync(localFilename);
+                                myList.Clear();
+                                client.Dispose();
                             }
-                            await Context.Channel.SendFileAsync(localFilename);
-                            myList.Clear();
+                            
                         }
                     }
                     catch (Exception ee)
@@ -597,6 +599,7 @@ namespace Luxary
                     }                   
                 }
             }
+
             catch (Exception ee)
             {
                 var auth = new EmbedAuthorBuilder()

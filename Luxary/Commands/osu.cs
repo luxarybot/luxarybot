@@ -19,13 +19,16 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO.Compression;
+using System.Runtime.InteropServices;
 using Luxary.Service;
 using System.Web;
 using Newtonsoft.Json;
+using SteamKit2.GC.Dota.Internal;
+using SteamKit2.Unified.Internal;
 
 namespace Luxary
 {
-    [Group("osu")]
+    [Group("Games")]
     public class Osu : ModuleBase<ICommandContext>
     {
         public class Part22 : IEquatable<Part22>
@@ -67,6 +70,67 @@ namespace Luxary
 
         private static List<Part22> parts22 = new List<Part22>();
 
+        [Command("pubg")]
+        public async Task Pubg(string name, [Optional]string mode)
+        {
+            int gi = 0;
+            if (mode == "duo")
+            {
+                gi = 0;
+            }
+            if (mode == "squad")
+            {
+                gi = 1;
+            }
+            if (mode == "duo-fpp")
+            {
+                gi = 2;
+            }
+            if (mode != null)
+            {
+                HttpWebRequest httpWebRequest =
+                    WebRequest.Create($"https://api.pubgtracker.com/v2/profile/pc/{name}") as HttpWebRequest;
+                httpWebRequest.Method = "GET";
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Headers.Add("TRN-Api-Key",
+                    "5ad9927e-15f1-4116-8159-6e74daf459fd");
+                HttpWebResponse response = (HttpWebResponse) httpWebRequest.GetResponse();
+                Encoding ascii = Encoding.ASCII;
+                Stream responseStream = response.GetResponseStream();
+                if (responseStream == null)
+                    throw new InvalidOperationException();
+                Encoding encoding = ascii;
+                using (StreamReader streamReader = new StreamReader(responseStream, encoding))
+                {
+                    string end = streamReader.ReadToEnd();
+                    var container = JObject.Parse(end);
+                    var nname = container["nickname"];
+                    var turl = container["avatar"];
+                    var embed = new EmbedBuilder
+                    {
+                        Title = $"{nname}'s PUBG stats",
+                        ThumbnailUrl = turl.ToString()
+                    };
+                    var count = container["stats"][gi]["stats"].Count();
+                    //for (int i = 0; i < 2; i++)
+                    //{
+                    for (int ie = 0; ie < count; ie++)
+                    {
+                        var des = container["stats"][gi]["stats"][ie]["displayValue"].ToString();
+                        var lbl = container["stats"][gi]["stats"][ie]["label"].ToString();
+                        embed.Description += $"**{lbl}**: {des}\n";
+                    }
+                    //}
+                    await ReplyAsync("", false, embed.Build());
+
+
+                }
+            }
+            else
+            {
+                await ReplyAsync("choose gamemode ples, duo, squad, dua-fpp");
+            }
+        }
         [Command("user")]
         [Alias("us","u")]
         public async Task Ossu([Remainder] string name)
