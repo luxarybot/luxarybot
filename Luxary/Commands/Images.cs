@@ -171,7 +171,6 @@ namespace Luxary
                     ImageSharp.Image<Rgba32> user =
                         await core.StartStreamAsync(
                             path: $"images/{randomString}.png");
-                    //totale foto groot VVVVV
                     ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(277, 340);
                     //size per image VVVVV
                     ImageSharp.Size size250 = new ImageSharp.Size(277, 340);
