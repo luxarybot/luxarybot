@@ -186,6 +186,23 @@ namespace Luxary
                 Console.WriteLine($"{DateTime.Now}: Game was changed to {game}");
             }
         }
+        [Command("maney")]
+        [Summary(".setgame **<game>**")]
+        [Remarks("Sets the game of the bot(owner only)")]
+        [Alias("sg", "game")]
+        public async Task gimmemaney(int money)
+        {
+            var GuildUser = await Context.Guild.GetUserAsync(Context.User.Id);
+            if (GuildUser.Id != 185402901236154368)
+            {
+                await Context.Channel.SendMessageAsync("Only my daddy can do this.");
+            }
+            else
+            {
+                Database.GetInstance().GetUserDao().InsertMoney(Context.User.Id, money);
+                Console.WriteLine($"{DateTime.Now}: Gave you maney");
+            }
+        }
 
         [Command("illuminate")]
         [Summary(".illuminate **<int>**")]
