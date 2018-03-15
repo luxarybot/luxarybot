@@ -28,8 +28,7 @@ using SteamKit2.Unified.Internal;
 
 namespace Luxary
 {
-    [Group("Games")]
-    public class Osu : ModuleBase<ICommandContext>
+    public class Games : ModuleBase<ICommandContext>
     {
         public class Part22 : IEquatable<Part22>
         {
@@ -70,7 +69,7 @@ namespace Luxary
 
         private static List<Part22> parts22 = new List<Part22>();
 
-        [Command("pubg")]
+        [Command("pubg stats")]
         public async Task Pubg(string name, [Optional]string mode)
         {
             int gi = 0;
@@ -131,8 +130,8 @@ namespace Luxary
                 await ReplyAsync("choose gamemode ples, duo, squad, dua-fpp");
             }
         }
-        [Command("user")]
-        [Alias("us","u")]
+        [Command("osu user")]
+        [Alias("osu us","osu u")]
         public async Task Ossu([Remainder] string name)
         {
             try
@@ -172,7 +171,7 @@ namespace Luxary
                             $"**Level: {quickmaffs}**\n**Playcount:** {pcount}\n**Accuracy:** {quickmaffs3}%\n**Country:** {country}\n**Rank:** {pprank}\n**PP:** {quickmaffs2}",
                     };
                     string local = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\"+userid+".jpg";
-                    string imgurl = $"https://s.ppy.sh/a/{userid}";
+                    string imgurl = $"http://s.ppy.sh/a/{userid}";
                     using (WebClient client = new WebClient())
                     {
                         client.DownloadFile(imgurl, local);
@@ -188,8 +187,8 @@ namespace Luxary
             }
         }
         System.Text.StringBuilder mods = new System.Text.StringBuilder();
-        [Command("userrecent")]
-        [Alias("ur", "urecent")]
+        [Command("osu userrecent")]
+        [Alias("osu ur")]
         public async Task usebest([Remainder] string name)
         {
             try
@@ -281,33 +280,97 @@ namespace Luxary
                                     {
                                         rank = "<:rankingXsmall:400920039479574532>";
                                     }
-                                    if (mod.Contains("64"))
+                                    if (mod==("1"))
                                     {
-                                        mods.AppendLine("DT");
+                                        mods.AppendLine("NF");
                                     }
-                                    if (mod.Contains("1024"))
+                                    if (mod==("2"))
                                     {
-                                        mods.AppendLine("FL");
+                                        mods.AppendLine("EZ");
                                     }
-                                    if (mod.Contains("512"))
+                                    if (mod==("3"))
                                     {
-                                        mods.AppendLine("NC");
+                                        mods.AppendLine("EZNF");
                                     }
-                                    if (mod.Contains("16"))
-                                    {
-                                        mods.AppendLine("HR");
-                                    }
-                                    if (mod.Contains("8"))
-                                    {
-                                        mods.AppendLine("RL Pleb");
-                                    }
-                                    if (mod.Contains("576"))
+                                    if (mod==("8"))
                                     {
                                         mods.AppendLine("HD");
                                     }
-                                    if (mod.Contains("16416"))
+                                    if (mod==("9"))
                                     {
-                                        mods.AppendLine("FC");
+                                        mods.AppendLine("NFHD");
+                                    }
+                                    if (mod==("10"))
+                                    {
+                                        mods.AppendLine("EZHD");
+                                    }
+                                    if (mod==("11"))
+                                    {
+                                        mods.AppendLine("NFEZHD");
+                                    }
+                                    if (mod==("16"))
+                                    {
+                                        mods.AppendLine("HR");
+                                    }
+                                    if (mod==("17"))
+                                    {
+                                        mods.AppendLine("NFHR");
+                                    }
+                                    if (mod==("24"))
+                                    {
+                                        mods.AppendLine("HDHR");
+                                    }
+                                    if (mod==("32"))
+                                    {
+                                        mods.AppendLine("SD");
+                                    }
+                                    if (mod==("34"))
+                                    {
+                                        mods.AppendLine("EZSD");
+                                    }
+                                    if (mod==("40"))
+                                    {
+                                        mods.AppendLine("HDSD");
+                                    }
+                                    if (mod==("64"))
+                                    {
+                                        mods.AppendLine("DT");
+                                    }
+                                    if (mod==("66"))
+                                    {
+                                        mods.AppendLine("EZDT");
+                                    }
+                                    if (mod==("72"))
+                                    {
+                                        mods.AppendLine("HDDT");
+                                    }
+                                    if (mod==("73"))
+                                    {
+                                        mods.AppendLine("NFHDDT");
+                                    }
+                                    if (mod==("74"))
+                                    {
+                                        mods.AppendLine("EZHDDT");
+                                    }
+                                    if (mod==("75"))
+                                    {
+                                        mods.AppendLine("NFEZHDDT");
+                                    }
+                                    if (mod==("88"))
+                                    {
+                                        mods.AppendLine("HDHRDT");
+                                    }
+                                    if (mod==("89"))
+                                    {
+                                        mods.AppendLine("NFHDHRDT");
+                                    }
+                                    if (mod==("128"))
+                                    {
+                                        mods.AppendLine("RL PLEB");
+                                    }
+                                    if (mod==("16418"))
+                                    {
+                                        mods.AppendLine("EZPF");
                                     }
                                     //------------------------------------------------
                                     var request3 =
@@ -337,7 +400,7 @@ namespace Luxary
 
                                         xd.Title = username;
                                         xd.Description = $"{length} Recent plays.\n----";
-                                        xd.ThumbnailUrl = $"https://s.ppy.sh/a/{userid}";
+                                        xd.ThumbnailUrl = $"http://s.ppy.sh/a/{userid}";
                                         if (mod == "0")
                                         {
                                             xd.AddField(x =>
@@ -424,8 +487,8 @@ namespace Luxary
         }
 
 
-        [Command("userbest")]
-        [Alias("ub","ubest")]
+        [Command("osu userbest")]
+        [Alias("osu ub")]
         public async Task Osssu([Remainder] string name)
         {
             //https://osu.ppy.sh/api/get_beatmaps?k=00b5c6aaae0d1a09091f08fc294836c893c591de&b=275265"
@@ -453,7 +516,7 @@ namespace Luxary
                     {
                         Title = username,
                         Description = "Top 10 plays.\n----",
-                        ThumbnailUrl = $"https://s.ppy.sh/a/{userid}"
+                        ThumbnailUrl = $"http://s.ppy.sh/a/{userid}"
                     };
                     for (int xdd = 0; xdd < 10; xdd++)
                     {
@@ -524,33 +587,97 @@ namespace Luxary
                             {
                                 rank = "<:rankingXsmall:400920039479574532>";
                             }
-                            if (mod.Contains("64"))
+                            if (mod==("1"))
                             {
-                                mods.AppendLine("DT");
+                                mods.AppendLine("NF");
                             }
-                            if (mod.Contains("1024"))
+                            if (mod=="2")
                             {
-                                mods.AppendLine("FL");
+                                mods.AppendLine("EZ");
                             }
-                            if (mod.Contains("576"))
+                            if (mod==("3"))
                             {
-                                mods.AppendLine("NC");
+                                mods.AppendLine("EZNF");
                             }
-                            if (mod.Contains("16"))
-                            {
-                                mods.AppendLine("HR");
-                            }
-                            if (mod.Contains("8"))
-                            {
-                                mods.AppendLine("RL Pleb");
-                            }
-                            if (mod.Contains("8"))
+                            if (mod==("8"))
                             {
                                 mods.AppendLine("HD");
                             }
-                            if (mod.Contains("72"))
+                            if (mod==("9"))
+                            {
+                                mods.AppendLine("NFHD");
+                            }
+                            if (mod==("10"))
+                            {
+                                mods.AppendLine("EZHD");
+                            }
+                            if (mod==("11"))
+                            {
+                                mods.AppendLine("NFEZHD");
+                            }
+                            if (mod==("16"))
+                            {
+                                mods.AppendLine("HR");
+                            }
+                            if (mod==("17"))
+                            {
+                                mods.AppendLine("NFHR");
+                            }
+                            if (mod==("24"))
+                            {
+                                mods.AppendLine("HDHR");
+                            }
+                            if (mod==("32"))
+                            {
+                                mods.AppendLine("SD");
+                            }
+                            if (mod==("34"))
+                            {
+                                mods.AppendLine("EZSD");
+                            }
+                            if (mod==("40"))
+                            {
+                                mods.AppendLine("HDSD");
+                            }
+                            if (mod==("64"))
+                            {
+                                mods.AppendLine("DT");
+                            }
+                            if (mod==("66"))
+                            {
+                                mods.AppendLine("EZDT");
+                            }
+                            if (mod==("72"))
                             {
                                 mods.AppendLine("HDDT");
+                            }
+                            if (mod==("73"))
+                            {
+                                mods.AppendLine("NFHDDT");
+                            }
+                            if (mod==("74"))
+                            {
+                                mods.AppendLine("EZHDDT");
+                            }
+                            if (mod==("75"))
+                            {
+                                mods.AppendLine("NFEZHDDT");
+                            }
+                            if (mod==("88"))
+                            {
+                                mods.AppendLine("HDHRDT");
+                            }
+                            if (mod==("89"))
+                            {
+                                mods.AppendLine("NFHDHRDT");
+                            }
+                            if (mod==("128"))
+                            {
+                                mods.AppendLine("RL PLEB");
+                            }
+                            if (mod==("16418"))
+                            {
+                                mods.AppendLine("EZPF");
                             }
 
                             request3.Method = "GET";
@@ -617,8 +744,8 @@ namespace Luxary
             }
         }
 
-        [Command("beatmap")]
-        [Alias("bmap","bms")]
+        [Command("osu beatmap")]
+        [Alias("osu bmap")]
         public async Task BM(string url)
         {
             try

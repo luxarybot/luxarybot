@@ -503,7 +503,7 @@ namespace Luxary
         {
             await ReplyAsync($"https://www.twitch.tv/{name}");
         }
- 
+
         [Command("twitch video")]
         [Summary(".twitch **<username>**")]
         [Remarks("Searchs stuff")]

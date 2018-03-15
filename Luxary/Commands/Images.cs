@@ -319,7 +319,7 @@ namespace Luxary
             Console.WriteLine("Making API Call...");
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate })) //This acts like a webbrowser
             {
-                string websiteurl = "http://random.cat/meow";                           //The API site
+                string websiteurl = "http://aws.random.cat/meow";                           //The API site
                 client.BaseAddress = new Uri(websiteurl);                                   //This redirects the code to the API?
                 HttpResponseMessage response = client.GetAsync("").Result;   //Then it gets the information
                 response.EnsureSuccessStatusCode();                                       //Makes sure that its successfull
