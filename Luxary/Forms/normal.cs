@@ -44,40 +44,14 @@ namespace Luxary
         private static int idd2;
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {           
+            label3.Text = "";
             id = 0;
             idd = 0;
-            idd2 = 0;
             pid = 0;
-            label3.Text = "";
-            aTimer = new Timer();
-            if (aTimer.Enabled == false)
-            {
-                aTimer.Start();
-                aTimer.Interval = 500;
-                aTimer.Enabled = true;
-                aTimer.AutoReset = true;
-                aTimer.Elapsed += StartBoi;
-            }
-            else
-            {
-                aTimer.Start();
-                aTimer.AutoReset = true;
-                aTimer.Elapsed += StartBoi;
-            }
+            GoingTimer();
         }
-
-        public async void StartBoi(Object source, System.Timers.ElapsedEventArgs e)
-        {
-            try
-            {
-                await GoingTimer();
-            }
-            catch
-            {
-                aTimer.Stop();
-            }
-        }
+        List<string> myList = new List<string>();
         private Bitmap MyImage;
         private static string img;
         public async Task GoingTimer()
@@ -87,52 +61,57 @@ namespace Luxary
             XmlDocument Doc = new XmlDocument();
             Doc.Load(url);
             XmlNodeList itemList = Doc.DocumentElement.SelectNodes("post");
-            List<string> myList = new List<string>();
             foreach (XmlNode currNode in itemList)
             {
                 string date = string.Empty;
                 date = currNode.Attributes["file_url"].Value;
-                string modifiedString = date.Replace("//", "http://");
-                myList.Add(modifiedString);
+                myList.Add(date);
             }
             try
             {
-                string input = "abcdefghijklmnopqrstuvwxyz0123456789";
-                char ch;
-                string chars = @"\";
-                string randomString2 = $"{xd}_{idd}_";
-                Random rand = new Random();
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < myList.Count; i++)
                 {
-                    ch = input[rand.Next(0, input.Length)];
-                    randomString2 += ch;
-                }
-                if (MyImage != null)
-                {
-                    MyImage.Dispose();
-                }
-                string randomString = myList[id++];
-                string localFilename = textBox1.Text + chars + randomString2 + ".jpg";
+                    string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+                    char ch;
+                    string chars = @"\";
+                    string randomString2 = $"{xd}_{idd}_";
+                    Random rand = new Random();
+                    for (int id = 0; id < 8; id++)
+                    {
+                        ch = input[rand.Next(0, input.Length)];
+                        randomString2 += ch;
+                    }
+                    if (MyImage != null)
+                    {
+                        MyImage.Dispose();
+                    }
+                    string randomString = myList[id++];
+                    string localFilename = textBox1.Text + chars + randomString2 + ".jpg";
 
-                using (WebClient client = new WebClient())
-                {
-                    client.DownloadFile(randomString, localFilename);
+                    using (WebClient client = new WebClient())
+                    {
+                        client.DownloadFile(randomString, localFilename);
+                    }
+                    try
+                    {
+                        System.Drawing.Image image = new Bitmap(localFilename);
+                        pb1.Image = image;
+                        pb1.SizeMode = PictureBoxSizeMode.StretchImage;
+                    }
+                    catch
+                    {
+                        
+                    }
+                    label3.Text = $"Downloaded: {idd} images";
+                    idd++;
                 }
-                System.Drawing.Image image = new Bitmap(localFilename);
-                pb1.Image = image;
-                pb1.SizeMode = PictureBoxSizeMode.StretchImage;
-                label3.Text = $"Downloaded: {idd} images";
-                idd++;
-                idd2++;
             }
-            catch
+            catch (Exception ee)
             {
-                idd2 = 0;
-                myList.Clear();
-                id = 0;
-                pid++;
+                
             }
-
+            pid++;
+            await GoingTimer();
         }
 
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)

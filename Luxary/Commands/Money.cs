@@ -17,9 +17,9 @@ using Luxary.Services;
 namespace Luxary
 {
     [Group("eco")]
-    public class Kekistan: ModuleBase
+    public class Kekistan : ModuleBase
     {
-       
+
         [Command("roll")]
         [Summary(".daily")]
         [Remarks("Gives your daily loan, richboi")]
@@ -169,8 +169,13 @@ namespace Luxary
             var checktime = Database.GetInstance().GetUserDao().UnixCheck(Context.User.Id);
             if (unixTime > checktime)
             {
-                Database.GetInstance().GetUserDao().InsertUser(Context.User.Id, 100, (int)(unixTime + 86400), Context.User.Username);
-                await ReplyAsync($"ez 100 bucks");
+                Database.GetInstance().GetUserDao().InsertUser(Context.User.Id, 100, (int)(unixTime + 86400), Context.User.Username, 1);
+                var xd = new EmbedBuilder
+                {
+                    Title = "$$$",
+                    Description = ($"You have gained: **$100**")
+                };
+                await ReplyAsync("", false, xd.Build());
             }
             else
             {
@@ -192,11 +197,17 @@ namespace Luxary
 
         [Command("money")]
         [Summary(".money")]
+        [Alias("coins","bal","balance")]
         [Remarks("Shows your wallet")]
         public async Task Money()
         {
-            var xd = Database.GetInstance().GetUserDao().UserMoney(Context.User.Id);
-            await ReplyAsync(xd.ToString());
+            var mon = Database.GetInstance().GetUserDao().UserMoney(Context.User.Id);
+            var xd = new EmbedBuilder
+            {
+                Title = "$$$",
+                Description = ($"You have a total of: **${mon}**")
+            };
+            await ReplyAsync("", false, xd.Build());
         }
     }
 }

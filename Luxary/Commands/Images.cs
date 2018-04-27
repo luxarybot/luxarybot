@@ -737,7 +737,7 @@ namespace Luxary
                                         var CID = json3[xd]["championId"].ToString();
                                         var CPT = json3[xd]["championPoints"].ToString();
                                         var CLVL = json3[xd]["championLevel"].ToString();
-                                        using (FileStream fs = new FileStream(@"D:\Discord\Luxary\Luxary\bin\Debug\champs.txt", FileMode.Open,
+                                        using (FileStream fs = new FileStream(@"champs.txt", FileMode.Open,
                                             FileAccess.Read))
                                         using (StreamReader srr = new StreamReader(fs))
                                         using (JsonTextReader reader = new JsonTextReader(srr))
@@ -895,7 +895,7 @@ namespace Luxary
                                 var CID = json3[0]["championId"].ToString();
                                 var CLVL = json3[0]["championLevel"].ToString();
                                 var CPT = json3[0]["championPoints"].ToString();
-                                using (FileStream fs = new FileStream(@"D:\Discord\Luxary\Luxary\bin\Debug\champs.txt", FileMode.Open,
+                                using (FileStream fs = new FileStream(@"champs.txt", FileMode.Open,
                                     FileAccess.Read))
                                 using (StreamReader srr = new StreamReader(fs))
                                 using (JsonTextReader reader = new JsonTextReader(srr))
@@ -1523,6 +1523,11 @@ namespace Luxary
                 ImageUrl = "https://raw.githubusercontent.com/ThijmenHogenkamp/Bot/master/Luxary/bin/Debug/pic/weeb.gif"
             };
             await ReplyAsync("", false, build.Build());
+        }
+
+        public static implicit operator Image(Bitmap v)
+        {
+            throw new NotImplementedException();
         }
     }
 }

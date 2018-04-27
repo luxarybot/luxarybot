@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Luxary</RootNamespace>
     <AssemblyName>Luxary</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -426,6 +426,7 @@
     <Compile Include="Services\DB2.cs" />
     <Compile Include="Services\DB3.cs" />
     <Compile Include="Services\DB4.cs" />
+    <Compile Include="Services\Draw.cs" />
     <Compile Include="Services\ImageCore.cs" />
     <Compile Include="Services\prefix.cs" />
     <Compile Include="Services\quotes.cs" />

@@ -782,42 +782,41 @@ namespace Luxary
                     embed.Description = text;
                 await ReplyAsync("", false, embed.Build());
             }
-                else
-                {
-                string[] predictionssTexts = new string[]
-                {
-                    $"I rate this a **0/10** lol.",
-                    $"I rate this a **1/10**",
-                    $"I rate this a **2/10**",
-                    $"I rate this a **3/10**",
-                    $"I rate this a **4/10**",
-                    $"I rate this a solid **5/7**",
-                    $"I rate this a **6/10**",
-                    $"I rate this a **7/10**",
-                    $"I rate this a **8/10**",
-                    $"I rate this a **9/10**",
-                    $"I rate this a **10/10** yeys"
-                };
+            else
+            {
+            string[] predictionssTexts = new string[]
+            {
+                $"I rate this a **0/10** lol.",
+                $"I rate this a **1/10**",
+                $"I rate this a **2/10**",
+                $"I rate this a **3/10**",
+                $"I rate this a **4/10**",
+                $"I rate this a solid **5/7**",
+                $"I rate this a **6/10**",
+                $"I rate this a **7/10**",
+                $"I rate this a **8/10**",
+                $"I rate this a **9/10**",
+                $"I rate this a **10/10** yeys"
+            };
 
-                        Random rand = new Random();
+                    Random rand = new Random();
 
-                        var rnd = new Random();
-                        int getal = rnd.Next(1, 6);
-                        int g1 = rnd.Next(1, 255);
-                        int g2 = rnd.Next(1, 255);
-                        int g3 = rnd.Next(1, 255);
-                        var embed = new EmbedBuilder()
-                        {
-                        Color = new Color(g1, g2, g3),
-                        };
-                        int randomIndex = rand.Next(predictionssTexts.Length);
-                        string text = predictionssTexts[randomIndex];
-                        embed.Title = $"**I say...**";
-                        embed.Description = text;
-                        await ReplyAsync("", false, embed.Build());
-                    }
+                    var rnd = new Random();
+                    int getal = rnd.Next(1, 6);
+                    int g1 = rnd.Next(1, 255);
+                    int g2 = rnd.Next(1, 255);
+                    int g3 = rnd.Next(1, 255);
+                    var embed = new EmbedBuilder()
+                    {
+                    Color = new Color(g1, g2, g3),
+                    };
+                    int randomIndex = rand.Next(predictionssTexts.Length);
+                    string text = predictionssTexts[randomIndex];
+                    embed.Title = $"**I say...**";
+                    embed.Description = text;
+                    await ReplyAsync("", false, embed.Build());
                 }
-
+            }
         [Command("roll")]
         [Summary(".roll **<number>**")]
         [Remarks("Rick rolling")]

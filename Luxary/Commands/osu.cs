@@ -1,33 +1,27 @@
 ﻿using System;
-using System.Diagnostics;
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using Discord;
-using Discord.Audio;
 using Discord.WebSocket;
 using Discord.Commands;
 using System.IO;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Text;
 using System.Net.Http;
 using ImageSharp;
-using ImageSharp.Drawing;
 using Newtonsoft.Json.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using System.IO.Compression;
 using System.Runtime.InteropServices;
 using Luxary.Service;
-using System.Web;
 using Newtonsoft.Json;
-using SteamKit2.GC.Dota.Internal;
-using SteamKit2.Unified.Internal;
+using Luxary.Services;
 
 namespace Luxary
 {
+
     public class Games : ModuleBase<ICommandContext>
     {
         public class Part22 : IEquatable<Part22>
@@ -66,9 +60,125 @@ namespace Luxary
                 return (this.PartId.Equals(other.PartId));
             }
         }
-
+        [Command("ppset")]
+        public async Task setpp(IGuildUser user, int pp)
+        {
+            Database.GetInstance().GetUserDao().InsertPP(user.Id, pp);
+            EmbedBuilder xd = new EmbedBuilder();
+            xd.Title = "P3D0";
+            xd.Description = ($"increased pedo lvl **+{pp}**");
+            await ReplyAsync("", false, xd.Build());
+        }
         private static List<Part22> parts22 = new List<Part22>();
+        [Command("pedopas")]
+        [Summary(".pp")]
+        [Alias("pp")]
+        [Remarks("pedopas.")]
+        public async Task PP(IGuildUser userr = null)
+        {
+            try
+            {
+                if (!(userr == null))
+                {
+                    var pplvl = Database.GetInstance().GetUserDao().UserPP(userr.Id);
+                    System.Drawing.Color color = System.Drawing.Color.FromArgb(255, 0, 0, 0);
+                    Font font = new Font("Boulder", 500);
+                    var us = userr as SocketGuildUser;
+                    string text = $"Name: {us.Username}     \n        LVL: {pplvl}";
+                    ImageCore core = new ImageCore();
+                    ImageSharp.Image<Rgba32> image = null;
+                    HttpClient httpCleint = new HttpClient();
+                    HttpResponseMessage response = await httpCleint.GetAsync(userr.GetAvatarUrl());
+                    Stream inputStream = await response.Content.ReadAsStreamAsync();
+                    image = ImageSharp.Image.Load(inputStream);
 
+                    Stream outStream = new MemoryStream();
+                    image.SaveAsPng(outStream);
+                    outStream.Position = 0;
+                    string input = "abcdefghijklmnopqrstuvwxyz0123456789";
+                    char ch;
+                    string randomString = "";
+                    Random rand = new Random();
+                    for (int i = 0; i < 8; i++)
+                    {
+                        ch = input[rand.Next(0, input.Length)];
+                        randomString += ch;
+                    }
+                    var file = File.Create($"images/{randomString}.png");
+                    await outStream.CopyToAsync(file);
+                    file.Dispose();
+
+                    ImageSharp.Image<Rgba32> champ1 =
+                        await core.StartStreamAsync(path: "pic/pp.png");
+                    ImageSharp.Image<Rgba32> user =
+                        await core.StartStreamAsync(
+                            path: $"images/{randomString}.png");
+                    ImageSharp.Image<Rgba32> finalImage = new ImageSharp.Image<Rgba32>(446, 206);
+                    //size per image VVVVV
+                    ImageSharp.Size size250 = new ImageSharp.Size(446, 206);
+                    ImageSharp.Size size125 = new ImageSharp.Size(80, 80);
+                    ImageSharp.Size sizeText = new ImageSharp.Size(125, 50);
+                    champ1.Resize(size250);
+                    user.Resize(size125);
+
+
+
+
+
+
+                    //first, create a dummy bitmap just to get a graphics object
+                    System.Drawing.Image img = new Bitmap(1, 1);
+                    Graphics drawing = Graphics.FromImage(img);
+                    //measure the string to see how big the image needs to be
+                    System.Drawing.SizeF textSize = drawing.MeasureString(text, font, 60000);
+
+                    //set the stringformat flags to rtl
+                    StringFormat sf = new StringFormat();
+                    //uncomment the next line for right to left languages
+                    //sf.FormatFlags = StringFormatFlags.DirectionRightToLeft;
+                    sf.Trimming = StringTrimming.Word;
+                    //free up the dummy image and old graphics object
+                    img.Dispose();
+                    drawing.Dispose();
+
+                    //create a new image of the right size
+                    img = new Bitmap((int)textSize.Width, (int)textSize.Height);
+
+                    drawing = Graphics.FromImage(img);
+                    //Adjust for high quality
+                    drawing.CompositingQuality = CompositingQuality.HighQuality;
+                    drawing.InterpolationMode = InterpolationMode.HighQualityBilinear;
+                    drawing.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    drawing.SmoothingMode = SmoothingMode.HighQuality;
+                    drawing.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                    //paint the background
+                    drawing.Clear(System.Drawing.Color.Transparent);
+
+                    //create a brush for the text
+                    Brush textBrush = new SolidBrush(color);
+
+                    drawing.DrawString(text, font, textBrush, new System.Drawing.RectangleF(0, 0, textSize.Width, textSize.Height), sf);
+
+                    drawing.Save();
+
+                    img.Save($"images/{randomString}2.png", System.Drawing.Imaging.ImageFormat.Png);
+                    ImageSharp.Image<Rgba32> texxt =
+                        await core.StartStreamAsync(
+                            path: $"images/{randomString}2.png");
+                    finalImage.DrawImage(champ1, 1f, size250, new ImageSharp.Point(0, 0));
+                    finalImage.DrawImage(user, 1f, size125, new ImageSharp.Point(20, 80));
+                    finalImage.DrawImage(texxt, 1f, sizeText, new ImageSharp.Point(125, 80));
+                    textBrush.Dispose();
+                    drawing.Dispose();
+                    await core.StopStreamAsync(Context.Message, finalImage);
+                }
+            }
+            catch (Exception e)
+            {
+                await ReplyAsync(e.ToString());
+            }
+        }
         [Command("pubg stats")]
         public async Task Pubg(string name, [Optional]string mode)
         {
@@ -171,10 +281,10 @@ namespace Luxary
                             $"**Level: {quickmaffs}**\n**Playcount:** {pcount}\n**Accuracy:** {quickmaffs3}%\n**Country:** {country}\n**Rank:** {pprank}\n**PP:** {quickmaffs2}",
                     };
                     string local = @"D:\Discord\Luxary\Luxary\bin\Debug\xd\"+userid+".jpg";
-                    string imgurl = $"http://s.ppy.sh/a/{userid}";
+                    string imgurl = $"https://s.ppy.sh/a/{userid}";
                     using (WebClient client = new WebClient())
                     {
-                        client.DownloadFile(imgurl, local);
+                        //client.DownloadFile(imgurl, local);
                     }
                     xd.ThumbnailUrl = imgurl;
                     await ReplyAsync("", false, xd.Build());
@@ -389,9 +499,7 @@ namespace Luxary
                                             myWebResponse3.GetResponseStream() ?? throw new InvalidOperationException(),
                                             encoding3))
                                     {
-                                        var result3 = reader3.ReadToEnd();
-                                        var container3 = (JContainer) JsonConvert.DeserializeObject(result3);
-
+                                        var container3 = (JContainer) JsonConvert.DeserializeObject(reader3.ReadToEnd());
                                         var title = container3[0]["title"].ToString();
                                         var diff = container3[0]["version"].ToString();
                                         var url = container3[0]["beatmapset_id"].ToString();
@@ -400,7 +508,7 @@ namespace Luxary
 
                                         xd.Title = username;
                                         xd.Description = $"{length} Recent plays.\n----";
-                                        xd.ThumbnailUrl = $"http://s.ppy.sh/a/{userid}";
+                                        xd.ThumbnailUrl = $"https://s.ppy.sh/a/{userid}";
                                         if (mod == "0")
                                         {
                                             xd.AddField(x =>
@@ -516,7 +624,7 @@ namespace Luxary
                     {
                         Title = username,
                         Description = "Top 10 plays.\n----",
-                        ThumbnailUrl = $"http://s.ppy.sh/a/{userid}"
+                        ThumbnailUrl = $"https://s.ppy.sh/a/{userid}"
                     };
                     for (int xdd = 0; xdd < 10; xdd++)
                     {

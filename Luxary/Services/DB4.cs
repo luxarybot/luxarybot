@@ -10,5 +10,6 @@ namespace Luxary.Services
         public string Name { get; set; }
         public Int32 Counter { get; set; }
         public string DailyGot { get; set; }
+        public int PP { get; set; }
     }
 }

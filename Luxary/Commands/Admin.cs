@@ -268,23 +268,26 @@ namespace Luxary
         {
             try
             {
-                var role = user.Guild.Roles.Where(has => has.Name.ToUpper() == roles.ToUpper());
-                await user.AddRolesAsync(role);
-                var embed = new EmbedBuilder
+                var GuildUser = await Context.Guild.GetUserAsync(Context.User.Id);
+                if (GuildUser.Id != 185402901236154368)
                 {
-                    Title = "Admin",
-                    Description = $"Gave **{user}** the role **{roles}**"
-                };
-                await ReplyAsync("", false, embed.Build());
+                    await Context.Channel.SendMessageAsync("No rights");
+                }
+                else
+                {
+                    var role = Context.Guild.Roles.FirstOrDefault(x => x.Name == roles);
+                    await user.AddRoleAsync(role);
+                    var embed = new EmbedBuilder
+                    {
+                        Title = "Admin",
+                        Description = $"Gave **{user}** the role **{roles}**"
+                    };
+                    await ReplyAsync("", false, embed.Build());
+                }
             }
-            catch (Exception)
+            catch(Exception e)
             {
-                var embed = new EmbedBuilder
-                {
-                    Title = "Error",
-                    Description = $"idk no rights?"
-                };
-                await ReplyAsync("", false, embed.Build());
+                Console.WriteLine(e);
             }
         }
         [Command("Kick")]

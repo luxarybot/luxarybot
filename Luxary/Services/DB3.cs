@@ -10,7 +10,7 @@ namespace Luxary.Services
         {
         }
 
-        public void InsertUser(ulong discordId, int Money2, int counter, string xd)
+        public void InsertUser(ulong discordId, int Money2, int counter, string xd, int pp)
         {
 
             User user = Find(a => a.DiscordID == discordId);
@@ -21,7 +21,8 @@ namespace Luxary.Services
                     DiscordID = discordId,
                     Money = Money2,
                     Counter = counter,
-                    Name = xd
+                    Name = xd,
+                    PP = pp
                 };
                 Save(user2);
                 return;
@@ -42,6 +43,29 @@ namespace Luxary.Services
             user.Money += Money2;
             Save(user);
         }
+        public void InsertPP(ulong discordId, int pp)
+        {
+
+            User user = Find(a => a.DiscordID == discordId);
+            if (user == null)
+            {
+                User user2 = new User
+                {
+                    DiscordID = discordId,
+                    PP = pp
+                };
+                Save(user2);
+                return;
+            }
+
+            else
+            {
+                user.PP += pp;
+            }
+            //;P
+            Save(user);
+
+        }
         public void GrabMoney(ulong discordId, double Money2)
         {
             User user = Find(a => a.DiscordID == discordId);
@@ -55,6 +79,16 @@ namespace Luxary.Services
             if (user != null)
             {
                 return (int) user.Money;
+            }
+            return 0;
+        }
+
+        public int UserPP(ulong discordId)
+        {
+            User user = Find(a => a.DiscordID == discordId);
+            if (user != null)
+            {
+                return user.PP;
             }
             return 0;
         }
