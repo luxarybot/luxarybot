@@ -21,7 +21,7 @@ using Luxary.Services;
 
 namespace Luxary
 {
-
+    //
     public class Games : ModuleBase<ICommandContext>
     {
         public class Part22 : IEquatable<Part22>
